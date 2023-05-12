@@ -79,7 +79,8 @@ const signInWithGoogle = async () => {
       });
     }
   } catch (err) {
-
+    // log out the user if an error occurs
+    auth.signOut();
   }
 };
 
