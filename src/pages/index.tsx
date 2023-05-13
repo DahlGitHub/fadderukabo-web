@@ -16,24 +16,22 @@ import Ssn from '/public/svg/ssn.svg';
 export default function HomePage() {
   return (
     <Layout>
-      <main className="pb-16 bg-white">
         <section> 
-    <div className='relative flex flex-col items-center justify-center py-12 text-center'>
-      <Vercel className='text-5xl' />
-      <h1 className='mt-4'>
-        Next.js + Tailwind CSS + TypeScript Starter
-      </h1>
-      <p className='mt-2 text-sm text-gray-800'>
-        A starter for Next.js, Tailwind CSS, and TypeScript with Absolute
-        Import, Seo, Link component, pre-configured with Husky{' '}
-      </p>
-      <p className='mt-2 text-sm text-gray-700'>
-      
-      </p>
-    </div>
-  </section>
-</main>
-
+        <div className='relative flex flex-col items-center justify-center py-12 text-center'>
+            <a href="https://www.usn.no" className="hover:text-gray-800 dark:hover:text-gray-400">
+                <Usn className="text-[10rem]"/>
+            </a> 
+            <h1 className='mt-4 tracking-widest uppercase font-semibold text-3xl'>
+                Coming Soon
+            </h1>
+            <p className='mt-2 text-sm text-gray-800 font-semibold uppercase text-xl tracking-widest'>
+                Stay tuned
+            </p>
+            <p className='mt-2 text-sm text-gray-700'>
+            
+            </p>
+        </div>
+        </section>
     </Layout>
   );
 }
