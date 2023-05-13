@@ -4,13 +4,12 @@ import Footer from './Footer';
 export default function Layout({ children }: { children: React.ReactNode }) {
   // Put Header or Footer Here
   return (
-  <div className='flex flex-col min-h-screen'>
-    <main className='flex-grow'>
-       {children} 
-    </main>
-    
-    <Footer/>
-    
+<div className="mx-auto">
+<div className="flex h-screen flex-col justify-between">
+
+        <main className="mb-auto">{children}</main>
+        <Footer />
+      </div>
   </div>
   );
 }
