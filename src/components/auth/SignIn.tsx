@@ -17,38 +17,39 @@ export default function SignIn() {
   const [allowedEmails, setAllowedEmails] = useState<string[]>([]);
   const router = useRouter();
 
-
   useEffect(() => {
     if (loading) {
       // maybe trigger a loading screen
       return;
     }
-  
+
     if (user) {
       getDocs(collection(db, 'allowedEmails'))
         .then((querySnapshot) => {
           const emails = querySnapshot.docs.map((doc) => doc.data().email);
           setAllowedEmails(emails);
+
+          const userEmail = user.email;
+          let accessGranted = false;
+          if (userEmail && allowedEmails.includes(userEmail)) {
+            accessGranted = true;
+            router.push('/dashboard');
+          } else {
+            auth.signOut()
+              .catch((error) => {
+                console.error("Error signing out:", error);
+              });
+          }
+
+          if (accessGranted) {
+            toast.success(`Access granted. You are authorized to access this site, ${user.displayName}!`);
+          } else {
+            toast.error("Access denied. You are not authorized to access this site.");
+          }
         })
         .catch((error) => {
           console.error("Error getting documents:", error);
         });
-  
-      const userEmail = user.email;
-    
-      if (userEmail && !allowedEmails.includes(userEmail)) {
-        // Log out the user and display an error message
-        auth.signOut()
-          .then(() => {
-            toast.error("Access denied. You are not authorized to access this site.");
-          })
-          .catch((error) => {
-            console.error("Error signing out:", error);
-          });
-      } else {
-        toast.success(`Access granted. You are authorized to access this site, ${user.displayName}!`);
-        router.push("./dashboard");
-      }
     }
   }, [user, loading, allowedEmails, router, auth, db]);
 
