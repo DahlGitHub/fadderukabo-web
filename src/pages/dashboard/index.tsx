@@ -1,12 +1,12 @@
 import React from 'react'
-import Layout from '@/components/layout/Layout'
 import Dashboard from '@/components/dashboard/Dashboard'
+import DashboardLayout from '@/components/dashboard/DashboardLayout'
 
 const index = () => {
   return (
-    <Layout>
+    <DashboardLayout>
       <Dashboard/>
-    </Layout>
+    </DashboardLayout>
   )
 }
 
