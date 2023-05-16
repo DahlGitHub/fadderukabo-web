@@ -1,6 +1,8 @@
 import { AppProps } from 'next/app';
 
 import '@/styles/globals.css';
+import { ToastContainer } from 'react-toastify';
+import { SSRProvider } from '@react-aria/ssr';
 
 
 /**
@@ -9,7 +11,14 @@ import '@/styles/globals.css';
  */
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+
+    <SSRProvider>
+      <Component {...pageProps} />
+      <ToastContainer/>
+    </SSRProvider>
+  
+  );
 }
 
 export default MyApp;
