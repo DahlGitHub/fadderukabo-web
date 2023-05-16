@@ -30,28 +30,26 @@ export default function SignIn() {
           setAllowedEmails(emails);
 
           const userEmail = user.email;
-          let accessGranted = false;
-          if (userEmail && allowedEmails.includes(userEmail)) {
-            accessGranted = true;
+          if (userEmail && emails.includes(userEmail)) {
+            // User is in allowedEmails, redirect to the desired page
+            toast.success(`Access granted ${user.displayName}!`);
             router.push('/dashboard');
           } else {
+            // User is not in allowedEmails, log out the user and display an error message
             auth.signOut()
+              .then(() => {
+                toast.error("Access denied. You are not authorized to access this site.");
+              })
               .catch((error) => {
                 console.error("Error signing out:", error);
               });
-          }
-
-          if (accessGranted) {
-            toast.success(`Access granted. You are authorized to access this site, ${user.displayName}!`);
-          } else {
-            toast.error("Access denied. You are not authorized to access this site.");
           }
         })
         .catch((error) => {
           console.error("Error getting documents:", error);
         });
     }
-  }, [user, loading, allowedEmails, router, auth, db]);
+  }, [user, loading, router, auth, db]);
 
 
   return (
@@ -101,7 +99,6 @@ export default function SignIn() {
         </div>
     </div>
 </div>
-<ToastContainer/>
 </section>
 
     /*
