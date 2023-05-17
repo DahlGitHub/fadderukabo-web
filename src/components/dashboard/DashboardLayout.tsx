@@ -3,6 +3,7 @@ import Dashboard from "./Dashboard";
 import { UserContext } from "../auth/UserContext";
 import { auth } from "../../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import Sidebar from "../sidebar/Sidebar";
 
 
 
@@ -21,7 +22,8 @@ const DashboardLayout = ({ children } : {children: ReactNode}) => {
       :
       
       <div className="w-full w-[calc(100vw-100px)]">
-        { children }
+        <Sidebar />
+        <main>{ children }</main>
       </div>
       
       }
