@@ -2,54 +2,47 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import React, { useState, useEffect } from "react";
-import { signInWithGoogle, db } from "../../../firebase";
+import { signInWithGoogle, db, getSessionToken } from "../../../firebase";
 import 'firebase/auth';
 import { useRouter } from 'next/router';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { getAuth, signOut } from 'firebase/auth';
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, onSnapshot } from "firebase/firestore";
 
 import UsnIcon from "public/svg/usnicon.svg"
 
 export default function SignIn() {
   const auth = getAuth();
   const [user, loading, error] = useAuthState(auth);
-  const [allowedEmails, setAllowedEmails] = useState<string[]>([]);
   const router = useRouter();
 
   useEffect(() => {
     if (loading) {
-      // maybe trigger a loading screen
+      // Maybe trigger a loading screen
       return;
     }
 
     if (user) {
-      getDocs(collection(db, 'allowedEmails'))
-        .then((querySnapshot) => {
-          const emails = querySnapshot.docs.map((doc) => doc.data().email);
-          setAllowedEmails(emails);
-
-          const userEmail = user.email;
-          if (userEmail && emails.includes(userEmail)) {
-            // User is in allowedEmails, redirect to the desired page
-            toast.success(`Access granted ${user.displayName}!`);
+      getSessionToken(user)
+        .then((sessionToken) => {
+          if (sessionToken) {
+            toast.success('Successfully signed in.');
             router.push('/dashboard');
           } else {
-            // User is not in allowedEmails, log out the user and display an error message
-            auth.signOut()
+            signOut(auth)
               .then(() => {
-                toast.error("Access denied. You are not authorized to access this site.");
+                toast.error('Access denied. You are not authorized to access this site.');
               })
               .catch((error) => {
-                console.error("Error signing out:", error);
+                toast.error('Error signing out:', error);
               });
           }
         })
         .catch((error) => {
-          console.error("Error getting documents:", error);
+          toast.error('Error getting session token:', error);
         });
     }
-  }, [user, loading, router, auth, db]);
+  }, [user, loading, router, auth]);
 
 
   return (
