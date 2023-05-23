@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
-import{ GoogleAuthProvider, getAuth, signInWithPopup, signInWithEmailAndPassword,createUserWithEmailAndPassword,sendPasswordResetEmail, signOut} from "firebase/auth";
-import {getFirestore, query, getDocs,collection,where,addDoc, doc, setDoc} from "firebase/firestore";
+import{ GoogleAuthProvider, getAuth, signInWithPopup, signInWithEmailAndPassword,createUserWithEmailAndPassword,sendPasswordResetEmail, signOut, User} from "firebase/auth";
+import {getFirestore, query, getDocs,collection,where,addDoc, doc, setDoc, updateDoc, DocumentReference} from "firebase/firestore";
 import { getDatabase } from "firebase/database";
 import "firebase/auth";
 import firebase from 'firebase/compat/app';
@@ -84,24 +84,7 @@ const signInWithGoogle = async () => {
   }
 };
 
-const signInWithMicrosoft = async () => {
-  try {
-    const res = await signInWithPopup(auth, microsoftProvider);
-    const user = res.user;
-    const q = query(collection(db, "users"), where("uid", "==", user.uid));
-    const docs = await getDocs(q);
-    if (docs.docs.length === 0) {
-      await setDoc(doc(db, "users", user.uid), {
-        uid: user.uid,
-        name: user.displayName,
-        authProvider: "microsoft",
-        email: user.email,
-      });
-    }
-  } catch (err) {
 
-  }
-}
 
 const logInWithEmailAndPassword = async (email: string, password: string) => {
     try {
@@ -111,29 +94,20 @@ const logInWithEmailAndPassword = async (email: string, password: string) => {
     }
 };
 
-const registerWithEmailAndPassword = async (name: any, email: string, password: string) => {
-  try {
-    const res = await createUserWithEmailAndPassword(auth, email, password);
-    const user = res.user;
-    await setDoc(doc(db, "users", user.uid), {
-      uid: user.uid,
-      name,
-      authProvider: "local",
-      email: user.email,
-    });
-  } catch (err) {
+export const getSessionToken = async (user: User): Promise<string | null> => {
+  const authorizedEmailsRef = collection(db, 'allowedEmails');
+  const authorizedEmailsQuery = query(authorizedEmailsRef, where('email', '==', user.email));
 
+  const querySnapshot = await getDocs(authorizedEmailsQuery);
+  if (!querySnapshot.empty) {
+    const sessionToken = user.uid;
+    const userDocRef = querySnapshot.docs[0].ref;
+    await updateDoc(userDocRef, { sessionToken });
+
+    return sessionToken;
   }
-};
 
-//endre melding til sjekk mailen din om du har fått melding hvis ikke sjekk om du har skrevet riktig mail.
-const sendPasswordReset = async (email: string) => {
-  try {
-    await sendPasswordResetEmail(auth, email);
-    alert("Password reset link sent!");
-  } catch (err) {
-
-  }
+  return null;
 };
 
 
@@ -141,6 +115,6 @@ const logout = () => {
   signOut(auth);
 };
 
-export {auth, db, sendPasswordReset, logInWithEmailAndPassword, signInWithGoogle, signInWithMicrosoft, registerWithEmailAndPassword, logout, app, database, storage}
+export {auth, db, logInWithEmailAndPassword, signInWithGoogle, logout, app, database, storage}
 
 
