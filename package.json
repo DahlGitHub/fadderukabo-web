@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-avatar": "^1.0.2",
+    "@radix-ui/react-collapsible": "^1.0.2",
     "@react-aria/ssr": "^3.6.0",
     "@types/node": "20.1.2",
     "@types/react": "18.2.6",
@@ -17,6 +19,7 @@
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.1",
     "firebase": "^9.21.0",
+    "flowbite": "^1.6.5",
     "next": "13.4.1",
     "postcss": "8.4.23",
     "react": "18.2.0",
