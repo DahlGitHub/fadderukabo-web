@@ -11,24 +11,16 @@ const DashboardLayout = ({ children } : {children: ReactNode}) => {
   const [user, loading, error] = useAuthState(auth);
   return (
     <UserContext.Provider value={{user, loading, error}}>
-      <div className="min-h-screen">
-      <div className="flex">
 
-      {loading
-      ? <div>
-        Loading...
-        </div>
-
-      :
-      
-      <div className="w-full w-[calc(100vw-100px)]">
-        <Sidebar />
-        <main>{ children }</main>
+      <div className="h-screen overflow-hidden bg-primary-800 flex text-black">
+      <div className=" h-screen">
+        
       </div>
-      
-      }
+      <div className="flex-1">
+        <main className="overflow-auto">{children}</main>
       </div>
     </div>
+
     </UserContext.Provider>
     
   );
