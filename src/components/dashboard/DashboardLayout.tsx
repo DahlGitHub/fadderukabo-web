@@ -1,27 +1,44 @@
 import React, { ReactNode, useState } from "react";
 import Dashboard from "./Dashboard";
-import { UserContext } from "../auth/UserContext";
+import UserContext from "../auth/UserContext";
 import { auth } from "../../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Sidebar from "../sidebar/Sidebar";
+import Header from "../layout/Header";
 
+interface DefaultLayoutProps {
+  children: ReactNode;
+}
 
-
-const DashboardLayout = ({ children } : {children: ReactNode}) => {
-  const [user, loading, error] = useAuthState(auth);
+const DashboardLayout = ({ children } : DefaultLayoutProps ) => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
-    <UserContext.Provider value={{user, loading, error}}>
 
-      <div className="h-screen overflow-hidden bg-primary-800 flex text-black">
-      <div className=" h-screen">
-        
+    <div className="dark:bg-boxdark-2 dark:text-bodydark">
+      {/* <!-- ===== Page Wrapper Start ===== --> */}
+      <div className="flex h-screen overflow-hidden">
+        {/* <!-- ===== Sidebar Start ===== --> */}
+        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        {/* <!-- ===== Sidebar End ===== --> */}
+
+        {/* <!-- ===== Content Area Start ===== --> */}
+        <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+          {/* <!-- ===== Header Start ===== --> */}
+          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+          {/* <!-- ===== Header End ===== --> */}
+
+          {/* <!-- ===== Main Content Start ===== --> */}
+          <main>
+            <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+              {children}
+            </div>
+          </main>
+          {/* <!-- ===== Main Content End ===== --> */}
+        </div>
+        {/* <!-- ===== Content Area End ===== --> */}
       </div>
-      <div className="flex-1">
-        <main className="overflow-auto">{children}</main>
-      </div>
+      {/* <!-- ===== Page Wrapper End ===== --> */}
     </div>
-
-    </UserContext.Provider>
     
   );
 };
