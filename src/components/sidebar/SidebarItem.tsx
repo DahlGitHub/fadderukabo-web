@@ -34,8 +34,8 @@ const SidebarItem = () => {
 
 
   return (
-<aside id="default-sidebar" className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidenav">
-    <div className="overflow-y-auto py-5 px-3 h-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+
+    <div>
       <ul className="space-y-2">
         {links.map((link, index) => (
           <li key={index}>
@@ -48,15 +48,7 @@ const SidebarItem = () => {
                 <span className="ml-3">{link.title}</span>
               </Link>
             )}
-            {link.sublinks && (
-              <ul id={`dropdown-${index}`} className="hidden py-2 space-y-2">
-                {link.sublinks.map((sublink, subIndex) => (
-                  <li key={subIndex}>
-                    <Link href={sublink.href} className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">{sublink.title}</Link>
-                  </li>
-                ))}
-              </ul>
-            )}
+            
           </li>
         ))}
       </ul>
@@ -70,7 +62,7 @@ const SidebarItem = () => {
       </li>
       </ul>
     </div>
-  </aside>
+
     );
 };
 
