@@ -1,16 +1,21 @@
-import Image from "next/image";
-
 import Link from "next/link";
-import { useState } from "react";
-import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import SidebarLinkGroup from "./SidebarLinkGroup";
 
 const links = [
   { title: 'Dashboard', href: '/dashboard' },
   { title: 'Program', href: '/dashboard/program' },
   { title: 'Groups', href: '#' },
   { title: 'List', href: '#' },
+  { title: 'Carousel',
+    sublinks: [
+      { title: 'Org.', href: '#' },
+      { title: 'Studentlife', href: '#' },
+      { title: 'Reviews', href: '#' }
+    ]
+  },
   {
-    title: 'Extra',
+    title: 'Sections',
     sublinks: [
       { title: 'Org.', href: '#' },
       { title: 'Studentlife', href: '#' },
@@ -19,39 +24,94 @@ const links = [
   },
 ];
 
-
-const SidebarItems = [
-    { id: 1, iconItem: "", text: "Dashboard",link: "/dashboard" },
-    { id: 2, iconItem: "", text: "Events",link: "/dashboard/events" },
-    { id: 3,  iconItem: "", text: "Groups",link: "/dashboard/files" },
-    { id: 4, iconItem: "", text: "Org.",link: "/dashboard/contactChat" },
-    { id: 5, iconItem: "", text: "Studentlife",link: "/dashboard/teams" },
-    { id: 5, iconItem: "", text: "Reviews",link: "/dashboard/teams" },
-    { id: 5, iconItem: "", text: "Static",link: "/dashboard/teams" },
-    { id: 5, iconItem: "", text: "Fadderlist",link: "/dashboard/teams" },
-  ];
+  
 const SidebarItem = () => {
 
+  const storedSidebarExpanded = typeof window !== "undefined" && localStorage.getItem('sidebar-expanded');
+  const [sidebarExpanded, setSidebarExpanded] = useState(
+    storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
+  );
+
+  
+  useEffect(() => {
+    localStorage.setItem('sidebar-expanded', sidebarExpanded.toString());
+    if (sidebarExpanded) {
+      document.querySelector('body')?.classList.add('sidebar-expanded');
+    } else {
+      document.querySelector('body')?.classList.remove('sidebar-expanded');
+    }
+  }, [sidebarExpanded]);
 
   return (
 
     <div>
       <ul className="space-y-2">
-        {links.map((link, index) => (
-          <li key={index}>
-            {link.sublinks ? (
-              <button type="button" className="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls={`dropdown-${index}`} data-collapse-toggle={`dropdown-${index}`}>
-                <span className="flex-1 ml-3 text-left whitespace-nowrap">{link.title}</span>
-              </button>
-            ) : (
-              <Link href={link.href} className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+      {links.map((link, index) => (
+        <li key={index}>
+          {link.sublinks ? (
+            <SidebarLinkGroup>
+              {(handleClick, open) => (
+                <>
+                  <Link
+                    href="#"
+                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4'
+                    }`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      sidebarExpanded ? handleClick() : setSidebarExpanded(true);
+                    }}
+                  >
+
+                    {link.title}
+                    <svg
+                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
+                            open && 'rotate-180'
+                          }`}
+                          width="20"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                            d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
+                            fill=""
+                          />
+                        </svg>
+                  </Link>
+                  <div className={`translate transform overflow-hidden ${!open && 'hidden'}`}>
+                    <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                      {link.sublinks.map((sublink, index) => (
+                        <li key={index}>
+                          <Link
+                            href={sublink.href}
+                            className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+                          >
+                            <span className="ml-3">{sublink.title}</span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </>
+              )}
+            </SidebarLinkGroup>
+          ) : (
+           
+              <Link
+                href={link.href}
+                className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              >
                 <span className="ml-3">{link.title}</span>
               </Link>
-            )}
-            
-          </li>
-        ))}
-      </ul>
+          
+          )}
+        </li>
+      ))}
+    </ul>
+      
       <hr className="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700"/>
       <ul>
       <li>
