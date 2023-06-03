@@ -30,7 +30,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
-      {/* <!-- SIDEBAR HEADER --> */}
+   
       <div className="flex items-center justify-between gap-2 px-6 py-5 lg:py-6">
         <Link href="/">
         <img src="https://cdn.discordapp.com/attachments/745379181214433454/943092522496954408/unknown.png" alt="logo" className="w-30 h-10" />
@@ -59,14 +59,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         </button>
       </div>
 
-      <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
+      <div className="no-scrollbar flex flex-col overflow-y-hidden duration-300 ease-linear">
         <nav className="mt-5 lg:mt-9 lg:px-6">
-          <div>
-            <ul className="mb-6 flex flex-col gap-1.5">
+          <div className="mb-6 flex flex-col gap-1.5">
               <SidebarItem/>
-            </ul>
           </div>
-
         </nav>
       </div>
     </aside>
