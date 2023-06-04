@@ -1,22 +1,28 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import SidebarLinkGroup from "./SidebarLinkGroup";
-import { LayoutGrid, CalendarDays, Lock, LayoutTemplate, Sprout, GraduationCap } from "lucide-react";
+import { LayoutGrid, Calendar, Lock, LayoutTemplate, Sprout, GraduationCap, Users, List, Heart, LinkIcon, HelpCircle } from "lucide-react";
 import { useRouter } from "next/router";
 
 const links = [
   { headTitle: 'Main', links: [
-  {icon: <LayoutGrid /> , title: 'Dashboard', href: '/dashboard' },
-  {icon: <CalendarDays/>, title: 'Program', href: '/dashboard/program' },
-  { title: 'Groups', href: '#' },
-  { title: 'List', href: '#' },
+  {icon: <LayoutGrid className="ml-2 h-4 w-4" /> , title: 'Dashboard', href: '/dashboard' },
+  {icon: <Calendar className="ml-2 h-4 w-4"/>, title: 'Program', href: '/dashboard/program' },
+  {icon: <Users className="ml-2 h-4 w-4"/> ,title: 'Groups', href: '#' },
+  {icon: <List className="ml-2 h-4 w-4"/>, title: 'List', href: '#' },
   ]},
   {headTitle: 'Sections', links: [
-    { title: 'Student Life', href: '#' },
-    { title: 'Student Org.', href: '#' },
-    { title: 'Student Reviews', href: '#' },
+    {icon: <LayoutTemplate className="ml-2 h-4 w-4"/>, title: 'Articles', href: '#' },
+    {icon: <HelpCircle className="ml-2 h-4 w-4"/>, title: 'Questions', href: '#' },
+    {icon: <Sprout className="ml-2 h-4 w-4" />, title: 'Student Life', href: '#' },
+    {icon: <GraduationCap className="ml-2 h-4 w-4" />, title: 'Student Org.', href: '#' },
+    {icon: <Heart className="ml-2 h-4 w-4"/>, title: 'Student Reviews', href: '#' },
   ]},
-];
+  {headTitle: 'Others', links: [
+    {icon: "", title: 'Team', href: '#' },
+    {icon: <LinkIcon className="ml-2 h-4 w-4"/>, title: 'Nettskjema', href: '#' },
+
+]}];
 
   
 const SidebarItem = () => {
@@ -30,8 +36,8 @@ const SidebarItem = () => {
   return (
     <div>
       {links.map((linkGroup, index) => (
-        <div key={index} className="mt-5">
-          <h2 className="mb-2 px-2 text-lg font-semibold tracking-tight">
+        <div key={index} className="mb-5">
+          <h2 className="mb-1 px-2 font-semibold tracking-tight">
             {linkGroup.headTitle}
           </h2>
           <ul className="space-y-1">
@@ -39,14 +45,14 @@ const SidebarItem = () => {
               <li key={index}>
                 <Link
                   href={link.href}
-                  className={`flex items-center p-2 text-sm font-semibold rounded-lg group ${
+                  className={`flex items-center px-1 py-2 text-xs font-semibold rounded-lg group ${
                     activeLink === link.href
-                      ? 'text-gray-900 bg-gray-200 hover:bg-gray-100 dark:bg-gray-700 dark:text-white'
-                      : 'text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700'
+                      ? 'text-gray-50 bg-gray-950 hover:bg-gray-900 dark:bg-gray-700 dark:text-white'
+                      : 'text-gray-900 dark:text-white hover:text-gray-50 hover:bg-gray-950 dark:hover:bg-gray-700'
                   }`}
                 >
                   {link.icon}
-                  <span className="ml-3">{link.title}</span>
+                  <span className="ml-2">{link.title}</span>
                 </Link>
               </li>
             ))}
@@ -60,14 +66,14 @@ const SidebarItem = () => {
         <li>
           <Link
             href="#"
-            className={`flex items-center p-2 text-sm font-semibold rounded-lg group ${
+            className={`flex items-center p-2 text-xs font-semibold rounded-lg group ${
               activeLink === '#'
-                ? 'text-gray-900 bg-gray-100 dark:bg-gray-700 dark:text-white'
-                : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+              ? 'text-gray-50 bg-gray-950 hover:bg-gray-900 dark:bg-gray-700 dark:text-white'
+              : 'text-gray-900 dark:text-white hover:text-gray-50 hover:bg-gray-950 dark:hover:bg-gray-700'
             }`}
           >
-            <Lock />
-            <span className="ml-3">Authorized</span>
+            <Lock className="ml-2 h-4 w-4" />
+            <span className="ml-2">Authorized</span>
           </Link>
         </li>
       </ul>
