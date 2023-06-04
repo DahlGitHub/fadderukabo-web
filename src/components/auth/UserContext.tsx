@@ -1,7 +1,18 @@
-import { useEffect } from 'react';
+import { createContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../../firebase';
+import { auth } from '../../../firebase';
+import { User } from 'firebase/auth';
+
+interface UserContextProps {
+  user: User | null | undefined;
+  loading: boolean;
+  error: Error | undefined;
+}
+
+export const UserContext = createContext<UserContextProps | null>(null);
+{/*
 
 const UserContext = (WrappedComponent: React.ComponentType<any>) => {
   return (props: any) => {
@@ -28,5 +39,5 @@ const UserContext = (WrappedComponent: React.ComponentType<any>) => {
     return <WrappedComponent {...props} />;
   };
 };
-
+*/}
 export default UserContext;
