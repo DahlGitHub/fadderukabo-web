@@ -28,6 +28,7 @@ export default function SignIn() {
           if (sessionToken) {
             toast.success('Successfully signed in.');
             router.push('/dashboard');
+            console.log(sessionToken)
           } else {
             signOut(auth)
               .then(() => {
