@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import SidebarItem from "./SidebarItem";
 import Link from "next/link";
 import { MoveLeft} from "lucide-react";
+import Usn from '/public/svg/usnlogo.svg';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -26,14 +27,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <aside
       
-      className={`absolute left-0 top-0 z-50 flex h-screen w-60 bg-gray-50 border-r border-gray-200 flex-col overflow-y-hidden duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+      className={`absolute left-0 top-0 z-50 flex h-screen w-60 flex-col bg-gray-50 border border-r overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
    
-      <div className="flex items-center justify-between gap-2 px-6 py-5 lg:py-6">
+      <div className="flex items-center justify-between gap-2 px-6 ">
         <Link href="/">
-        <img src="https://cdn.discordapp.com/attachments/745379181214433454/943092522496954408/unknown.png" alt="logo" className="w-30 h-10" />
+        <Usn className="text-[5rem]"/>
         </Link>
 
         <button
@@ -48,7 +49,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       </div>
 
       <div className="no-scrollbar flex flex-col overflow-y-hidden duration-300 ease-linear">
-        <nav className="px-5">
+        <nav className="px-3">
           <div className="mb-6 flex flex-col gap-1.5">
               <SidebarItem/>
           </div>
