@@ -55,14 +55,6 @@ const storage = getStorage(app);
 
 const googleProvider = new GoogleAuthProvider();
 
-const microsoftProvider = new firebase.auth.OAuthProvider("microsoft.com");
-microsoftProvider.setCustomParameters({
-  prompt: "consent",
-  tenant: "52c4340a-af1c-4010-b7e4-08e63d51696f"
-})
-
-
-
 
 const signInWithGoogle = async () => {
   try {
@@ -109,7 +101,6 @@ export const getSessionToken = async (user: User): Promise<string | null> => {
 
   return null;
 };
-
 
 const logout = () => {
   signOut(auth);
