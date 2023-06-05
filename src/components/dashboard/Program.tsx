@@ -11,7 +11,15 @@ const Program = () => {
 
     return(
         <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
-            Hi
+            <div className="min-h-screen bg-gray-200">
+                Hi
+            </div>
+            <div className="min-h-screen bg-gray-300">
+                Hi
+            </div>
+            <div className="min-h-screen bg-gray-400">
+                Hi
+            </div>
         </section>
     )
 }

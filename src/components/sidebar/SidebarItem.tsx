@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import SidebarLinkGroup from "./SidebarLinkGroup";
-import { LayoutGrid, Calendar, Lock, LayoutTemplate, Sprout, GraduationCap, Users, List, Heart, LinkIcon, HelpCircle } from "lucide-react";
+import { LayoutGrid, Calendar, Lock, LayoutTemplate, Sprout, GraduationCap, Users, List, Heart, LinkIcon, HelpCircle, ShieldCheck } from "lucide-react";
 import { useRouter } from "next/router";
 
 const links = [
@@ -19,7 +19,7 @@ const links = [
     {icon: <Heart className="ml-2 h-4 w-4"/>, title: 'Student Reviews', href: '#' },
   ]},
   {headTitle: 'Others', links: [
-    {icon: "", title: 'Team', href: '#' },
+    {icon: <ShieldCheck className="ml-2 h-4 w-4"/>, title: 'Team', href: '#' },
     {icon: <LinkIcon className="ml-2 h-4 w-4"/>, title: 'Nettskjema', href: '#' },
 
 ]}];
@@ -33,11 +33,12 @@ const SidebarItem = () => {
     setActiveLink(router.pathname);
   }, [router.pathname]);
 
+  
   return (
     <div>
       {links.map((linkGroup, index) => (
         <div key={index} className="mb-5">
-          <h2 className="mb-1 px-2 font-semibold tracking-tight">
+          <h2 className="mb-1 px-2 font-semibold tracking-tight text-gray-700 text-xs">
             {linkGroup.headTitle}
           </h2>
           <ul className="space-y-1">
@@ -48,7 +49,7 @@ const SidebarItem = () => {
                   className={`flex items-center px-1 py-2 text-xs font-semibold rounded-lg group ${
                     activeLink === link.href
                       ? 'text-gray-50 bg-gray-950 hover:bg-gray-900 dark:bg-gray-700 dark:text-white'
-                      : 'text-gray-900 dark:text-white hover:text-gray-50 hover:bg-gray-950 dark:hover:bg-gray-700'
+                      : 'text-gray-600 dark:text-white hover:text-gray-50 hover:bg-gray-950 dark:hover:bg-gray-700'
                   }`}
                 >
                   {link.icon}
@@ -69,7 +70,7 @@ const SidebarItem = () => {
             className={`flex items-center p-2 text-xs font-semibold rounded-lg group ${
               activeLink === '#'
               ? 'text-gray-50 bg-gray-950 hover:bg-gray-900 dark:bg-gray-700 dark:text-white'
-              : 'text-gray-900 dark:text-white hover:text-gray-50 hover:bg-gray-950 dark:hover:bg-gray-700'
+              : 'text-gray-600 dark:text-white hover:text-gray-50 hover:bg-gray-950 dark:hover:bg-gray-700'
             }`}
           >
             <Lock className="ml-2 h-4 w-4" />

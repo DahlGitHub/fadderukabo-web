@@ -27,12 +27,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <aside
       
-      className={`absolute left-0 top-0 z-50 flex h-screen w-60 flex-col bg-gray-50 border border-r overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+      className={`absolute left-0 top-0 z-50 flex h-screen w-60 flex-col bg-white border-r overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
    
       <div className="flex items-center justify-between gap-2 px-6 ">
+        
         <Link href="/">
         <Usn className="text-[5rem]"/>
         </Link>
