@@ -65,9 +65,17 @@ const signInWithGoogle = async () => {
     if (docs.docs.length === 0) {
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
-        name: user.displayName,
-        authProvider: "google",
         email: user.email,
+        displayName: user.displayName,
+        authProvider: (await user.getIdTokenResult()).signInProvider,
+        created: user.metadata.creationTime,
+        signedIn: user.metadata.lastSignInTime,
+        photoURL: user.photoURL,
+      });
+    } else {
+      const docRef = doc(db, "users", user.uid);
+      await updateDoc(docRef, {
+        signedIn: user.metadata.lastSignInTime,
       });
     }
   } catch (err) {
