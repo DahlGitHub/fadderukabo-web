@@ -66,7 +66,7 @@ const SidebarItem = () => {
       <ul>
         <li>
           <Link
-            href="#"
+            href="/dashboard/authorized"
             className={`flex items-center p-2 text-xs font-semibold rounded-lg group ${
               activeLink === '#'
               ? 'text-gray-50 bg-gray-950 hover:bg-gray-900 dark:bg-gray-700 dark:text-white'
