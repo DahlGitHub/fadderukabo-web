@@ -14,14 +14,14 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { auth } from "../../firebase"
 import Link from "next/link"
+import { toast } from "react-toastify"
 
 const signOut = () => {
     
- //auth.signOut().then(() => {
-      // toast.info("Signed out successfully");
-  //}
-  console.log("sign out"
-)}
+ auth.signOut().then(() => {
+    toast.info("Signed out successfully");
+ })
+}
 
 export function UserNav() {
   return (
