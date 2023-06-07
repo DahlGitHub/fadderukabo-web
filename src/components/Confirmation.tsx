@@ -23,10 +23,6 @@ interface ConfirmationProps {
       setIsOpen(false);
     };
   
-    const handleCancel = () => {
-      setIsOpen(false);
-    };
-  
     return (
       <div>
         <Dialog>
@@ -44,12 +40,9 @@ interface ConfirmationProps {
 
             </DialogHeader>
             <div className="flex justify-between mt-4">
-              <button className="mr-2" onClick={handleCancel}>
-                Cancel
-              </button>
-              <button className="bg-red-500 text-white" onClick={handleConfirm}>
-                Confirm
-              </button>
+            <DialogTrigger onClick={() => setIsOpen(false)}>Cancel</DialogTrigger>
+            <DialogTrigger onClick={handleConfirm}>Confirm</DialogTrigger>
+
             </div>
           </DialogContent>
         </Dialog>
