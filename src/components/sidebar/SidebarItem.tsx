@@ -36,14 +36,14 @@ const SidebarItem = () => {
   
   return (
     <div>
-      {links.map((linkGroup, index) => (
-        <div key={index} className="mb-5">
+      {links.map((linkGroup, groupIndex) => (
+        <div key={groupIndex} className="mb-5">
           <h2 className="mb-1 px-2 font-semibold tracking-tight text-gray-700 text-xs">
             {linkGroup.headTitle}
           </h2>
           <ul className="space-y-1">
-            {linkGroup.links.map((link, index) => (
-              <li key={index}>
+            {linkGroup.links.map((link, linkIndex) => (
+              <li key={linkIndex}>
                 <Link
                   href={link.href}
                   className={`flex items-center px-1 py-2 text-xs font-semibold rounded-lg group ${
@@ -68,9 +68,9 @@ const SidebarItem = () => {
           <Link
             href="/dashboard/authorized"
             className={`flex items-center p-2 text-xs font-semibold rounded-lg group ${
-              activeLink === '#'
-              ? 'text-gray-50 bg-gray-950 hover:bg-gray-900 dark:bg-gray-700 dark:text-white'
-              : 'text-gray-600 dark:text-white hover:text-gray-50 hover:bg-gray-950 dark:hover:bg-gray-700'
+              activeLink === '/dashboard/authorized'
+                ? 'text-gray-50 bg-gray-950 hover:bg-gray-900 dark:bg-gray-700 dark:text-white'
+                : 'text-gray-600 dark:text-white hover:text-gray-50 hover:bg-gray-950 dark:hover:bg-gray-700'
             }`}
           >
             <Lock className="ml-2 h-4 w-4" />
