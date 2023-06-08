@@ -5,7 +5,6 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-    DialogFooter,
   } from "@/components/ui/dialog"
 
 import { useState } from "react";
@@ -27,6 +26,7 @@ interface ConfirmationProps {
       <div>
         <Dialog>
           <DialogTrigger onClick={() => setIsOpen(true)}>Delete</DialogTrigger>
+          
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Are you sure absolutely sure?</DialogTitle>
