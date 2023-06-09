@@ -8,27 +8,28 @@ export default function Page() {
     const [users, setUsers] = useState<Authorized[]>([]);
     const [allowedEmails, setAllowedEmails] = useState<string[]>([]);
   
+
     useEffect(() => {
-      const fetchAllowedEmails = async () => {
-        const querySnapshot = await getDocs(collection(db, "allowedEmails"));
-        const emails = querySnapshot.docs.map((doc) => doc.data().email);
-        setAllowedEmails(emails);
+      const fetchUsers = async (emails: string[]) => {
+        const usersSnapshot = await getDocs(query(collection(db, "users"), where("email", "in", emails)));
+        const usersData = usersSnapshot.docs.map((doc) => doc.data() as Authorized);
+        setUsers(usersData);
       };
   
-      fetchAllowedEmails();
-    }, []);
-  
-    useEffect(() => {
       const fetchData = async () => {
         try {
-          const q = query(collection(db, "users"), where("email", "in", allowedEmails));
-          const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            const result = querySnapshot.docs.map((doc) => doc.data() as Authorized);
-            setUsers(result);
+          const querySnapshot = await getDocs(collection(db, "allowedEmails"));
+          const allowedEmailsData = querySnapshot.docs.map((doc) => doc.data().email);
+          setAllowedEmails(allowedEmailsData);
+          await fetchUsers(allowedEmailsData);
+  
+          const unsubscribe = onSnapshot(collection(db, "allowedEmails"), (snapshot) => {
+            const updatedEmails = snapshot.docs.map((doc) => doc.data().email);
+            setAllowedEmails(updatedEmails);
+            fetchUsers(updatedEmails);
           });
   
           return () => {
-            // Unsubscribe from the real-time updates when the component unmounts
             unsubscribe();
           };
         } catch (error) {
@@ -37,7 +38,7 @@ export default function Page() {
       };
   
       fetchData();
-    }, [allowedEmails]);
+    }, []);
 
 
   return (

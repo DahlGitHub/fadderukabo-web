@@ -31,11 +31,11 @@ interface ConfirmationProps {
             <DialogHeader>
               <DialogTitle>Are you sure absolutely sure?</DialogTitle>
               <DialogDescription>
-                <p>{message}</p>
+                {message}
                 
                 </DialogDescription>
                 <DialogDescription className="pt-2">
-                    <p>This action cannot be undone.</p>
+                    This action cannot be undone.
                 </DialogDescription>
 
             </DialogHeader>

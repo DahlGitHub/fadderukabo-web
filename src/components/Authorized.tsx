@@ -34,23 +34,23 @@ const Authorized = () => {
   const handleDeleteEmail = async (email: string) => {
     try {
       const currentUser = auth.currentUser;
-  
+
       // Check if the current user is deleting their own email
       if (currentUser && currentUser.email === email) {
         console.log("Cannot delete your own email.");
         return;
       }
-  
+
       // Check if the email is a protected email that should not be deleted
       const protectedEmail = "fadderstyretbo@gmail.com";
       if (email === protectedEmail) {
         console.log(`Cannot delete the protected email: ${protectedEmail}`);
         return;
       }
-  
+
       const querySnapshot = await getDocs(collection(db, "allowedEmails"));
       const docToDelete = querySnapshot.docs.find((doc) => doc.data().email === email);
-  
+
       if (docToDelete) {
         await deleteDoc(doc(db, "allowedEmails", docToDelete.id));
         setAllowedEmails((prevEmails) => prevEmails.filter((e) => e !== email));
@@ -61,32 +61,53 @@ const Authorized = () => {
     }
   };
 
+  const listedEmails = allowedEmails.map((email) => {
+    const user = users.find((user) => user.email === email);
+    if (user) {
+      return {
+        name: user.displayName,
+        email: user.email,
+        created: user.created,
+        signedIn: user.signedIn,
+        photoURL: user.photoURL,
+      };
+    } else {
+      return {
+        name: "",
+        email: email,
+        created: "",
+        signedIn: "",
+        photoURL: "",
+      };
+    }
+  });
+
   return (
     <div>
       <AddAuthorized />
       <h2>List of Users with Allowed Emails</h2>
-      {users.length > 0 ? (
+      {listedEmails.length > 0 ? (
         <ul className="text-sm">
-          {users.map((user) => (
+          {listedEmails.map((user) => (
             <li key={user.email}>
-              <p>Name: {user.displayName}</p>
+              <p>Name: {user.name}</p>
               <p>Email: {user.email}</p>
               <p>{user.created}</p>
               <p>{user.signedIn}</p>
               <img
                 src={user.photoURL}
-                alt={user.displayName}
-                className="w-10 h-10 rounded-full"  
+                alt={user.name}
+                className="w-10 h-10 rounded-full"
               />
-              <Confirmation 
-                onConfirm={() => handleDeleteEmail(user.email)} 
+              <Confirmation
+                onConfirm={() => handleDeleteEmail(user.email)}
                 message={`Are you sure you want to delete ${user.email}?`}
-                />
+              />
             </li>
           ))}
         </ul>
       ) : (
-        <p>No users found with allowed emails.</p>
+        <p>No emails found.</p>
       )}
     </div>
   );
