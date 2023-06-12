@@ -1,10 +1,15 @@
 import Layout from "@/components/layout/Layout";
-import SignIn from "@/components/auth/SignIn";
+import SignIn from "@/components/auth/SignInAccount";
+import { AuthAction, withAuthUser } from "next-firebase-auth";
 
-const Login = () => (
+
+const login = () => (
     <Layout>
-        <SignIn/>
+        <SignIn />
     </Layout>
   )
   
-  export default Login
+  export default withAuthUser({
+    whenAuthed: AuthAction.REDIRECT_TO_APP,
+
+  })(login)
