@@ -23,6 +23,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".src/components/ui/button.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".src/components/ui/button.tsx", "src/pages/demo.tsx", "src/pages/api/login.tsx", "src/pages/api/logout.tsx"],
   "exclude": ["node_modules"]
 }
