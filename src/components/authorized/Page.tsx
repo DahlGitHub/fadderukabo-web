@@ -40,11 +40,28 @@ export default function Page() {
       fetchData();
     }, []);
 
+    // Map all emails in allowedEmails and check if each exists in users
+const listedEmails = allowedEmails.map((email) => {
+  const user = users.find((user) => user.email === email);
+  if (user) {
+    return user; // Display the user data if it exists
+  } else {
+    return {
+      id: email,
+      photoURL: "https://www.gstatic.com/identity/boq/profilepicturepicker/photo_silhouette_e02a5f5deb3ffc173119a01bc9575490.png",
+      displayName: "Invalid name",
+      email: email,
+      created: 9999999999999999,
+      signedIn: 9999999999999999,
+    };
+  }
+});
+
 
   return (
     <div className="container mx-auto py-10">
         <AddAuthorized />
-        <DataTable columns={columns} data={users} />
+        <DataTable columns={columns} data={listedEmails} />
     </div>
   );
 }
