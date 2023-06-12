@@ -3,21 +3,18 @@ import { AppProps } from 'next/app';
 import '@/styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-import { SSRProvider } from '@react-aria/ssr';
 
+import initAuth from '@/components/auth/initAuth';
 
-/**
- * !STARTERCONF info
- * ? `Layout` component is called in every page using `np` snippets. If you have consistent layout across all page, you can add it here too
- */
+initAuth();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
 
-    <SSRProvider>
+    <>
       <Component {...pageProps} />
       <ToastContainer/>
-    </SSRProvider>
+    </>
   
   );
 }
