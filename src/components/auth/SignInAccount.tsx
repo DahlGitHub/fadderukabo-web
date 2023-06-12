@@ -2,32 +2,30 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import React, { useState, useEffect } from "react";
-import { signInWithGoogle, db, getSessionToken } from "../../../firebase";
+import { signInWithGoogle, db, getSessionToken, auth } from "../../../firebase";
 import 'firebase/auth';
 import { useRouter } from 'next/router';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { getAuth, signOut } from 'firebase/auth';
+
 import { collection, getDocs, onSnapshot } from "firebase/firestore";
 
 import UsnIcon from "public/svg/usnicon.svg"
+import { getAuth, signOut } from 'firebase/auth';
+import { AuthAction, useAuthUser, withAuthUser } from 'next-firebase-auth';
 
-export default function SignIn() {
-  const auth = getAuth();
-  const [user, loading, error] = useAuthState(auth);
+
+export default function SignInAccont() {
+  const AuthUser = useAuthUser()
+  const [user, loading, error] = useAuthState(auth); // Assuming you have initialized the Firebase auth instance as `auth`
   const router = useRouter();
-
+  
   useEffect(() => {
-    if (loading) {
-      // Maybe trigger a loading screen
-      return;
-    }
-
     if (user) {
       getSessionToken(user)
         .then((sessionToken) => {
           if (sessionToken) {
             toast.success('Successfully signed in.');
-            router.push('/dashboard');
+            window.location.reload()
             console.log(sessionToken)
           } else {
             signOut(auth)
@@ -44,7 +42,6 @@ export default function SignIn() {
         });
     }
   }, [user, loading, router, auth]);
-
 
   return (
 <section className="flex justify-center">
@@ -72,7 +69,6 @@ export default function SignIn() {
               <span className="absolute px-3 font-medium text-gray-500 -translate-x-1/2 bg-white left-1/2">or</span>
               </div>
                     <div>
-
                         <button
                       className="inline-flex items-center justify-center px-5 w-48 py-2 w-full text-base font-medium text-center text-gray-600 rounded-lg border border-gray-300 focus:ring-4 focus:ring-gray-500 hover:bg-gray-50 hover:focus:ring-4 hover:border-blue-500"
                       onClick={signInWithGoogle}
@@ -95,19 +91,5 @@ export default function SignIn() {
 </div>
 </section>
 
-    /*
-<button
-                className="inline-flex items-center justify-center px-5 w-48 py-3 my-3 mx-auto w-full text-base font-medium text-center text-white rounded-lg bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
-                onClick={signInWithGoogle}
-              >
-                <img className='mr-2'
-                  width={30}
-                  src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png"
-                />
-                <span className='text-[13px] font-bold'>Login with Google</span>
-              </button>
-*/
-
-    
   );
 }
