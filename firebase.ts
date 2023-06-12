@@ -2,10 +2,7 @@
 import{ GoogleAuthProvider, getAuth, signInWithPopup, signInWithEmailAndPassword,createUserWithEmailAndPassword,sendPasswordResetEmail, signOut, User} from "firebase/auth";
 import {getFirestore, query, getDocs,collection,where,addDoc, doc, setDoc, updateDoc, DocumentReference} from "firebase/firestore";
 import { getDatabase } from "firebase/database";
-import "firebase/auth";
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
+
 import { initializeApp, getApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
 import { onAuthStateChanged } from "firebase/auth";
@@ -33,8 +30,12 @@ function initializeAppIfNecessary() {
   }
 }
 
+
+
 // Initialize Firebase
 const app = initializeAppIfNecessary();
+
+export const authUser = getAuth()
 
 const auth = getAuth(app);
 onAuthStateChanged(auth, (user) => {
@@ -54,6 +55,7 @@ const database = getDatabase(app);
 const storage = getStorage(app);
 
 const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({ prompt: "select_account" });
 
 
 const signInWithGoogle = async () => {
@@ -85,15 +87,6 @@ const signInWithGoogle = async () => {
 };
 
 
-
-const logInWithEmailAndPassword = async (email: string, password: string) => {
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-    } catch (err) {
-
-    }
-};
-
 export const getSessionToken = async (user: User): Promise<string | null> => {
   const authorizedEmailsRef = collection(db, 'allowedEmails');
   const authorizedEmailsQuery = query(authorizedEmailsRef, where('email', '==', user.email));
@@ -114,6 +107,6 @@ const logout = () => {
   signOut(auth);
 };
 
-export {auth, db, logInWithEmailAndPassword, signInWithGoogle, logout, app, database, storage}
+export {auth, db, signInWithGoogle, logout, app, database, storage}
 
 
