@@ -9,20 +9,15 @@ const links = [
   {icon: <LayoutGrid className="ml-2 h-4 w-4" /> , title: 'Dashboard', href: '/dashboard' },
   {icon: <Calendar className="ml-2 h-4 w-4"/>, title: 'Program', href: '/dashboard/program' },
   {icon: <Users className="ml-2 h-4 w-4"/> ,title: 'Groups', href: '#' },
-  {icon: <List className="ml-2 h-4 w-4"/>, title: 'List', href: '#' },
+  {icon: <List className="ml-2 h-4 w-4"/>, title: 'Student List', href: '#' },
   ]},
   {headTitle: 'Sections', links: [
     {icon: <LayoutTemplate className="ml-2 h-4 w-4"/>, title: 'Articles', href: '#' },
     {icon: <HelpCircle className="ml-2 h-4 w-4"/>, title: 'Questions', href: '#' },
-    {icon: <Sprout className="ml-2 h-4 w-4" />, title: 'Student Life', href: '#' },
-    {icon: <GraduationCap className="ml-2 h-4 w-4" />, title: 'Student Org.', href: '#' },
-    {icon: <Heart className="ml-2 h-4 w-4"/>, title: 'Student Reviews', href: '#' },
-  ]},
-  {headTitle: 'Others', links: [
-    {icon: <ShieldCheck className="ml-2 h-4 w-4"/>, title: 'Team', href: '#' },
     {icon: <LinkIcon className="ml-2 h-4 w-4"/>, title: 'Nettskjema', href: '#' },
-
-]}];
+    {icon: <GraduationCap className="ml-2 h-4 w-4" />, title: 'Student Life', href: '#' },
+  ]},
+];
 
   
 const SidebarItem = () => {
