@@ -1,4 +1,4 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { useState } from "react";
 import { db } from "../../firebase";
 
@@ -12,9 +12,18 @@ const AddAuthorized = () => {
   
       const handleAddEmail = async () => {
         try {
-          const docRef = await addDoc(collection(db, 'allowedEmails'), { email });
-          setEmail('');
-          console.log('Email added with ID: ', docRef.id);
+          // Check if the email already exists in the collection
+          const querySnapshot = await getDocs(query(collection(db, 'allowedEmails'), where('email', '==', email)));
+      
+          if (querySnapshot.empty) {
+            // Email doesn't exist, add it to the collection
+            const docRef = await addDoc(collection(db, 'allowedEmails'), { email });
+            setEmail('');
+            console.log('Email added with ID: ', docRef.id);
+          } else {
+            setEmail('');
+            console.log('Email already exists.');
+          }
         } catch (error) {
           console.error('Error adding email:', error);
         }
