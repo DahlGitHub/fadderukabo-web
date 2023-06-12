@@ -6,6 +6,7 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { UserNav } from "../UserNav";
+import Page from "../studentlist/Page";
 
 const Dashboard = () => {
 
@@ -14,7 +15,7 @@ const Dashboard = () => {
     return(
         <div className="bg-white dark:bg-gray-900 text-black dark:text-white">
             <div>Welcome {username} !
-
+                <Page />
             </div>
 
         </div>

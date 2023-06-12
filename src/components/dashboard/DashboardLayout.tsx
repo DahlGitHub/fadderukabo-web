@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import Dashboard from "./Dashboard";
-import UserContext from "../auth/UserContext";
+import { AuthContextProvider } from "../auth/AuthContext";
 import { auth, db } from "../../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Sidebar from "../sidebar/Sidebar";
@@ -20,6 +20,8 @@ const DashboardLayout = ({ children }: DefaultLayoutProps) => {
   const [user, loading, error] = useAuthState(auth);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+    {
+      /*
   useEffect(() => {
     const userLoggedIn = async () => {
       if (!auth.currentUser) {
@@ -48,10 +50,11 @@ const DashboardLayout = ({ children }: DefaultLayoutProps) => {
   if (loading) {
     return <div>Loading...</div>;
   }
-
+*/
+    }
   return (
-    <UserContext.Provider value={{ user, loading, error }}>
-      <div className="">
+
+      <div>
         <div className="flex h-screen overflow-hidden">
           <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
           <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
@@ -62,12 +65,14 @@ const DashboardLayout = ({ children }: DefaultLayoutProps) => {
           </div>
         </div>
       </div>
-    </UserContext.Provider>
+
   );
 };
 
-export const getServerSideProps = async (context : any) => {
-  const auth = getAuth();
+{
+  /*
+export async function getServerSideProps (context : any) {
+  const auth = await getAuth();
   const user = auth.currentUser;
 
   if (!user) {
@@ -99,6 +104,7 @@ export const getServerSideProps = async (context : any) => {
   return {
     props: {},
   };
+  */
 };
 
 export default DashboardLayout;
