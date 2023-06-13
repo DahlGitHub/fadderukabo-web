@@ -1,8 +1,9 @@
 import React from 'react'
 import DashboardLayout from '@/components/dashboard/DashboardLayout'
-import Authorized from '@/components/Authorized'
+import Authorized from '@/components/authorized/Authorized'
+import { AuthAction, withAuthUser } from 'next-firebase-auth'
 
-const program = () => {
+const authorized = () => {
   return (
     <DashboardLayout>
       <Authorized/>
@@ -10,4 +11,7 @@ const program = () => {
   )
 }
 
-export default program
+export default withAuthUser({ 
+  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+})(authorized)
