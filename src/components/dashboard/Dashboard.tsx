@@ -6,7 +6,7 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { UserNav } from "../UserNav";
-import Page from "../studentlist/Page";
+import Page from "../studentlist/StudentListPage";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -30,7 +30,7 @@ const Dashboard = () => {
       Show Toast
     </Button>
             <div>Welcome {username} !
-                <Page />
+
             </div>
 
         </div>

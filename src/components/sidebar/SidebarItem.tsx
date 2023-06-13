@@ -8,8 +8,8 @@ const links = [
   { headTitle: 'Main', links: [
   {icon: <LayoutGrid className="ml-2 h-4 w-4" /> , title: 'Dashboard', href: '/dashboard' },
   {icon: <Calendar className="ml-2 h-4 w-4"/>, title: 'Program', href: '/dashboard/program' },
-  {icon: <Users className="ml-2 h-4 w-4"/> ,title: 'Groups', href: '#' },
-  {icon: <List className="ml-2 h-4 w-4"/>, title: 'Student List', href: '#' },
+  {icon: <Users className="ml-2 h-4 w-4"/> ,title: 'Groups', href: '/dashboard/groups' },
+  {icon: <List className="ml-2 h-4 w-4"/>, title: 'Student List', href: '/dashboard/studentlist' },
   ]},
   {headTitle: 'Sections', links: [
     {icon: <LayoutTemplate className="ml-2 h-4 w-4"/>, title: 'Articles', href: '#' },
