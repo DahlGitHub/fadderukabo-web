@@ -45,7 +45,7 @@ const SidebarItem = () => {
                     activeLink === link.href
                       ? 'text-gray-50 bg-gray-950 hover:bg-gray-900 dark:bg-gray-700 dark:text-white'
                       : 'text-gray-600 dark:text-white hover:text-gray-50 hover:bg-gray-950 dark:hover:bg-gray-700'
-                  }`}
+                  } transition delay-10` }
                 >
                   {link.icon}
                   <span className="ml-2">{link.title}</span>
