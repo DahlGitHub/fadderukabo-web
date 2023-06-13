@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { collection, getDocs, where, query, onSnapshot, deleteDoc, doc } from "firebase/firestore";
 import { auth, db } from "../../../firebase";
 import { columns, DataTable, Authorized } from "./AuthorizedData";
-import AddAuthorized from "../AddAuthorized";
+import AddAuthorized from "./AddAuthorized";
 
 export default function Page() {
     const [users, setUsers] = useState<Authorized[]>([]);
