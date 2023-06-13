@@ -1,7 +1,7 @@
 import { AppProps } from 'next/app';
 
 import '@/styles/globals.css';
-import { Toaster } from "@/components/ui/toaster";
+
 
 import initAuth from '@/components/auth/initAuth';
 
@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
     <>
       <Component {...pageProps} />
-      <Toaster />
+      
     </>
   
   );
