@@ -3,14 +3,15 @@
 
 import {ColumnDef,flexRender,getCoreRowModel,useReactTable,SortingState, getSortedRowModel, VisibilityState} from "@tanstack/react-table"
 import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow,} from "@/components/ui/table"
-import { MoreHorizontal, ArrowUpDown } from "lucide-react"
+import { MoreHorizontal, Crown, UserCircle  } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {DropdownMenu,DropdownMenuCheckboxItem,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
 import React from "react"
+import EditStudent from "./EditStudent"
 
 
 export type Authorized = {
-    id: string
+    docId: string
     status: "fadder" | "faddersjef"
     name: string
     group: string
@@ -18,7 +19,7 @@ export type Authorized = {
 
 
   export const columns: ColumnDef<Authorized>[] = [
-    
+
     {
     accessorKey: "name",
     header: "Name",
@@ -26,25 +27,14 @@ export type Authorized = {
         const authorized = row.original
         return (
           <div className="flex items-center">
-
+            {authorized.status == "faddersjef" ? <Crown className="h-4 w-4" /> : <UserCircle className="h-4 w-4" /> }
             <span className="ml-2">{authorized.name}</span>
           </div>
         )
       },
       enableHiding: false,
     },
-    {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => {
-        const authorized = row.original
-        return (
-          <div className="flex items-center">
-            <span className="ml-2 uppercase">{authorized.status}</span>
-          </div>
-        )
-      }
-    },
+ 
     {
     accessorKey: "group",
     header: "Group",
@@ -82,12 +72,10 @@ export type Authorized = {
                 </DropdownMenuItem>
                  */   
                 }
-                <DropdownMenuItem asChild>
-
-                       
- 
-                </DropdownMenuItem>
-                <DropdownMenuItem>View payment details</DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <EditStudent data={row.original} docId={row.original.docId} />
+              </DropdownMenuItem>                
+              <DropdownMenuItem>View payment details</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           )
@@ -98,11 +86,13 @@ export type Authorized = {
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
+
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
+   
   }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
@@ -120,6 +110,7 @@ export function DataTable<TData, TValue>({
       },
     })
    
+
     return (
       <div>
         <DropdownMenu>
