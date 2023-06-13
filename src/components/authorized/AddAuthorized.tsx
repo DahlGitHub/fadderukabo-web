@@ -1,6 +1,6 @@
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { useState } from "react";
-import { db } from "../../firebase";
+import { db } from "../../../firebase";
 
 
 const AddAuthorized = () => {
