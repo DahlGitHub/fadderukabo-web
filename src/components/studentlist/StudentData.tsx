@@ -6,8 +6,10 @@ import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow,} from "@/compo
 import { MoreHorizontal, Crown, UserCircle  } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {DropdownMenu,DropdownMenuCheckboxItem,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import EditStudent from "./EditStudent"
+import { collection, onSnapshot } from "firebase/firestore"
+import { db } from "../../../firebase"
 
 
 export type Authorized = {
@@ -17,6 +19,10 @@ export type Authorized = {
     group: string
   }
 
+  interface GroupData {
+    title: string;
+    hexValue: string;
+  }
 
   export const columns: ColumnDef<Authorized>[] = [
 
@@ -27,7 +33,7 @@ export type Authorized = {
         const authorized = row.original
         return (
           <div className="flex items-center">
-            {authorized.status == "faddersjef" ? <Crown className="h-4 w-4" /> : <UserCircle className="h-4 w-4" /> }
+            <span>{authorized.status == "faddersjef" ? <Crown className="h-4 w-4" /> : <UserCircle className="h-4 w-4" /> }</span>
             <span className="ml-2">{authorized.name}</span>
           </div>
         )
@@ -40,9 +46,29 @@ export type Authorized = {
     header: "Group",
     cell: ({ row }) => {
         const authorized = row.original
+        
+        const [groupData, setGroupData] = useState<GroupData[]>([]);
+
+        useEffect(() => {
+          const unsubscribe = onSnapshot(collection(db, 'groupdata'), (snapshot) => {
+            const data = snapshot.docs.map((doc) => doc.data() as GroupData);
+            setGroupData(data);
+          });
+    
+          return () => {
+            unsubscribe();
+          };
+        }, []);
+
+        const matchedGroup = groupData.find((group) => group.title === authorized.group);
+        const hexValue = matchedGroup ? matchedGroup.hexValue : '#000000';
+
         return (
-          <div className="flex items-center">
-            <span className="ml-2">{authorized.group}</span>
+          <div className="flex flex-row items-center">
+              
+              <div className="rounded-full w-3 h-3" style={{backgroundColor: hexValue }}></div>
+              <span className="ml-2">{authorized.group}</span>
+              
           </div>
         )
       }
