@@ -6,7 +6,7 @@ import {
     DialogTrigger,
   } from "@/components/ui/dialog"
 import { collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
-import { db } from '../../../firebase';
+import { auth, db } from '../../../firebase';
 
 import { Button } from "@/components/ui/button"
 import {
@@ -24,6 +24,7 @@ import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from 'react-hook-form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
 
 interface EditDataProps {
   data: Authorized;
@@ -73,6 +74,9 @@ export const EditStudent: React.FC<EditDataProps> = ({ docId, data}) => {
             name: data.name,
             group: data.group,
             status: data.status,
+            authorName: auth?.currentUser?.displayName,
+            authorPhotoURL: auth?.currentUser?.photoURL,
+            authorEmail: auth?.currentUser?.email,
           });
         setIsOpen(false);
       }

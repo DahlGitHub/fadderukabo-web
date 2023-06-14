@@ -10,6 +10,8 @@ import React, { useEffect, useState } from "react"
 import EditStudent from "./EditStudent"
 import { collection, onSnapshot } from "firebase/firestore"
 import { db } from "../../../firebase"
+import { Avatar, AvatarImage } from "../ui/avatar"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 
 
 export type Authorized = {
@@ -17,6 +19,9 @@ export type Authorized = {
     status: "fadder" | "faddersjef"
     name: string
     group: string
+    authorName: string
+    authorEmail: string
+    authorPhotoURL: string
   }
 
   interface GroupData {
@@ -74,6 +79,33 @@ export type Authorized = {
       }
     },
     {
+      accessorKey: "author",
+      header: "Author",
+      cell: ({ row }) => {
+          const authorized = row.original
+          return (
+            <div className="flex items-center">
+              <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                <Avatar className="h-6 w-6">
+                <AvatarImage src={authorized.authorPhotoURL ?? undefined} alt={authorized.authorName ?? undefined} />
+                </Avatar>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">{authorized.authorName}</p>
+                  <p className="text-xs leading-none text-muted-foreground">{authorized.authorEmail}</p>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+              </TooltipProvider>
+            </div>
+          )
+        }
+        
+    },
+    {
         id: "actions",
         cell: ({ row }) => {
           
@@ -121,7 +153,9 @@ export function DataTable<TData, TValue>({
    
   }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
-    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
+    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({
+      author: false,
+    })
 
     const table = useReactTable({
       data,
