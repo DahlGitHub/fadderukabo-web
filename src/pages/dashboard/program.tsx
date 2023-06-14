@@ -1,7 +1,7 @@
 import React from 'react'
 import DashboardLayout from '@/components/dashboard/DashboardLayout'
 import Program from '@/components/dashboard/Program'
-import { AuthAction, withAuthUser } from 'next-firebase-auth'
+import { AuthAction, withAuthUser, withAuthUserSSR, withAuthUserTokenSSR } from 'next-firebase-auth'
 
 const program = () => {
   return (
@@ -10,6 +10,11 @@ const program = () => {
     </DashboardLayout>
   )
 }
+
+export const getServerSideProps = withAuthUserTokenSSR({
+
+})()
+
 
 export default withAuthUser({ 
   whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
