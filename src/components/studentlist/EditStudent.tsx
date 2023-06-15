@@ -121,11 +121,13 @@ export const EditStudent: React.FC<EditDataProps> = ({ docId, data}) => {
                             </SelectTrigger>
                             </FormControl>
                             <SelectContent>
+                              <div className='overflow-y-auto'>
                                 {groupOptions.map((group) => (
                                 <SelectItem key={group} value={group}>
                                     {group}
                                 </SelectItem>
                                 ))}
+                                </div>
                             </SelectContent>
                              </Select>
                             <FormDescription>
