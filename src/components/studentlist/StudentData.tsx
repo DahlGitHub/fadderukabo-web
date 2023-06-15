@@ -3,7 +3,7 @@
 
 import {ColumnDef,flexRender,getCoreRowModel,useReactTable,SortingState, getSortedRowModel, VisibilityState} from "@tanstack/react-table"
 import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow,} from "@/components/ui/table"
-import { MoreHorizontal, Crown, UserCircle  } from "lucide-react"
+import { MoreHorizontal, Crown, UserCircle, SortAsc, ArrowUpDown  } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {DropdownMenu,DropdownMenuCheckboxItem,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
 import React, { useEffect, useState } from "react"
@@ -30,10 +30,20 @@ export type Authorized = {
   }
 
   export const columns: ColumnDef<Authorized>[] = [
-
+    
     {
     accessorKey: "name",
-    header: "Name",
+    header: ({ column}) => {
+      return (
+                  <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
     cell: ({ row }) => {
         const authorized = row.original
         return (
@@ -45,10 +55,20 @@ export type Authorized = {
       },
       enableHiding: false,
     },
- 
+    
     {
     accessorKey: "group",
-    header: "Group",
+    header: ({ column }) => {
+      return (
+        <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Group
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+      )
+    },
     cell: ({ row }) => {
         const authorized = row.original
         
@@ -66,17 +86,22 @@ export type Authorized = {
         }, []);
 
         const matchedGroup = groupData.find((group) => group.title === authorized.group);
-        const hexValue = matchedGroup ? matchedGroup.hexValue : '#000000';
+        const hexValue = matchedGroup ? matchedGroup.hexValue : undefined;
+        const groupTitle = matchedGroup ? matchedGroup.title : '-';
 
         return (
           <div className="flex flex-row items-center">
               
-              <div className="rounded-full w-3 h-3" style={{backgroundColor: hexValue }}></div>
-              <span className="ml-2">{authorized.group}</span>
+              {hexValue && (
+                <div className="mr-2 rounded-full w-3 h-3" style={{backgroundColor: hexValue }}></div>
+              )}
+              <span>{groupTitle}</span>
               
           </div>
         )
-      }
+      },
+      enableSorting: true,
+      
     },
     {
       accessorKey: "author",
