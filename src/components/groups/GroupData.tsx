@@ -24,24 +24,6 @@ export type Group = {
     authorPhotoURL: string
   }
 
-  const useMemberCount = (group: string): number => {
-    const [memberCount, setMemberCount] = useState(0);
-  
-    useEffect(() => {
-      const querySnapshot = query(collection(db, "studentdata"), where("group", "==", group));
-  
-      const unsubscribe = onSnapshot(querySnapshot, (snapshot) => {
-        setMemberCount(snapshot.size);
-      });
-  
-      return () => {
-        unsubscribe();
-      };
-    }, [group]);
-  
-    return memberCount;
-  };
-  
   export const columns: ColumnDef<Group>[] = [
 
     {
@@ -58,19 +40,19 @@ export type Group = {
       enableHiding: false,
     },
     {
-        accessorKey: "members",
-        header: "Members",
-        cell: ({ row }) => {
-            const group = row.original
-            const memberCount = useMemberCount(group.title);
-            return (
-              <div className="flex items-center">
-                <span className="ml-2">{memberCount}</span>
-              </div>
-            )
-          }
+      accessorKey: "members",
+      header: "Members",
+      cell: ({ row }) => {
+          const group = row.original
 
-    },
+          return (
+            <div className="flex items-center">
+              <span className="ml-2">{group.members}</span>
+            </div>
+          )
+        }
+
+  },
     {
         accessorKey: "color",
         header: "Color",
@@ -169,6 +151,8 @@ export function DataTable<TData, TValue>({
       author: false,
     })
 
+    
+
     const table = useReactTable({
       data,
       columns,
@@ -213,9 +197,9 @@ export function DataTable<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button variant="outline" className="ml-auto">
-        <AddGroup />
-        </Button>
+        
+          <AddGroup />
+        
       <div className="rounded-md border">
         
         <Table>

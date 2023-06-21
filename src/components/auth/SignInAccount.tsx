@@ -7,12 +7,8 @@ import 'firebase/auth';
 import { useRouter } from 'next/router';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Image from "next/image"
-
-import { collection, getDocs, onSnapshot } from "firebase/firestore";
-
 import UsnIcon from "public/svg/usnicon.svg"
-import { getAuth, signOut } from 'firebase/auth';
-import { AuthAction, useAuthUser, withAuthUser } from 'next-firebase-auth';
+import {  signOut } from 'firebase/auth';
 
 
 export default function SignInAccont() {
@@ -41,7 +37,7 @@ export default function SignInAccont() {
           toast.error('Error getting session token:', error);
         });
     }
-  }, [user, loading, router, auth]);
+  }, [user, loading, router]);
 
   return (
 <section className="flex justify-center">

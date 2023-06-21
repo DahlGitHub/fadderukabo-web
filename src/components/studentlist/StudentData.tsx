@@ -29,7 +29,7 @@ export type Authorized = {
     hexValue: string;
   }
 
-  const useGroupData = (): GroupData[] => {
+  const GroupCell: React.FC<{ row: any }> = ({ row }) => {
     const [groupData, setGroupData] = useState<GroupData[]>([]);
   
     useEffect(() => {
@@ -43,7 +43,22 @@ export type Authorized = {
       };
     }, []);
   
-    return groupData;
+    const authorized = row.original;
+    const matchedGroup = groupData.find((group) => group.title === authorized.group);
+    const hexValue = matchedGroup ? matchedGroup.hexValue : undefined;
+    const groupTitle = matchedGroup ? matchedGroup.title : '-';
+
+    return (
+      <div className="flex flex-row items-center">
+          
+          {hexValue && (
+            <div className="mr-2 rounded-full w-3 h-3" style={{backgroundColor: hexValue }}></div>
+          )}
+          <span>{groupTitle}</span>
+          
+      </div>
+    )
+  
   };
 
   export const columns: ColumnDef<Authorized>[] = [
@@ -74,40 +89,10 @@ export type Authorized = {
     },
     
     {
-    accessorKey: "group",
-    header: ({ column }) => {
-      return (
-        <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Group
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-      )
-    },
-    cell: ({ row }) => {
-        const authorized = row.original
-        
-        const groupData = useGroupData();
-
-        const matchedGroup = groupData.find((group) => group.title === authorized.group);
-        const hexValue = matchedGroup ? matchedGroup.hexValue : undefined;
-        const groupTitle = matchedGroup ? matchedGroup.title : '-';
-
-        return (
-          <div className="flex flex-row items-center">
-              
-              {hexValue && (
-                <div className="mr-2 rounded-full w-3 h-3" style={{backgroundColor: hexValue }}></div>
-              )}
-              <span>{groupTitle}</span>
-              
-          </div>
-        )
-      },
+      accessorKey: "group",
+      header: "Group",
+      cell: GroupCell,
       enableSorting: true,
-      
     },
     {
       accessorKey: "author",
