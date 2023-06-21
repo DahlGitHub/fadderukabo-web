@@ -29,6 +29,23 @@ export type Authorized = {
     hexValue: string;
   }
 
+  const useGroupData = (): GroupData[] => {
+    const [groupData, setGroupData] = useState<GroupData[]>([]);
+  
+    useEffect(() => {
+      const unsubscribe = onSnapshot(collection(db, "groupdata"), (snapshot) => {
+        const data = snapshot.docs.map((doc) => doc.data() as GroupData);
+        setGroupData(data);
+      });
+  
+      return () => {
+        unsubscribe();
+      };
+    }, []);
+  
+    return groupData;
+  };
+
   export const columns: ColumnDef<Authorized>[] = [
     
     {
@@ -72,18 +89,7 @@ export type Authorized = {
     cell: ({ row }) => {
         const authorized = row.original
         
-        const [groupData, setGroupData] = useState<GroupData[]>([]);
-
-        useEffect(() => {
-          const unsubscribe = onSnapshot(collection(db, 'groupdata'), (snapshot) => {
-            const data = snapshot.docs.map((doc) => doc.data() as GroupData);
-            setGroupData(data);
-          });
-    
-          return () => {
-            unsubscribe();
-          };
-        }, []);
+        const groupData = useGroupData();
 
         const matchedGroup = groupData.find((group) => group.title === authorized.group);
         const hexValue = matchedGroup ? matchedGroup.hexValue : undefined;

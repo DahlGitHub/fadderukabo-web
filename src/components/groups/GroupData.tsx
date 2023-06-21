@@ -3,7 +3,7 @@
 
 import {ColumnDef,flexRender,getCoreRowModel,useReactTable,SortingState, getSortedRowModel, VisibilityState} from "@tanstack/react-table"
 import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow,} from "@/components/ui/table"
-import { MoreHorizontal, Crown, UserCircle  } from "lucide-react"
+import { MoreHorizontal, Crown, UserCircle, Group  } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {DropdownMenu,DropdownMenuCheckboxItem,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
 import React, { useEffect, useState } from "react"
@@ -24,6 +24,24 @@ export type Group = {
     authorPhotoURL: string
   }
 
+  const useMemberCount = (group: string): number => {
+    const [memberCount, setMemberCount] = useState(0);
+  
+    useEffect(() => {
+      const querySnapshot = query(collection(db, "studentdata"), where("group", "==", group));
+  
+      const unsubscribe = onSnapshot(querySnapshot, (snapshot) => {
+        setMemberCount(snapshot.size);
+      });
+  
+      return () => {
+        unsubscribe();
+      };
+    }, [group]);
+  
+    return memberCount;
+  };
+  
   export const columns: ColumnDef<Group>[] = [
 
     {
@@ -44,21 +62,7 @@ export type Group = {
         header: "Members",
         cell: ({ row }) => {
             const group = row.original
-            const [memberCount, setMemberCount] = useState(0);
-            useEffect(() => {
-                const querySnapshot = query(
-                  collection(db, "studentdata"),
-                  where("group", "==", group.title)
-                );
-            
-                const unsubscribe = onSnapshot(querySnapshot, (snapshot) => {
-                    setMemberCount(snapshot.size)
-                });
-    
-                return () => {
-                    unsubscribe()
-                }
-            }, [group.title])
+            const memberCount = useMemberCount(group.title);
             return (
               <div className="flex items-center">
                 <span className="ml-2">{memberCount}</span>
