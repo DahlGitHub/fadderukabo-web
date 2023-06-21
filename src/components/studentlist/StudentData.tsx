@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react"
 import EditStudent from "./EditStudent"
 import { collection, onSnapshot } from "firebase/firestore"
 import { db } from "../../../firebase"
-import { Avatar, AvatarImage } from "../ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 
 
@@ -115,6 +115,7 @@ export type Authorized = {
                 <TooltipTrigger>
                 <Avatar className="h-6 w-6">
                 <AvatarImage src={authorized.authorPhotoURL ?? undefined} alt={authorized.authorName ?? undefined} />
+                <AvatarFallback>{authorized.authorName.charAt(0)}</AvatarFallback>
                 </Avatar>
                 </TooltipTrigger>
                 <TooltipContent>

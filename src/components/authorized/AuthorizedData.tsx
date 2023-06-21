@@ -11,6 +11,7 @@ import Confirmation from "../Confirmation"
 import { collection, deleteDoc, doc, getDocs } from "firebase/firestore"
 import { auth, db } from "../../../firebase"
 import React from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 
 
 export type Authorized = {
@@ -59,11 +60,10 @@ export type Authorized = {
         const authorized = row.original
         return (
           <div className="flex items-center">
-            <img
-              src={authorized.photoURL}
-              alt={authorized.displayName}
-              className="w-8 h-8 rounded-full"
-            />
+            <Avatar className="w-8 h-8 rounded-full">
+              <AvatarImage src={authorized.photoURL} alt={authorized.displayName}/> 
+              <AvatarFallback>{authorized.displayName.charAt(0)}</AvatarFallback>
+            </Avatar>
             <span className="ml-2">{authorized.displayName}</span>
           </div>
         )

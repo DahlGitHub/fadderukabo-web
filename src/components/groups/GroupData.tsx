@@ -9,8 +9,9 @@ import {DropdownMenu,DropdownMenuCheckboxItem,DropdownMenuContent,DropdownMenuIt
 import React, { useEffect, useState } from "react"
 import { collection, onSnapshot, query, where } from "firebase/firestore"
 import { db } from "../../../firebase"
-import { Avatar, AvatarImage } from "../ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
+import AddGroup from "./AddGroup"
 
 
 export type Group = {
@@ -96,6 +97,7 @@ export type Group = {
                 <TooltipTrigger>
                 <Avatar className="h-6 w-6">
                 <AvatarImage src={authorized.authorPhotoURL ?? undefined} alt={authorized.authorName ?? undefined} />
+                <AvatarFallback>{authorized.authorName.charAt(0)}</AvatarFallback>
                 </Avatar>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -207,7 +209,9 @@ export function DataTable<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-    
+        <Button variant="outline" className="ml-auto">
+        <AddGroup />
+        </Button>
       <div className="rounded-md border">
         
         <Table>

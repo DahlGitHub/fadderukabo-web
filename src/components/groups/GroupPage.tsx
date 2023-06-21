@@ -25,7 +25,6 @@ export default function StudentListPage() {
 
     return (
       <div className="container mx-auto py-10">
-        <AddGroup />
         <DataTable columns={columns} data={data}  />
       </div>
     );

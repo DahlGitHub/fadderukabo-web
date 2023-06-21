@@ -30,6 +30,7 @@ export function UserNav() {
         <Button variant="secondary" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-9 w-9">
             <AvatarImage src={auth.currentUser?.photoURL ?? undefined} alt={auth.currentUser?.displayName ?? undefined} />
+            <AvatarFallback>{auth.currentUser?.displayName?.charAt(0)}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
