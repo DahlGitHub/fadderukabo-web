@@ -9,6 +9,7 @@ import { UserNav } from "../UserNav";
 import Page from "../studentlist/StudentListPage";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import TableSkeleton from "../TableSkeleton";
 
 const Dashboard = () => {
 
@@ -30,7 +31,7 @@ const Dashboard = () => {
       Show Toast
     </Button>
             <div>Welcome {username} !
-
+            <TableSkeleton />
             </div>
 
         </div>
