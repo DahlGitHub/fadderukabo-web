@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import SidebarLinkGroup from "./SidebarLinkGroup";
 import { LayoutGrid, Calendar, Lock, LayoutTemplate, Sprout, GraduationCap, Users, List, Heart, LinkIcon, HelpCircle, ShieldCheck } from "lucide-react";
 import { useRouter } from "next/router";
+import { usePathname } from "next/navigation"
+import path from "path";
 
 const links = [
   { headTitle: 'Main', links: [
@@ -21,12 +23,7 @@ const links = [
 
   
 const SidebarItem = () => {
-  const router = useRouter();
-  const [activeLink, setActiveLink] = useState('');
-
-  useEffect(() => {
-    setActiveLink(router.pathname);
-  }, [router.pathname]);
+  const pathname = usePathname()
 
   
   return (
@@ -42,7 +39,7 @@ const SidebarItem = () => {
                 <Link
                   href={link.href}
                   className={`flex items-center px-1 py-2 text-xs font-semibold rounded-lg group ${
-                    activeLink === link.href
+                    pathname === link.href
                       ? 'text-gray-50 bg-gray-950 hover:bg-gray-900 dark:bg-gray-700 dark:text-white'
                       : 'text-gray-600 dark:text-white hover:text-gray-50 hover:bg-gray-950 dark:hover:bg-gray-700'
                   } transition delay-10` }
@@ -63,7 +60,7 @@ const SidebarItem = () => {
           <Link
             href="/dashboard/authorized"
             className={`flex items-center p-2 text-xs font-semibold rounded-lg group ${
-              activeLink === '/dashboard/authorized'
+              pathname === '/dashboard/authorized'
                 ? 'text-gray-50 bg-gray-950 hover:bg-gray-900 dark:bg-gray-700 dark:text-white'
                 : 'text-gray-600 dark:text-white hover:text-gray-50 hover:bg-gray-950 dark:hover:bg-gray-700'
             }`}
