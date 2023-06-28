@@ -15,6 +15,7 @@ import {
 import { auth } from "../../firebase"
 import Link from "next/link"
 import { toast } from "react-toastify"
+import { UserAvatar } from "./UserAvatar"
 
 const signOut = () => {
     
@@ -24,14 +25,12 @@ const signOut = () => {
 }
 
 export function UserNav() {
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="secondary" className="relative h-8 w-8 rounded-full">
-          <Avatar className="h-9 w-9">
-            <AvatarImage src={auth.currentUser?.photoURL ?? undefined} alt={auth.currentUser?.displayName ?? undefined} />
-            <AvatarFallback>{auth.currentUser?.displayName?.charAt(0)}</AvatarFallback>
-          </Avatar>
+            <UserAvatar />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
