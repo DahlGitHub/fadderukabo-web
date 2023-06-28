@@ -3,6 +3,7 @@ import { collection, onSnapshot, doc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../../firebase";
 import { columns, DataTable, Authorized } from "./StudentData";
 import AddStudent from "./AddStudent";
+import ImportStudent from "./ImportStudent";
 
 
 export default function StudentListPage() {
@@ -36,6 +37,7 @@ export default function StudentListPage() {
 
     return (
       <div className="container mx-auto py-10">
+        <ImportStudent />
         <AddStudent groupOptions={groupOptions} />
         <DataTable columns={columns} data={data}  />
       </div>
