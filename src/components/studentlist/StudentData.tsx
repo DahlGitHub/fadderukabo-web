@@ -1,7 +1,7 @@
 "use client"
 
 
-import {ColumnDef,flexRender,getCoreRowModel,useReactTable,SortingState, getSortedRowModel, VisibilityState} from "@tanstack/react-table"
+import {ColumnDef,flexRender,getCoreRowModel,useReactTable,SortingState, getSortedRowModel, VisibilityState, ColumnFiltersState, getFilteredRowModel, getFacetedRowModel, getFacetedUniqueValues} from "@tanstack/react-table"
 import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow,} from "@/components/ui/table"
 import { MoreHorizontal, Crown, UserCircle, SortAsc, ArrowUpDown  } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -12,6 +12,9 @@ import { collection, onSnapshot } from "firebase/firestore"
 import { db } from "../../../firebase"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
+import { Input } from "../ui/input"
+import { StudentFacetedFilter, groupSelections } from "./StudentFacetedFilter"
+
 
 
 export type Authorized = {
@@ -30,19 +33,20 @@ export type Authorized = {
   }
 
   const GroupCell: React.FC<{ row: any }> = ({ row }) => {
-    const [groupData, setGroupData] = useState<GroupData[]>([]);
-  
+  const [groupData, setGroupData] = useState<GroupData[]>([]);
     useEffect(() => {
       const unsubscribe = onSnapshot(collection(db, "groupdata"), (snapshot) => {
         const data = snapshot.docs.map((doc) => doc.data() as GroupData);
         setGroupData(data);
+
       });
   
       return () => {
         unsubscribe();
       };
     }, []);
-  
+
+
     const authorized = row.original;
     const matchedGroup = groupData.find((group) => group.title === authorized.group);
     const hexValue = matchedGroup ? matchedGroup.hexValue : undefined;
@@ -67,10 +71,10 @@ export type Authorized = {
     accessorKey: "name",
     header: ({ column}) => {
       return (
-                  <Button
+          <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
+          >
           Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -90,8 +94,21 @@ export type Authorized = {
     
     {
       accessorKey: "group",
-      header: "Group",
+      header: ({ column }) => {
+        return (
+            <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+            Group
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
       cell: GroupCell,
+      filterFn: (row, id, value) => {
+        return value.includes(row.getValue(id))
+      },
       enableSorting: true,
     },
     {
@@ -170,6 +187,9 @@ export function DataTable<TData, TValue>({
    
   }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
+    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+      []
+    )
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({
       author: false,
     })
@@ -181,9 +201,15 @@ export function DataTable<TData, TValue>({
       onSortingChange: setSorting,
       getSortedRowModel: getSortedRowModel(),
       onColumnVisibilityChange: setColumnVisibility,
+      onColumnFiltersChange: setColumnFilters,
+      getFilteredRowModel: getFilteredRowModel(),
+      getFacetedRowModel: getFacetedRowModel(),
+      getFacetedUniqueValues: getFacetedUniqueValues(),
+      enableRowSelection: true,
       state: {
         sorting,
         columnVisibility,
+        columnFilters,
       },
     })
    
@@ -218,7 +244,23 @@ export function DataTable<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-    
+        <div className="flex items-center py-4">
+        <Input
+          placeholder="Search name..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("name")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+          {table.getColumn("group") && (
+          <StudentFacetedFilter
+            column={table.getColumn("group")}
+            title="Groups"
+            options={groupSelections}
+          />
+        )}
+      </div>
       <div className="rounded-md border">
         
         <Table>
