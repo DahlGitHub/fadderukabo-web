@@ -9,7 +9,7 @@ import { Badge } from "../ui/badge"
 import { Separator } from "../ui/separator"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "../ui/command"
 import { useEffect, useState } from "react"
-import { collection, getDocs } from "firebase/firestore"
+import { collection, getDocs, query } from "firebase/firestore"
 import { db } from "../../../firebase"
 
 
@@ -31,19 +31,22 @@ interface GroupSelection {
   color?: string;
 }
 
+const fetchData = async () => {
+  try {
+    const q = await getDocs(query(collection(db, "groupdata")));
+    const fetchedGroupSelections: GroupSelection[] = q.docs.map((doc) => {
+      const group = doc.data();
+      return { label: group.title, value: group.title, color: group.hexValue };
+    });
+    groupSelections.length = 0; // Clear the existing array
+    groupSelections.push(...fetchedGroupSelections); // Push the fetched data into the array
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-export async function fetchGroupSelections(): Promise<void> {
-  const groupData = await getDocs(collection(db, "groupdata"));
-  const fetchedGroupSelections: GroupSelection[] = groupData.docs.map((doc) => {
-    const data = doc.data();
-    return { label: data.title, value: data.title, color: data.hexValue };
-  });
-  groupSelections.length = 0; // Clear the existing array
-  groupSelections.push(...fetchedGroupSelections); // Push the fetched data into the array
-}
+fetchData();
 
-// Call the fetchGroupSelections function to fetch the data and update the groupSelections array
-fetchGroupSelections();
 
 export function StudentFacetedFilter<TData, TValue>({
   column,
