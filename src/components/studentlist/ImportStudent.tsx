@@ -59,7 +59,7 @@ export const ImportStudent = () => {
             // Iterate over the row object
             Object.entries(row).forEach(([key, value]) => {
               if (value !== undefined) {
-                docData[key.toLowerCase()] = value as string;
+                docData[key] = value as string;
               }
             });
       
