@@ -2,14 +2,12 @@ import { useEffect, useState } from "react";
 import { collection, onSnapshot, doc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../../firebase";
 import { columns, DataTable, Authorized } from "./StudentData";
-import AddStudent from "./AddStudent";
 import ImportStudent from "./ImportStudent";
 
 
 export default function StudentListPage() {
   
   const [data, setData] = useState<Authorized[]>([]);
-  const [groupOptions, setGroupOptions] = useState<string[]>([]);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'studentdata'), (snapshot) => {
@@ -25,20 +23,8 @@ export default function StudentListPage() {
   }, []);
   
 
-
-  useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, 'groupdata'), (snapshot) => {
-      const titles = snapshot.docs.map((doc) => doc.data().title);
-      setGroupOptions(titles);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
     return (
       <div className="container mx-auto py-10">
-        <ImportStudent />
-        <AddStudent groupOptions={groupOptions} />
         <DataTable columns={columns} data={data}  />
       </div>
     );
