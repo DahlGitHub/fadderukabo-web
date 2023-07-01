@@ -15,6 +15,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/
 import { Input } from "../ui/input"
 import { StudentFacetedFilter, groupSelections } from "./StudentFacetedFilter"
 import { StudentToolbar } from "./StudentToolbar"
+import { Badge } from "../ui/badge"
+import { ScrollArea } from "../ui/scroll-area"
 
 
 
@@ -82,11 +84,12 @@ export type Authorized = {
       )
     },
     cell: ({ row }) => {
-        const authorized = row.original
+        const data = row.original
         return (
           <div className="flex items-center">
-            <span>{authorized.status == "faddersjef" ? <Crown className="h-4 w-4" /> : <UserCircle className="h-4 w-4" /> }</span>
-            <span className="ml-2">{authorized.name}</span>
+            <span>{data.status == "faddersjef" ? <Crown className="h-4 w-4" /> : <UserCircle className="h-4 w-4 text-gray-500" /> }</span>
+            <span className="ml-2">{data.name}</span>
+            
           </div>
         )
       },
@@ -238,9 +241,12 @@ export function DataTable<TData, TValue>({
                 </TableRow>
               ))}
             </TableHeader>
+            
             <TableBody>
+              
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
+                  
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
@@ -251,6 +257,7 @@ export function DataTable<TData, TValue>({
                       </TableCell>
                     ))}
                   </TableRow>
+                  
                 ))
               ) : (
                 <TableRow>
@@ -259,8 +266,10 @@ export function DataTable<TData, TValue>({
                   </TableCell>
                 </TableRow>
               )}
+              
             </TableBody>
           </Table>
+          
         </div>
       </div>
     )
