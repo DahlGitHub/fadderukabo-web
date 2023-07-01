@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as XLSX from 'xlsx';
 import { toast } from '../ui/use-toast';
 
@@ -13,6 +13,10 @@ import {
 import { addDoc, collection } from 'firebase/firestore';
 import { auth, db } from '../../../firebase';
 import { Button } from '../ui/button';
+import { Dialog, DialogContent, DialogTrigger} from '../ui/dialog';
+import { Plus, Upload } from 'lucide-react';
+import { ScrollArea } from '../ui/scroll-area';
+import { Input } from '../ui/input';
 
 type Props = {
     nameValue: string;
@@ -21,7 +25,19 @@ type Props = {
 
 export const ImportStudent = () => {
 
+    const [isOpen, setIsOpen] = useState(false);
     const [data, setData] = useState<Props[]>([])
+    const fileInput = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+      if (!isOpen) {
+        if (fileInput.current) {
+        // Clear the file input field and data when dialog is closed
+        fileInput.current.value = '';
+        }
+        setData([]);
+      }
+    }, [isOpen]);
 
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -48,7 +64,7 @@ export const ImportStudent = () => {
             }
           };
           reader.readAsBinaryString(file);
-        }
+        } 
       };
 
       const handleUploadToDatabase = async () => {
@@ -59,7 +75,7 @@ export const ImportStudent = () => {
             // Iterate over the row object
             Object.entries(row).forEach(([key, value]) => {
               if (value !== undefined) {
-                docData[key] = value as string;
+                docData[key.toLowerCase()] = value as string;
               }
             });
       
@@ -86,6 +102,7 @@ export const ImportStudent = () => {
             description: 'The sheet data has been uploaded to the database.',
           });
       
+          setData([]);
           console.log('Document IDs:', documentIds);
         } catch (error) {
           console.error('Error uploading data:', error);
@@ -94,20 +111,27 @@ export const ImportStudent = () => {
             description: 'There was an error uploading the data to the database.',
           });
         }
+
       };
 
   return (
-    <>
-    <Button onClick={handleUploadToDatabase}>Press me</Button>
 
-<input 
+        <Dialog>
+        <Button asChild variant="outline" className="h-8 px-2">
+        <DialogTrigger onClick={() => setIsOpen(true)}><Upload size={16}/></DialogTrigger>
+        </Button>
+        {isOpen && (
+        <DialogContent>
+
+<Input 
   type="file" 
   accept=".xlsx, .xls" 
-  onChange={handleFileUpload} 
+  onChange={handleFileUpload}
+  ref={fileInput} 
 />
 
 {data.length > 0 && (
-
+<ScrollArea className="h-96 rounded-md border p-4">
     <Table>
     <TableHeader>
       <TableRow>
@@ -117,21 +141,30 @@ export const ImportStudent = () => {
         ))}
       </TableRow>
     </TableHeader>
+    
     <TableBody>
+        
         {data.map((row, index) => (
+
             <TableRow key={index}>
                 <TableCell className='text-muted-foreground text-xs'>{index + 1}</TableCell>
                 {Object.values(row).map((value, index) => (
                     <TableCell key={index}>{value as string}</TableCell>
                 ))}
             </TableRow>
+         
         ))}
+        
     </TableBody>
-  </Table>
-
+    
+    </Table>
+</ScrollArea>
 )}
+<Button variant="outline" onClick={handleUploadToDatabase}>Upload</Button>
+</DialogContent>
+)}
+</Dialog>
 
-</>
   );
 }
 
