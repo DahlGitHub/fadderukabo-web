@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Column } from "@tanstack/react-table"
-import { Check, HelpCircle, LucideIcon, PlusCircle } from "lucide-react"
+import { Check, Filter, HelpCircle, LucideIcon, PlusCircle } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
@@ -61,7 +61,7 @@ export function StudentFacetedFilter<TData, TValue>({
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="outline" size="sm" className="h-8 border-dashed">
-          <PlusCircle className="mr-2 h-4 w-4" />
+          <Filter className="mr-2 h-4 w-4" />
           {title}
           {selectedValues?.size > 0 && (
             <>
