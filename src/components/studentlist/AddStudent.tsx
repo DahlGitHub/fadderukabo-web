@@ -1,6 +1,6 @@
+
 import React, { useEffect, useState } from 'react';
-import { Authorized } from './StudentData';
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogFooter, DialogTrigger } from "@/components/ui/dialog"
 import { collection, addDoc } from 'firebase/firestore';
 import { auth, db } from '../../../firebase';
 
@@ -11,6 +11,8 @@ import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from 'react-hook-form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Plus } from 'lucide-react';
+
 
 interface AddDataProps {
   groupOptions: string[];
@@ -49,7 +51,10 @@ export const AddStudent: React.FC<AddDataProps> = ({ groupOptions }) => {
 
   return (
     <Dialog>
-      <DialogTrigger onClick={() => setIsOpen(true)}>Add User</DialogTrigger>
+        <Button asChild variant="outline" className="h-8 px-2">
+        <DialogTrigger onClick={() => setIsOpen(true)}><Plus size={16}/></DialogTrigger>
+        </Button>
+      
       {isOpen && (
         <DialogContent>
           <Form {...form}>
@@ -115,11 +120,10 @@ export const AddStudent: React.FC<AddDataProps> = ({ groupOptions }) => {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Add</Button>
+            <Button type="submit">Add</Button>
             </form>
           </Form>
 
-          <DialogTrigger onClick={() => setIsOpen(false)}>Cancel</DialogTrigger>
         </DialogContent>
       )}
     </Dialog>
