@@ -22,8 +22,16 @@ export default function StudentListPage() {
   
 
     return (
+      <>
+      <div>
+        <h2 className="text-2xl font-bold tracking-tight">Welcome back!</h2>
+        <p className="text-muted-foreground">
+        Here&apos;s a list of your tasks for this month!
+        </p>
+          </div>
       <div className="py-10">
         <DataTable columns={columns} data={data}  />
       </div>
+      </>
     );
   }

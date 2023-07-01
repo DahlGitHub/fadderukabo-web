@@ -12,12 +12,9 @@ import { collection, onSnapshot } from "firebase/firestore"
 import { db } from "../../../firebase"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
-import { Input } from "../ui/input"
-import { StudentFacetedFilter, groupSelections } from "./StudentFacetedFilter"
 import { StudentToolbar } from "./StudentToolbar"
-import { Badge } from "../ui/badge"
-import { ScrollArea } from "../ui/scroll-area"
-
+import Confirmation from "../Confirmation"
+import DeleteRow from "../DeleteRow"
 
 
 export type Authorized = {
@@ -170,8 +167,15 @@ export type Authorized = {
                 }
               <DropdownMenuItem asChild>
                 <EditStudent data={row.original} docId={row.original.docId} />
-              </DropdownMenuItem>                
-              <DropdownMenuItem>View payment details</DropdownMenuItem>
+              </DropdownMenuItem>  
+              <DropdownMenuItem asChild>
+                    
+                    <DeleteRow 
+                      docId={row.original.docId} 
+                      collectionName={"studentdata"} 
+                      message={`Are you sure you want to delete ${row.getValue("name")}?`} />
+ 
+                </DropdownMenuItem>              
               </DropdownMenuContent>
             </DropdownMenu>
           )
