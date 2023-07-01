@@ -7,6 +7,10 @@ import AddStudent from "./AddStudent"
 import { useEffect, useState } from "react"
 import { collection, onSnapshot } from "firebase/firestore"
 import { db } from "../../../firebase"
+import { Eye, Trash2 } from "lucide-react"
+import ImportStudent from "./ImportStudent"
+import Confirmation from "../Confirmation"
+import DeleteCollection from "../DeleteCollection"
 
 interface StudentToolbarProps<TData> {
     table: Table<TData>
@@ -26,29 +30,35 @@ export function StudentToolbar<TData>({ table }: StudentToolbarProps<TData>) {
       }, []);
 
     return (
-        <div className="flex items-center py-4">
+        <div className="flex flex-col sm:flex-row justify-between py-4">
+            <div className="flex flex-1">
             <Input
                 placeholder="Search name..."
                 value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
                 onChange={(event) =>
                 table.getColumn("name")?.setFilterValue(event.target.value)
                 }
-                className="max-w-sm"
+                className="h-8 px-2 w-50 mr-2"
             />
+       
                 {table.getColumn("group") && (
                 <StudentFacetedFilter
                 column={table.getColumn("group")}
                 title="Groups"
                 options={groupSelections}
                 />
+                
             )}
+            </div>
+            <div className="flex space-x-2">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="ml-auto">
-                    Columns
+                <Button variant="outline" className="h-8 px-2">
+                    <Eye size={16} />
                 </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
+                
                 {table
                     .getAllColumns()
                     .filter(
@@ -70,9 +80,15 @@ export function StudentToolbar<TData>({ table }: StudentToolbarProps<TData>) {
                     })}
                 </DropdownMenuContent>
             </DropdownMenu>
-            <Button className="border">
-                <AddStudent groupOptions={groupOptions} />
-            </Button>
+            
+            
+            <ImportStudent />
+            <AddStudent groupOptions={groupOptions} />
+            <DeleteCollection collectionName={"studentdata"} />
+            </div>
+          
+    
+             
 
             
         </div>
