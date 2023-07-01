@@ -9,7 +9,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import Image from "next/image"
 import UsnIcon from "public/svg/usnicon.svg"
 import {  signOut } from 'firebase/auth';
-
+import GoogleIcon from "public/svg/google.svg"
 
 export default function SignInAccont() {
   const [user, loading, error] = useAuthState(auth); // Assuming you have initialized the Firebase auth instance as `auth`
@@ -40,7 +40,7 @@ export default function SignInAccont() {
   }, [user, loading, router]);
 
   return (
-<section className="flex justify-center">
+<div className="flex justify-center">
 <div className="relative py-16 mt-32">  
     <div className="relative container m-auto px-6 text-gray-500 md:px-12 xl:px-40">
         <div className="m-auto w-8/10">
@@ -69,9 +69,7 @@ export default function SignInAccont() {
                       className="inline-flex items-center justify-center px-5 w-48 py-2 w-full text-base font-medium text-center text-gray-600 rounded-lg border border-gray-300 focus:ring-4 focus:ring-gray-500 hover:bg-gray-50 hover:focus:ring-4 hover:border-blue-500"
                       onClick={signInWithGoogle}
                     >
-                    <Image className='mr-2'
-                    width={30}
-                    src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png" alt="Google"                    />
+                    <GoogleIcon className="w-3 h-3 mr-2"/>
                     <span className='text-[13px] font-semibold'>Sign in with Google</span>
                     </button>
                     </div>
@@ -84,7 +82,7 @@ export default function SignInAccont() {
         </div>
     </div>
 </div>
-</section>
+</div>
 
   );
 }
