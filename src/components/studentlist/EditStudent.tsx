@@ -83,7 +83,9 @@ export const EditStudent: React.FC<EditDataProps> = ({ docId, data}) => {
 
   return (
     <Dialog>
-        <DialogTrigger onClick={() => setIsOpen(true)}>EditThis</DialogTrigger>
+      <Button asChild className="h-8 px-2">
+        <DialogTrigger onClick={() => setIsOpen(true)}>Edit</DialogTrigger>
+      </Button>
         {isOpen && (
         <DialogContent>
             <Form {...form}>
