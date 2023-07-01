@@ -29,7 +29,7 @@ const DashboardLayout = ({ children }: DefaultLayoutProps) => {
           <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
             <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
             <main>
-              <div className="max-w-screen p-4 ">{children}</div>
+              <div className="max-w-screen p-4 px-8 ">{children}</div>
 
             </main>
           </div>

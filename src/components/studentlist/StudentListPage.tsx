@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import { collection, onSnapshot, doc, updateDoc } from "firebase/firestore";
-import { auth, db } from "../../../firebase";
+import { collection, onSnapshot} from "firebase/firestore";
+import { db } from "../../../firebase";
 import { columns, DataTable, Authorized } from "./StudentData";
-import ImportStudent from "./ImportStudent";
-
 
 export default function StudentListPage() {
   
@@ -24,7 +22,7 @@ export default function StudentListPage() {
   
 
     return (
-      <div className="container mx-auto py-10">
+      <div className="py-10">
         <DataTable columns={columns} data={data}  />
       </div>
     );
