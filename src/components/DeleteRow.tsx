@@ -3,6 +3,7 @@ import { db } from "../../firebase";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { Button } from "./ui/button";
+import { Trash2 } from "lucide-react";
 
 interface DeleteRowProps {
     docId: string;
@@ -24,13 +25,12 @@ interface DeleteRowProps {
     
   
     return (
-      <div>
         <Dialog>
-            <Button asChild className="h-8 px-2">
-          <DialogTrigger onClick={() => setIsOpen(true)}>
-            Delete
-          </DialogTrigger>
-         </Button>
+        <Button asChild variant="ghost" className="h-8 w-full px-2">
+            <DialogTrigger onClick={() => setIsOpen(true)}>
+            <Trash2 size={16} className='mr-2'/><div className='text-start w-full'>Delete</div>
+            </DialogTrigger>
+        </Button>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Warning</DialogTitle>
@@ -49,7 +49,6 @@ interface DeleteRowProps {
             </div>
           </DialogContent>
         </Dialog>
-      </div>
     );
   };
   

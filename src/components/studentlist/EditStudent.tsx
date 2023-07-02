@@ -24,6 +24,7 @@ import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from 'react-hook-form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Edit } from 'lucide-react';
 
 
 interface EditDataProps {
@@ -83,8 +84,10 @@ export const EditStudent: React.FC<EditDataProps> = ({ docId, data}) => {
 
   return (
     <Dialog>
-      <Button asChild className="h-8 px-2">
-        <DialogTrigger onClick={() => setIsOpen(true)}>Edit</DialogTrigger>
+      <Button asChild variant="ghost" className="h-8 w-full px-2">
+        <DialogTrigger onClick={() => setIsOpen(true)}>
+          <Edit size={16} className='mr-2'/><div className='text-start w-full'>Edit</div>
+        </DialogTrigger>
       </Button>
         {isOpen && (
         <DialogContent>
@@ -97,7 +100,7 @@ export const EditStudent: React.FC<EditDataProps> = ({ docId, data}) => {
                         <FormItem>
                             <FormLabel>Name</FormLabel>
                             <FormControl>
-                                <Input {...field} defaultValue={currentData.name} />
+                                <Input {...field} value={field.value} onChange={field.onChange} />
                             </FormControl>
                             <FormDescription>
                                 Fullname of the person.
