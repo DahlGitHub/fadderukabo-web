@@ -1,11 +1,10 @@
 "use client"
 
-
 import {ColumnDef,flexRender,getCoreRowModel,useReactTable,SortingState, getSortedRowModel, VisibilityState, ColumnFiltersState, getFilteredRowModel, getFacetedRowModel, getFacetedUniqueValues} from "@tanstack/react-table"
 import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow,} from "@/components/ui/table"
-import { MoreHorizontal, Crown, UserCircle, SortAsc, ArrowUpDown  } from "lucide-react"
+import { MoreHorizontal, Crown, UserCircle, SortAsc, ArrowUpDown, CaseSensitive, AlertTriangle  } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import {DropdownMenu,DropdownMenuCheckboxItem,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
+import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
 import React, { useEffect, useState } from "react"
 import EditStudent from "./EditStudent"
 import { collection, onSnapshot } from "firebase/firestore"
@@ -13,7 +12,6 @@ import { db } from "../../../firebase"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 import { StudentToolbar } from "./StudentToolbar"
-import Confirmation from "../Confirmation"
 import DeleteRow from "../DeleteRow"
 
 
@@ -50,19 +48,28 @@ export type Authorized = {
     const authorized = row.original;
     const matchedGroup = groupData.find((group) => group.title === authorized.group);
     const hexValue = matchedGroup ? matchedGroup.hexValue : undefined;
-    const groupTitle = matchedGroup ? matchedGroup.title : '-';
+    const groupTitle = matchedGroup ? matchedGroup.title : authorized.group;
 
-    return (
-      <div className="flex flex-row items-center">
-          
-          {hexValue && (
-            <div className="mr-2 rounded-full w-3 h-3" style={{backgroundColor: hexValue }}></div>
-          )}
-          <span>{groupTitle}</span>
-          
-      </div>
-    )
+    const renderContent = () => {
+      if (hexValue) {
+        return (
+          <>
+            <div className="mr-2 rounded-full w-3 h-3" style={{ backgroundColor: hexValue }} />
+            <span>{groupTitle}</span>
+          </>
+        );
+      } else {
+        return (
+          <>
+            <CaseSensitive className="text-gray-500 w-5 h-5" />
+          </>
+        );
+      }
+    };
   
+    return <div className="flex flex-row items-center">{renderContent()}</div>;
+
+
   };
 
   export const columns: ColumnDef<Authorized>[] = [
@@ -111,6 +118,7 @@ export type Authorized = {
         return value.includes(row.getValue(id))
       },
       enableSorting: true,
+
     },
     {
       accessorKey: "author",
@@ -153,7 +161,7 @@ export type Authorized = {
                   <MoreHorizontal className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className="space-y-1">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
                 <DropdownMenuSeparator />
@@ -165,6 +173,7 @@ export type Authorized = {
                 </DropdownMenuItem>
                  */   
                 }
+              
               <DropdownMenuItem asChild>
                 <EditStudent data={row.original} docId={row.original.docId} />
               </DropdownMenuItem>  
