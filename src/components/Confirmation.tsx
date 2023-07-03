@@ -1,53 +1,50 @@
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-  } from "@/components/ui/dialog"
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
-import { useState } from "react";
+import { useState } from 'react';
 
 interface ConfirmationProps {
-    onConfirm: () => void;
-    message: string;
-  }
-  
-  const Confirmation = ({ onConfirm, message }: ConfirmationProps) => {
-    const [isOpen, setIsOpen] = useState(false);
-  
-    const handleConfirm = () => {
-      onConfirm();
-      setIsOpen(false);
-    };
-  
-    return (
-      <div>
-        <Dialog>
-          <DialogTrigger onClick={() => setIsOpen(true)}>Delete</DialogTrigger>
-          
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Are you sure absolutely sure?</DialogTitle>
-              <DialogDescription>
-                {message}
-                
-                </DialogDescription>
-                <DialogDescription className="pt-2">
-                    This action cannot be undone.
-                </DialogDescription>
+  onConfirm: () => void;
+  message: string;
+}
 
-            </DialogHeader>
-            <div className="flex justify-between mt-4">
-            <DialogTrigger onClick={() => setIsOpen(false)}>Cancel</DialogTrigger>
-            <DialogTrigger onClick={handleConfirm}>Confirm</DialogTrigger>
+const Confirmation = ({ onConfirm, message }: ConfirmationProps) => {
+  const [isOpen, setIsOpen] = useState(false);
 
-            </div>
-          </DialogContent>
-        </Dialog>
-      </div>
-    );
+  const handleConfirm = () => {
+    onConfirm();
+    setIsOpen(false);
   };
-  
-  export default Confirmation;
+
+  return (
+    <div>
+      <Dialog>
+        <DialogTrigger onClick={() => setIsOpen(true)}>Delete</DialogTrigger>
+
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you sure absolutely sure?</DialogTitle>
+            <DialogDescription>{message}</DialogDescription>
+            <DialogDescription className="pt-2">
+              This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-between mt-4">
+            <DialogTrigger onClick={() => setIsOpen(false)}>
+              Cancel
+            </DialogTrigger>
+            <DialogTrigger onClick={handleConfirm}>Confirm</DialogTrigger>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
+
+export default Confirmation;

@@ -1,18 +1,35 @@
-
 import React, { useEffect, useState } from 'react';
-import { Dialog, DialogContent, DialogFooter, DialogTrigger } from "@/components/ui/dialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { collection, addDoc } from 'firebase/firestore';
 import { auth, db } from '../../../firebase';
 
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import * as z from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Plus } from 'lucide-react';
-
 
 interface AddDataProps {
   groupOptions: string[];
@@ -20,13 +37,13 @@ interface AddDataProps {
 
 const FormSchema = z.object({
   name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
+    message: 'Name must be at least 2 characters.',
   }),
   group: z.string().min(2, {
-    message: "Group must be at least 2 characters.",
+    message: 'Group must be at least 2 characters.',
   }),
   status: z.string().min(2, {
-    message: "Status must be at least 2 characters.",
+    message: 'Status must be at least 2 characters.',
   }),
 });
 
@@ -38,7 +55,7 @@ export const AddStudent: React.FC<AddDataProps> = ({ groupOptions }) => {
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    addDoc(collection(db, "studentdata"), {
+    addDoc(collection(db, 'studentdata'), {
       name: data.name,
       group: data.group,
       status: data.status,
@@ -51,10 +68,12 @@ export const AddStudent: React.FC<AddDataProps> = ({ groupOptions }) => {
 
   return (
     <Dialog>
-        <Button asChild variant="outline" className="h-8 px-2">
-        <DialogTrigger onClick={() => setIsOpen(true)}><Plus size={16}/></DialogTrigger>
-        </Button>
-      
+      <Button asChild variant="outline" className="h-8 px-2">
+        <DialogTrigger onClick={() => setIsOpen(true)}>
+          <Plus size={16} />
+        </DialogTrigger>
+      </Button>
+
       {isOpen && (
         <DialogContent>
           <Form {...form}>
@@ -86,14 +105,16 @@ export const AddStudent: React.FC<AddDataProps> = ({ groupOptions }) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {groupOptions.map((group) => (
+                        {groupOptions.map(group => (
                           <SelectItem key={group} value={group}>
                             {group}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
-                    <FormDescription>Group section for the person.</FormDescription>
+                    <FormDescription>
+                      Group section for the person.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -115,19 +136,20 @@ export const AddStudent: React.FC<AddDataProps> = ({ groupOptions }) => {
                         <SelectItem value="faddersjef">Faddersjef</SelectItem>
                       </SelectContent>
                     </Select>
-                    <FormDescription>Fadder status for the person.</FormDescription>
+                    <FormDescription>
+                      Fadder status for the person.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            <Button type="submit">Add</Button>
+              <Button type="submit">Add</Button>
             </form>
           </Form>
-
         </DialogContent>
       )}
     </Dialog>
   );
-}
+};
 
 export default AddStudent;

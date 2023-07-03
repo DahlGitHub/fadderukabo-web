@@ -1,18 +1,10 @@
-import React from 'react'
-import {
-    AuthAction,
-    useAuthUser,
-    withAuthUser,
-
-} from 'next-firebase-auth'
-
+import React from 'react';
+import { AuthAction, useAuthUser, withAuthUser } from 'next-firebase-auth';
 
 const Demo = () => {
-
-  const AuthUser = useAuthUser()
+  const AuthUser = useAuthUser();
   return (
     <div>
-
       <div>
         <div>
           <h3>Example: SSR + no ID token</h3>
@@ -26,13 +18,12 @@ const Demo = () => {
           </p>
           <p>Your favorite color is: {AuthUser.displayName}</p>
         </div>
-
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default withAuthUser({ 
+export default withAuthUser({
   whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-})(Demo)
+})(Demo);

@@ -10,14 +10,12 @@ initAuth();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-
     <>
       <SSRProvider>
-      <Component {...pageProps} />
-      <Toaster />
+        <Component {...pageProps} />
+        <Toaster />
       </SSRProvider>
     </>
-  
   );
 }
 

@@ -1,26 +1,39 @@
-import * as React from "react"
-import { Column } from "@tanstack/react-table"
-import { Check, Filter, HelpCircle, LucideIcon, PlusCircle } from "lucide-react"
+import * as React from 'react';
+import { Column } from '@tanstack/react-table';
+import {
+  Check,
+  Filter,
+  HelpCircle,
+  LucideIcon,
+  PlusCircle,
+} from 'lucide-react';
 
-import { cn } from "@/lib/utils"
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import { Button } from "../ui/button"
-import { Badge } from "../ui/badge"
-import { Separator } from "../ui/separator"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "../ui/command"
-import { useEffect, useState } from "react"
-import { collection, getDocs, query } from "firebase/firestore"
-import { db } from "../../../firebase"
-
+import { cn } from '@/lib/utils';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
+import { Separator } from '../ui/separator';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from '../ui/command';
+import { useEffect, useState } from 'react';
+import { collection, getDocs, query } from 'firebase/firestore';
+import { db } from '../../../firebase';
 
 interface StudentFacetedFilter<TData, TValue> {
-  column?: Column<TData, TValue>
-  title?: string
+  column?: Column<TData, TValue>;
+  title?: string;
   options: {
-    label: string
-    value: string
-    color?: string
-  }[]
+    label: string;
+    value: string;
+    color?: string;
+  }[];
 }
 
 export const groupSelections: GroupSelection[] = [];
@@ -33,8 +46,8 @@ interface GroupSelection {
 
 const fetchData = async () => {
   try {
-    const q = await getDocs(query(collection(db, "groupdata")));
-    const fetchedGroupSelections: GroupSelection[] = q.docs.map((doc) => {
+    const q = await getDocs(query(collection(db, 'groupdata')));
+    const fetchedGroupSelections: GroupSelection[] = q.docs.map(doc => {
       const group = doc.data();
       return { label: group.title, value: group.title, color: group.hexValue };
     });
@@ -47,15 +60,13 @@ const fetchData = async () => {
 
 fetchData();
 
-
 export function StudentFacetedFilter<TData, TValue>({
   column,
   title,
   options,
 }: StudentFacetedFilter<TData, TValue>) {
-  const facets = column?.getFacetedUniqueValues()
-  const selectedValues = new Set(column?.getFilterValue() as string[])
-
+  const facets = column?.getFacetedUniqueValues();
+  const selectedValues = new Set(column?.getFilterValue() as string[]);
 
   return (
     <Popover>
@@ -82,14 +93,17 @@ export function StudentFacetedFilter<TData, TValue>({
                   </Badge>
                 ) : (
                   options
-                    .filter((option) => selectedValues.has(option.value))
-                    .map((option) => (
+                    .filter(option => selectedValues.has(option.value))
+                    .map(option => (
                       <Badge
                         variant="secondary"
                         key={option.value}
                         className="rounded-sm px-1 font-normal"
                       >
-                        <div className="mr-1 rounded-full w-2.5 h-2.5" style={{backgroundColor: option.color }}></div>
+                        <div
+                          className="mr-1 rounded-full w-2.5 h-2.5"
+                          style={{ backgroundColor: option.color }}
+                        ></div>
                         {option.label}
                       </Badge>
                     ))
@@ -101,39 +115,41 @@ export function StudentFacetedFilter<TData, TValue>({
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
         <Command>
-          
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
-              {options.map((option) => {
-                const isSelected = selectedValues.has(option.value)
+              {options.map(option => {
+                const isSelected = selectedValues.has(option.value);
                 return (
                   <CommandItem
                     key={option.value}
                     onSelect={() => {
                       if (isSelected) {
-                        selectedValues.delete(option.value)
+                        selectedValues.delete(option.value);
                       } else {
-                        selectedValues.add(option.value)
+                        selectedValues.add(option.value);
                       }
-                      const filterValues = Array.from(selectedValues)
+                      const filterValues = Array.from(selectedValues);
                       column?.setFilterValue(
-                        filterValues.length ? filterValues : undefined
-                      )
+                        filterValues.length ? filterValues : undefined,
+                      );
                     }}
                   >
                     <div
                       className={cn(
-                        "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                        'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
                         isSelected
-                          ? "bg-primary text-primary-foreground"
-                          : "opacity-50 [&_svg]:invisible"
+                          ? 'bg-primary text-primary-foreground'
+                          : 'opacity-50 [&_svg]:invisible',
                       )}
                     >
-                      <Check className={cn("h-4 w-4")} />
+                      <Check className={cn('h-4 w-4')} />
                     </div>
                     <div className="mr-2 flex items-center">
-                    <div className="rounded-full w-3 h-3" style={{backgroundColor: option.color }}></div>
+                      <div
+                        className="rounded-full w-3 h-3"
+                        style={{ backgroundColor: option.color }}
+                      ></div>
                     </div>
                     <span className="text-xs truncate">{option.label}</span>
                     {facets?.get(option.value) && (
@@ -142,7 +158,7 @@ export function StudentFacetedFilter<TData, TValue>({
                       </span>
                     )}
                   </CommandItem>
-                )
+                );
               })}
             </CommandGroup>
             {selectedValues.size > 0 && (
@@ -162,5 +178,5 @@ export function StudentFacetedFilter<TData, TValue>({
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 }
