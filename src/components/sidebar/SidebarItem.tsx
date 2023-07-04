@@ -56,7 +56,7 @@ const links = [
       {
         icon: <HelpCircle className="ml-2 h-4 w-4" />,
         title: 'Questions',
-        href: '#',
+        href: '/dashboard/questions',
       },
       {
         icon: <LinkIcon className="ml-2 h-4 w-4" />,
