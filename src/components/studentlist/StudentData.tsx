@@ -29,6 +29,7 @@ import {
   ArrowUpDown,
   CaseSensitive,
   AlertTriangle,
+  ShieldCheck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -52,6 +53,7 @@ import {
 } from '../ui/tooltip';
 import { StudentToolbar } from './StudentToolbar';
 import DeleteRow from '../DeleteRow';
+import { Badge } from '../ui/badge';
 
 export type Authorized = {
   docId: string;
@@ -92,11 +94,13 @@ const GroupCell: React.FC<{ row: any }> = ({ row }) => {
     if (hexValue) {
       return (
         <>
+        <Badge variant="outline" style={{color: hexValue}} className='px-0.5'>
           <div
-            className="mr-2 rounded-full w-3 h-3"
+            className="rounded-full w-3 h-3"
             style={{ backgroundColor: hexValue }}
           />
-          <span>{groupTitle}</span>
+          </Badge>
+          <span className='pl-2'>{groupTitle}</span>
         </>
       );
     } else {
@@ -129,14 +133,14 @@ export const columns: ColumnDef<Authorized>[] = [
       const data = row.original;
       return (
         <div className="flex items-center">
-          <span>
+          <Badge variant="secondary" className='px-0.5'>
             {data.status == 'faddersjef' ? (
-              <Crown className="h-4 w-4" />
+              <Crown className="h-4 w-4 text-gray-500" />
             ) : (
               <UserCircle className="h-4 w-4 text-gray-500" />
             )}
-          </span>
-          <span className="ml-2">{data.name}</span>
+          </Badge>
+          <span className="pl-2">{data.name}</span>
         </div>
       );
     },
