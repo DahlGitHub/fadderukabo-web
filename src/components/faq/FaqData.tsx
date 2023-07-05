@@ -38,6 +38,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '../ui/tooltip';
+import DeleteRow from '../DeleteRow';
+import EditFaq from './EditFaq';
 
 export type Faq = {
   docId: string;
@@ -132,8 +134,18 @@ export const columns: ColumnDef<Faq>[] = [
                         Delete
                 </DropdownMenuItem>
                  */}
-            <DropdownMenuItem asChild></DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem asChild>
+                <EditFaq data={row.original} docId={row.original.docId} />
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+                <DeleteRow
+                    docId={row.original.docId}
+                    collectionName={'faqdata'}
+                    message={`Are you sure you want to delete ${row.getValue(
+                    'question',
+                    )}?`}
+                />
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

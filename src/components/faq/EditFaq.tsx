@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { collection, addDoc, doc } from 'firebase/firestore';
+import { collection, addDoc, doc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../../../firebase';
 
 import { Button } from '@/components/ui/button';
@@ -17,9 +17,15 @@ import { Input } from '@/components/ui/input';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Plus } from 'lucide-react';
+import { Edit, Plus } from 'lucide-react';
 
 import { Textarea } from '../ui/textarea';
+import { Faq } from './FaqData';
+
+interface EditDataProps {
+    data: Faq;
+    docId: string;
+}
 
 const FormSchema = z.object({
   question: z
@@ -40,15 +46,20 @@ const FormSchema = z.object({
     }),
 });
 
-export const AddFaq = () => {
-  const [isOpen, setIsOpen] = useState(false);
+export const EditFaq: React.FC<EditDataProps> = ({docId, data}) => {
+    const [currentData, setCurrentData] = useState(data)
+    const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+        question: currentData.question,
+        answer: currentData.answer,
+    }
   });
 
-  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    await addDoc(collection(db, 'faqdata'), {
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    updateDoc(doc(db, 'faqdata', docId), {
       question: data.question,
       answer: data.answer,
       authorName: auth?.currentUser?.displayName,
@@ -62,13 +73,10 @@ export const AddFaq = () => {
 
   return (
     <Dialog>
-      <Button asChild variant="outline" className="h-8 px-2">
-        <DialogTrigger
-          onClick={() => {
-            setIsOpen(true);
-          }}
-        >
-          <Plus size={16} />
+      <Button asChild variant="ghost" className="h-8 w-full px-2">
+        <DialogTrigger onClick={() => setIsOpen(true)}>
+          <Edit size={16} className="mr-2" />
+          <div className="text-start w-full">Edit</div>
         </DialogTrigger>
       </Button>
 
@@ -83,9 +91,8 @@ export const AddFaq = () => {
                   <FormItem>
                     <FormLabel>Question</FormLabel>
                     <FormControl>
-                      <Input type="text" {...field} />
+                      <Input type="text" {...field} value={field.value} onChange={field.onChange} />
                     </FormControl>
-                    <FormDescription>Full name of the person.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -97,15 +104,14 @@ export const AddFaq = () => {
                   <FormItem>
                     <FormLabel>Answer</FormLabel>
                     <FormControl>
-                      <Textarea {...field} />
+                      <Textarea {...field} value={field.value} onChange={field.onChange} />
                     </FormControl>
-                    <FormDescription>Full name of the person.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              <Button type="submit">Add</Button>
+              <Button type="submit">Update</Button>
             </form>
           </Form>
         </DialogContent>
@@ -114,4 +120,4 @@ export const AddFaq = () => {
   );
 };
 
-export default AddFaq;
+export default EditFaq;
