@@ -28,12 +28,6 @@ export default function ProgramPage() {
     <>
       <AddProgram />
       <div className="py-2">
-        <div className="pb-5">
-          <h2 className="text-2xl font-bold tracking-tight">Program</h2>
-          <p className="text-muted-foreground">
-            List of people in need of medical assistance
-          </p>
-        </div>
         <DataTable columns={columns} data={data} />
       </div>
     </>

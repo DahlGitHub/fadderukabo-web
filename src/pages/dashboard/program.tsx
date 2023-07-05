@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import {
   AuthAction,
@@ -6,12 +6,46 @@ import {
   withAuthUserSSR,
   withAuthUserTokenSSR,
 } from 'next-firebase-auth';
-import ProgramPage from '@/components/program/ProgramPage';
+import { TableSkeleton } from '@/components/TableSkeleton';
+import { DataTable, Program, columns } from '@/components/program/ProgramData';
+import { collection, onSnapshot } from 'firebase/firestore';
+import { db } from '../../../firebase';
 
 const program = () => {
+  const [data, setData] = useState<Program[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, 'programdata'), snapshot => {
+      const newData = snapshot.docs.map(
+        doc =>
+          ({
+            docId: doc.id,
+            ...doc.data(),
+          } as Program),
+      );
+
+      setData(newData);
+      setIsLoading(false);
+    });
+
+    // Detach the listener when the component unmounts
+    return () => unsubscribe();
+  }, []);
+
   return (
     <DashboardLayout>
-      <ProgramPage />
+      <div className="pb-5">
+        <h2 className="text-2xl font-bold tracking-tight">Program</h2>
+        <p className="text-muted-foreground">
+          List of people in need of medical assistance
+        </p>
+      </div>
+      {isLoading ? (
+        <TableSkeleton columnCount={5} />
+      ) : (
+        <DataTable columns={columns} data={data} />
+      )}
     </DashboardLayout>
   );
 };
