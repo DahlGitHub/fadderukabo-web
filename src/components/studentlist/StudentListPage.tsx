@@ -40,33 +40,16 @@ export default function StudentListPage() {
     return () => unsubscribe();
   }, []);
 
-  const formatContentWithLinks = (content: string) => {
-    const linkRegex = /\[(.*?)\]\((.*?)\)/g;
-    const formattedContent = content.replace(
-      linkRegex,
-      '<a href="$2" class="text-blue-700 underline">$1</a>',
-    );
-    return formattedContent;
-  };
-
-  const title = 'How much is a ticket';
-  const content =
-    'You can find the content [in Olav](https://www.randomurl.com) and also [here](https://www.example.com)';
-
-  const formattedContent = formatContentWithLinks(content);
-
   return (
     <>
-      <div className="py-2">
-        <div className="pb-5">
-          <h1>{title}</h1>
-          <div dangerouslySetInnerHTML={{ __html: formattedContent }} />
-          <h2 className="text-2xl font-bold tracking-tight">Student List</h2>
+      <div>
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">Fadderliste</h2>
           <p className="text-muted-foreground">
-            List of people in need of medical assistance
+            Liste over alle faddere og faddersjefer
           </p>
         </div>
-        <DataTable columns={columns} data={data} />
+        <DataTable columns={columns} data={data} showActions={true} showFunctions={true} />
       </div>
     </>
   );
