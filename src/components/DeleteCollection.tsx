@@ -60,7 +60,7 @@ const DeleteCollection = ({
   return (
     <div>
       <Dialog>
-        <Button asChild variant="outline" className="h-8 px-2">
+        <Button asChild variant="outline" className="h-8 px-2 hover:bg-red-500 hover:text-gray-50">
           <DialogTrigger onClick={() => setIsOpen(true)}>
             <Trash2 size={16} />
           </DialogTrigger>
