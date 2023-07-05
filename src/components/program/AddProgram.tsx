@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { collection, addDoc, doc } from 'firebase/firestore';
@@ -32,30 +31,38 @@ import {
 import { CalendarIcon, Loader, Plus } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { cn } from '@/lib/utils';
-import { format, set } from 'date-fns';
+import { format } from 'date-fns';
 import { Calendar } from '../ui/calendar';
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { Loader2 } from 'lucide-react';
 
 const FormSchema = z.object({
-  title: z.string().min(2, {
-    message: 'Title must be at least 2 characters.',
-  }),
+  title: z
+    .string()
+    .min(2, {
+      message: 'Title must be at least 2 characters.',
+    })
+    .max(100, {
+      message: 'Title must be no longer than 100 characters.',
+    }),
   date: z.date({
     required_error: 'A date is required.',
   }),
-  time: z.string().min(4, {
-    message: 'A time is required.',
+  time: z.string(),
+  category: z.string(),
+  location: z
+    .string()
+    .min(2, {
+      message: 'Location must be at least 2 characters.',
+    })
+    .max(25, {
+      message: 'Location must be no longer than 100 characters.',
+    }),
+  image: z.any().refine(fileList => fileList && fileList.length > 0, {
+    message: 'An image is required.',
   }),
-  category: z.string().min(2, {
-    message: 'Status must be at least 2 characters.',
-  }),
-  location: z.string().min(2, {
-    message: 'Status must be at least 2 characters.',
-  }),
-  image: z.any(),
   url: z.string().min(2, {
-    message: 'Status must be at least 2 characters.',
+    message: 'URL must be at least 5 characters.',
   }),
 });
 
@@ -74,7 +81,6 @@ export const AddProgram = () => {
       const storageRef = ref(storage, `/Images/${uniqueId}`);
       const uploadTask = uploadBytesResumable(storageRef, fileUrl);
       setIsSubmitting(true);
-      const start = Date.now();
 
       uploadTask.on(
         'state_changed',
@@ -82,7 +88,6 @@ export const AddProgram = () => {
         error => {
           console.log(error);
           setIsSubmitting(false);
-          setImagePreview(null); // Add this
         },
         async () => {
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
@@ -104,8 +109,6 @@ export const AddProgram = () => {
           setImagePreview(null); // Add this
           form.reset();
           setIsSubmitting(false);
-          const end = Date.now();
-          console.log(`Upload time: ${end - start}`);
         },
       );
     }
@@ -135,9 +138,8 @@ export const AddProgram = () => {
                   <FormItem>
                     <FormLabel>Title</FormLabel>
                     <FormControl>
-                      <Input type="text" {...field} />
+                      <Input placeholder="Grillparty" type="text" {...field} />
                     </FormControl>
-                    <FormDescription>Full name of the person.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -150,11 +152,8 @@ export const AddProgram = () => {
                     <FormItem>
                       <FormLabel>Time</FormLabel>
                       <FormControl>
-                        <Input type="time" className='w-50 px-2' {...field} />
+                        <Input type="time" className="w-50 px-2" {...field} />
                       </FormControl>
-                      <FormDescription>
-                        Full name of the person.
-                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -164,7 +163,7 @@ export const AddProgram = () => {
                   name="date"
                   render={({ field }) => (
                     <FormItem className="flex flex-col pt-3">
-                      <FormLabel>Date of birth</FormLabel>
+                      <FormLabel>Date</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
@@ -194,7 +193,6 @@ export const AddProgram = () => {
                           />
                         </PopoverContent>
                       </Popover>
-                      <FormDescription>Pick a date.</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -208,11 +206,12 @@ export const AddProgram = () => {
                     <FormItem>
                       <FormLabel>Location</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input
+                          type="text"
+                          placeholder="USN Campus"
+                          {...field}
+                        />
                       </FormControl>
-                      <FormDescription>
-                        Full name of the person.
-                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -238,9 +237,6 @@ export const AddProgram = () => {
                           </SelectItem>
                         </SelectContent>
                       </Select>
-                      <FormDescription>
-                        Full name of the person.
-                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -253,60 +249,66 @@ export const AddProgram = () => {
                   <FormItem>
                     <FormLabel>URL</FormLabel>
                     <FormControl>
-                      <Input type="url" {...field} />
+                      <Input
+                        type="url"
+                        placeholder="https://www.usn.no"
+                        {...field}
+                      />
                     </FormControl>
-                    <FormDescription>Full name of the person.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <div className="flex flex-row justify-between">
-              <FormField
-                control={form.control}
-                name="image"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Image</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="file"
-                        accept="image/*"
-                        onChange={e => {
-                          if (e.target.files && e.target.files.length > 0) {
-                            setFileUrl(e.target.files[0]);
+                <FormField
+                  control={form.control}
+                  name="image"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Image</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={e => {
+                            field.onChange(e);
+                            if (e.target.files && e.target.files.length > 0) {
+                              setFileUrl(e.target.files[0]);
 
-                            const reader = new FileReader();
-                            reader.onloadend = () => {
-                              setImagePreview(reader.result as string);
-                            };
-                            reader.readAsDataURL(e.target.files[0]);
-                          }
-                        }}
-                      />
-                    </FormControl>
-                    <FormDescription>Full name of the person.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormItem>
-              {imagePreview && (
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  className="mt-2 h-20 w-auto"
+                              const reader = new FileReader();
+                              reader.onloadend = () => {
+                                setImagePreview(reader.result as string);
+                              };
+                              reader.readAsDataURL(e.target.files[0]);
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        16:9 aspect ratio recommended
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              )}
-              </FormItem>
+                <FormItem>
+                  {imagePreview && (
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="mt-2 h-20 w-auto"
+                    />
+                  )}
+                </FormItem>
               </div>
               <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <span className="flex flex-row">
-                  <Loader2 className="mr-2 animate-spin my-0.5" size={16} />
-                  Adding...
-                </span>
+                    <Loader2 className="mr-2 animate-spin my-0.5" size={16} />
+                    Adding...
+                  </span>
                 ) : (
-                  "Add"
+                  'Add'
                 )}
               </Button>
             </form>
