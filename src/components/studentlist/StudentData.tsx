@@ -54,6 +54,7 @@ import {
 import { StudentToolbar } from './StudentToolbar';
 import DeleteRow from '../DeleteRow';
 import { Badge } from '../ui/badge';
+import { ScrollArea } from '../ui/scroll-area';
 
 export type Authorized = {
   docId: string;
@@ -201,6 +202,7 @@ export const columns: ColumnDef<Authorized>[] = [
         </div>
       );
     },
+    enableHiding: true,
   },
   {
     id: 'actions',
@@ -246,11 +248,15 @@ export const columns: ColumnDef<Authorized>[] = [
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  showActions?: boolean;
+  showFunctions?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  showActions,
+  showFunctions,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -258,12 +264,21 @@ export function DataTable<TData, TValue>({
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({
+      actions: true,
       author: false,
     });
 
+    const filteredColumns = columns.filter(column => {
+      if (column.id === 'actions') {
+        return showActions;
+      }
+      return true;
+    });
+  
+
   const table = useReactTable({
     data,
-    columns,
+    columns: filteredColumns,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
@@ -282,7 +297,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <StudentToolbar table={table} />
+      <StudentToolbar table={table} showFunctions={showFunctions} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -305,6 +320,7 @@ export function DataTable<TData, TValue>({
           </TableHeader>
 
           <TableBody>
+
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map(row => (
                 <TableRow
@@ -332,6 +348,7 @@ export function DataTable<TData, TValue>({
               </TableRow>
             )}
           </TableBody>
+          
         </Table>
       </div>
     </div>

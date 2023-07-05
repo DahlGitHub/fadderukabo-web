@@ -19,9 +19,13 @@ import DeleteCollection from '../DeleteCollection';
 
 interface StudentToolbarProps<TData> {
   table: Table<TData>;
+  showFunctions?: boolean;
 }
 
-export function StudentToolbar<TData>({ table }: StudentToolbarProps<TData>) {
+export function StudentToolbar<TData>({
+  table,
+  showFunctions = true,
+}: StudentToolbarProps<TData>) {
   const [groupOptions, setGroupOptions] = useState<string[]>([]);
 
   useEffect(() => {
@@ -53,6 +57,7 @@ export function StudentToolbar<TData>({ table }: StudentToolbarProps<TData>) {
           />
         )}
       </div>
+      {showFunctions && (
       <div className="flex space-x-2">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -78,11 +83,14 @@ export function StudentToolbar<TData>({ table }: StudentToolbarProps<TData>) {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+        
 
-        <ImportStudent />
-        <AddStudent groupOptions={groupOptions} />
-        <DeleteCollection collectionName={'studentdata'} />
-      </div>
+            <ImportStudent />
+            <AddStudent groupOptions={groupOptions} />
+            <DeleteCollection collectionName={'studentdata'} />
+          </div>
+        )}
+
     </div>
   );
 }
