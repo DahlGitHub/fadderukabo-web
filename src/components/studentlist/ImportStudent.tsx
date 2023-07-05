@@ -13,8 +13,8 @@ import {
 import { addDoc, collection } from 'firebase/firestore';
 import { auth, db } from '../../../firebase';
 import { Button } from '../ui/button';
-import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
-import { Plus, Upload } from 'lucide-react';
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { Loader2, Plus, Sheet, Upload } from 'lucide-react';
 import { ScrollArea } from '../ui/scroll-area';
 import { Input } from '../ui/input';
 
@@ -26,6 +26,7 @@ type Props = {
 export const ImportStudent = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<Props[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -67,6 +68,7 @@ export const ImportStudent = () => {
   };
 
   const handleUploadToDatabase = async () => {
+    setIsUploading(true);
     try {
       const promises = data.map(async row => {
         const docData: Record<string, string> = {};
@@ -102,6 +104,7 @@ export const ImportStudent = () => {
       });
 
       setData([]);
+      setIsOpen(false);
       console.log('Document IDs:', documentIds);
     } catch (error) {
       console.error('Error uploading data:', error);
@@ -109,18 +112,21 @@ export const ImportStudent = () => {
         title: 'Uh oh! Something went wrong.',
         description: 'There was an error uploading the data to the database.',
       });
+    } finally {
+      setIsUploading(false);
     }
   };
 
   return (
     <Dialog>
-      <Button asChild variant="outline" className="h-8 px-2">
+      <Button asChild variant="outline" className="h-8 px-2 hover:bg-green-700 hover:text-gray-50">
         <DialogTrigger onClick={() => setIsOpen(true)}>
           <Upload size={16} />
         </DialogTrigger>
       </Button>
       {isOpen && (
         <DialogContent>
+          <DialogTitle>Import Data</DialogTitle>
           <Input
             type="file"
             accept=".xlsx, .xls"
@@ -128,7 +134,7 @@ export const ImportStudent = () => {
             ref={fileInput}
           />
 
-          {data.length > 0 && (
+          {data.length > 0 ? (
             <ScrollArea className="h-96 rounded-md border p-4">
               <Table>
                 <TableHeader>
@@ -154,9 +160,57 @@ export const ImportStudent = () => {
                 </TableBody>
               </Table>
             </ScrollArea>
+          ) : (
+            <div>
+              <div className='px-1'>
+              <h3 className="text-lg font-bold mb-2">Expected data</h3>
+              <p className="text-sm mb-3">
+                Please upload an Excel file with the following structure:
+              </p>
+              </div>
+              <div className="rounded-md border flex items-center justify-center">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="text-muted-foreground text-xs">
+                      <TableHead>Column A</TableHead>
+                      <TableHead>Column B</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>John Doe</TableCell>
+                      <TableCell>Group A</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Jane Smith</TableCell>
+                      <TableCell>Group B</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Jenny T</TableCell>
+                      <TableCell>Group B</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
           )}
-          <Button variant="outline" onClick={handleUploadToDatabase}>
-            Upload
+          <Button
+            variant="outline"
+            onClick={handleUploadToDatabase}
+            disabled={data.length === 0 || isUploading} // Disable the button during uploading
+          >
+            {isUploading ? (
+              <span className="flex flex-row">
+                <Loader2 className="mr-2 animate-spin my-0.5" size={16} />
+                Uploading...
+              </span>
+            ) : (
+              <span className='flex flex-row'>
+                <Sheet className='mr-2 my-0.5' size={16}/>
+                Upload
+              </span>
+              
+            )}
           </Button>
         </DialogContent>
       )}
