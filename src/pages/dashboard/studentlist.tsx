@@ -61,7 +61,7 @@ const studentlist = () => {
       {isLoading ? (
         <TableSkeleton columnCount={3} />
       ) : (
-        <DataTable columns={columns} data={data} />
+        <DataTable columns={columns} data={data} showActions={true} />
       )}
     </DashboardLayout>
   );

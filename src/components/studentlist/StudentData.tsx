@@ -95,19 +95,30 @@ const GroupCell: React.FC<{ row: any }> = ({ row }) => {
     if (hexValue) {
       return (
         <>
-        <Badge variant="outline" style={{color: hexValue}} className='px-0.5'>
-          <div
-            className="rounded-full w-3 h-3"
-            style={{ backgroundColor: hexValue }}
-          />
+          <Badge
+            variant="outline"
+            style={{ color: hexValue }}
+            className="px-0.5"
+          >
+            <div
+              className="rounded-full w-3 h-3"
+              style={{ backgroundColor: hexValue }}
+            />
           </Badge>
-          <span className='pl-2'>{groupTitle}</span>
+          <span className="pl-2">{groupTitle}</span>
         </>
       );
     } else {
       return (
         <>
-          <CaseSensitive className="text-gray-500 w-5 h-5" />
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <CaseSensitive className="text-gray-500 w-5 h-5" />
+              </TooltipTrigger>
+              <TooltipContent>Value doesn't match existing groups</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </>
       );
     }
@@ -134,9 +145,16 @@ export const columns: ColumnDef<Authorized>[] = [
       const data = row.original;
       return (
         <div className="flex items-center">
-          <Badge variant="secondary" className='px-0.5'>
+          <Badge variant="secondary" className="px-0.5">
             {data.status == 'faddersjef' ? (
-              <Crown className="h-4 w-4 text-gray-500" />
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Crown className="h-4 w-4 text-gray-500" />
+                  </TooltipTrigger>
+                  <TooltipContent>Faddersjef</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             ) : (
               <UserCircle className="h-4 w-4 text-gray-500" />
             )}
@@ -268,13 +286,12 @@ export function DataTable<TData, TValue>({
       author: false,
     });
 
-    const filteredColumns = columns.filter(column => {
-      if (column.id === 'actions') {
-        return showActions;
-      }
-      return true;
-    });
-  
+  const filteredColumns = columns.filter(column => {
+    if (column.id === 'actions') {
+      return showActions;
+    }
+    return true;
+  });
 
   const table = useReactTable({
     data,
@@ -320,7 +337,6 @@ export function DataTable<TData, TValue>({
           </TableHeader>
 
           <TableBody>
-
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map(row => (
                 <TableRow
@@ -348,7 +364,6 @@ export function DataTable<TData, TValue>({
               </TableRow>
             )}
           </TableBody>
-          
         </Table>
       </div>
     </div>
