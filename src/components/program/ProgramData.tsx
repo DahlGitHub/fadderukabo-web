@@ -25,7 +25,6 @@ import {
   MoreHorizontal,
   ArrowUpDown,
   ImagePlus,
-  Link2,
   LinkIcon,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -54,6 +53,8 @@ import moment from 'moment';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { Badge } from '../ui/badge';
+import EditProgram from './EditProgram';
 
 export type Program = {
   docId: string;
@@ -124,6 +125,14 @@ export const columns: ColumnDef<Program>[] = [
         </Button>
       );
     },
+    cell: ({ row }) => {
+      const data = row.original;
+      return (
+        <div className="flex items-center">
+          <Badge className="text-xs bg-purple-700">{data.category}</Badge>
+        </div>
+      );
+    }
   },
   {
     accessorKey: 'url',
@@ -223,7 +232,9 @@ export const columns: ColumnDef<Program>[] = [
                 </DropdownMenuItem>
                  */}
 
-            <DropdownMenuItem asChild></DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <EditProgram data={row.original} docId={row.original.docId} />
+            </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <DeleteRow
                 docId={row.original.docId}
