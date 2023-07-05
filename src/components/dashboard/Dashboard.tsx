@@ -9,7 +9,6 @@ import { UserNav } from '../UserNav';
 import Page from '../studentlist/StudentListPage';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
-import TableSkeleton from '../TableSkeleton';
 
 const Dashboard = () => {
   const username = auth.currentUser?.displayName;
@@ -30,7 +29,7 @@ const Dashboard = () => {
       </Button>
       <div>
         Welcome {username} !
-        <TableSkeleton />
+
       </div>
     </div>
   );
