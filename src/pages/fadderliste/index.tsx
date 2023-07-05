@@ -1,10 +1,16 @@
 import { useEffect, useState } from 'react';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../firebase';
-import { columns, DataTable, Authorized } from '../../components/studentlist/StudentData';
+import {
+  columns,
+  DataTable,
+  Authorized,
+} from '../../components/studentlist/StudentData';
+import { TableSkeleton } from '@/components/TableSkeleton';
 
 export default function FadderListe() {
   const [data, setData] = useState<Authorized[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'studentdata'), snapshot => {
@@ -35,6 +41,7 @@ export default function FadderListe() {
       });
 
       setData(newData);
+      setIsLoading(false);
     });
 
     // Detach the listener when the component unmounts
@@ -50,7 +57,16 @@ export default function FadderListe() {
             Liste over alle faddere og faddersjefer
           </p>
         </div>
-        <DataTable columns={columns} data={data} showActions={false} showFunctions={false} />
+        {isLoading ? (
+          <TableSkeleton columnCount={2} />
+        ) : (
+          <DataTable
+            columns={columns}
+            data={data}
+            showActions={false}
+            showFunctions={false}
+          />
+        )}
       </div>
     </>
   );
