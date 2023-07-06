@@ -16,6 +16,7 @@ import { Eye, Trash2 } from 'lucide-react';
 import ImportStudent from './ImportStudent';
 import Confirmation from '../Confirmation';
 import DeleteCollection from '../DeleteCollection';
+import { FacetedFilter } from '../FacetedFilter';
 
 interface StudentToolbarProps<TData> {
   table: Table<TData>;
@@ -50,7 +51,7 @@ export function StudentToolbar<TData>({
         />
 
         {table.getColumn('group') && (
-          <StudentFacetedFilter
+          <FacetedFilter
             column={table.getColumn('group')}
             title="Groups"
             options={groupSelections}
