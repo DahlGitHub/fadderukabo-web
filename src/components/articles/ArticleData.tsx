@@ -1,18 +1,18 @@
 'use client';
 
 import {
-    ColumnDef,
-    flexRender,
-    getCoreRowModel,
-    useReactTable,
-    SortingState,
-    getSortedRowModel,
-    VisibilityState,
-    ColumnFiltersState,
-    getFilteredRowModel,
-    getFacetedRowModel,
-    getFacetedUniqueValues,
-  } from '@tanstack/react-table';
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+  SortingState,
+  getSortedRowModel,
+  VisibilityState,
+  ColumnFiltersState,
+  getFilteredRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+} from '@tanstack/react-table';
 import {
   Table,
   TableBody,
@@ -21,10 +21,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { MoreHorizontal, ImagePlus } from 'lucide-react';
+import { MoreHorizontal, ImagePlus, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
@@ -40,12 +41,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '../ui/tooltip';
-import DeleteRow from '../DeleteRow';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-import Link from 'next/link';
 import Image from 'next/image';
 import EditArticle from './EditArticle';
-
 
 export type Article = {
   docId: string;
@@ -66,7 +64,8 @@ export const columns: ColumnDef<Article>[] = [
       const data = row.original;
       return (
         <div className="flex items-center">
-          <span className='text-muted-foreground text-xs mr-2'>{data.id}</span><span className="ml-2">{data.title}</span>
+          <span className="text-muted-foreground text-xs mr-2">{data.id}</span>
+          <span className="ml-2">{data.title}</span>
         </div>
       );
     },
@@ -164,7 +163,7 @@ export const columns: ColumnDef<Article>[] = [
             <DropdownMenuSeparator />
 
             <DropdownMenuItem asChild>
-                <EditArticle data={row.original} docId={row.original.docId}  />
+              <EditArticle data={row.original} docId={row.original.docId} />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -183,7 +182,9 @@ export function DataTable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([],);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    [],
+  );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({
       author: false,
@@ -210,7 +211,32 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-
+      <div className="py-4">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="h-8 px-2">
+              <Eye size={16} />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {table
+              .getAllColumns()
+              .filter(column => column.getCanHide())
+              .map(column => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={value => column.toggleVisibility(!!value)}
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                );
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
