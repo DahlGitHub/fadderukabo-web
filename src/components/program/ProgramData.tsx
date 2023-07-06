@@ -55,6 +55,7 @@ import Image from 'next/image';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Badge } from '../ui/badge';
 import EditProgram from './EditProgram';
+import { ProgramToolbar } from './ProgramToolbar';
 
 export type Program = {
   docId: string;
@@ -132,6 +133,9 @@ export const columns: ColumnDef<Program>[] = [
           <Badge className="text-xs bg-purple-700">{data.category}</Badge>
         </div>
       );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
     }
   },
   {
@@ -291,6 +295,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
+      <ProgramToolbar table={table} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
