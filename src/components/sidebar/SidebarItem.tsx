@@ -1,23 +1,18 @@
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import SidebarLinkGroup from './SidebarLinkGroup';
+
 import {
   LayoutGrid,
   Calendar,
   Lock,
   LayoutTemplate,
-  Sprout,
   GraduationCap,
   Users,
   List,
-  Heart,
   LinkIcon,
   HelpCircle,
-  ShieldCheck,
 } from 'lucide-react';
-import { useRouter } from 'next/router';
+
 import { usePathname } from 'next/navigation';
-import path from 'path';
 
 const links = [
   {
@@ -51,7 +46,7 @@ const links = [
       {
         icon: <LayoutTemplate className="ml-2 h-4 w-4" />,
         title: 'Articles',
-        href: '#',
+        href: '/dashboard/articles',
       },
       {
         icon: <HelpCircle className="ml-2 h-4 w-4" />,
@@ -66,7 +61,7 @@ const links = [
       {
         icon: <GraduationCap className="ml-2 h-4 w-4" />,
         title: 'Student Life',
-        href: '#',
+        href: '/dashboard/studentlife',
       },
     ],
   },

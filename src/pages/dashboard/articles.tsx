@@ -1,0 +1,58 @@
+import React, { useEffect, useState } from 'react';
+import DashboardLayout from '@/components/dashboard/DashboardLayout';
+import {
+  AuthAction,
+  withAuthUser,
+  withAuthUserSSR,
+  withAuthUserTokenSSR,
+} from 'next-firebase-auth';
+import { TableSkeleton } from '@/components/TableSkeleton';
+import { collection, onSnapshot } from 'firebase/firestore';
+import { db } from '../../../firebase';
+import { DataTable, columns, Article } from '@/components/articles/ArticleData';
+
+const article = () => {
+  const [data, setData] = useState<Article[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, 'articledata'), snapshot => {
+      const newData = snapshot.docs.map(
+        doc =>
+          ({
+            docId: doc.id,
+            ...doc.data(),
+          } as Article),
+      );
+
+      setData(newData);
+      setIsLoading(false);
+    });
+
+    // Detach the listener when the component unmounts
+    return () => unsubscribe();
+  }, []);
+
+  return (
+    <DashboardLayout>
+      <div className="pb-5">
+        <h2 className="text-2xl font-bold tracking-tight">Article</h2>
+        <p className="text-muted-foreground">
+          List of people in need of medical assistance
+        </p>
+      </div>
+      {isLoading ? (
+        <TableSkeleton columnCount={2} />
+      ) : (
+        <DataTable columns={columns} data={data} />
+      )}
+    </DashboardLayout>
+  );
+};
+
+export const getServerSideProps = withAuthUserTokenSSR({})();
+
+export default withAuthUser({
+  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+})(article);
