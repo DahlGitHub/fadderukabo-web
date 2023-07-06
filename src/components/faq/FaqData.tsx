@@ -40,6 +40,7 @@ import {
 } from '../ui/tooltip';
 import DeleteRow from '../DeleteRow';
 import EditFaq from './EditFaq';
+import { FaqToolbar } from './FaqToolbar';
 
 export type Faq = {
   docId: string;
@@ -92,9 +93,7 @@ export const columns: ColumnDef<Faq>[] = [
                     src={faq.authorPhotoURL ?? undefined}
                     alt={faq.authorName ?? undefined}
                   />
-                  <AvatarFallback>
-                    {faq.authorName.charAt(0)}
-                  </AvatarFallback>
+                  <AvatarFallback>{faq.authorName.charAt(0)}</AvatarFallback>
                 </Avatar>
               </TooltipTrigger>
               <TooltipContent>
@@ -128,23 +127,18 @@ export const columns: ColumnDef<Faq>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
             <DropdownMenuSeparator />
-            {/*
-                           <DropdownMenuItem
-                    onClick={() => handleDeleteEmail(row.getValue("email"))}>
-                        Delete
-                </DropdownMenuItem>
-                 */}
+
             <DropdownMenuItem asChild>
-                <EditFaq data={row.original} docId={row.original.docId} />
+              <EditFaq data={row.original} docId={row.original.docId} />
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-                <DeleteRow
-                    docId={row.original.docId}
-                    collectionName={'faqdata'}
-                    message={`Are you sure you want to delete ${row.getValue(
-                    'question',
-                    )}?`}
-                />
+              <DeleteRow
+                docId={row.original.docId}
+                collectionName={'faqdata'}
+                message={`Are you sure you want to delete ${row.getValue(
+                  'question',
+                )}?`}
+              />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -183,30 +177,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="ml-auto">
-            Columns
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          {table
-            .getAllColumns()
-            .filter(column => column.getCanHide())
-            .map(column => {
-              return (
-                <DropdownMenuCheckboxItem
-                  key={column.id}
-                  className="capitalize"
-                  checked={column.getIsVisible()}
-                  onCheckedChange={value => column.toggleVisibility(!!value)}
-                >
-                  {column.id}
-                </DropdownMenuCheckboxItem>
-              );
-            })}
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <FaqToolbar table={table} />
 
       <div className="rounded-md border">
         <Table>
