@@ -45,7 +45,11 @@ const DeleteCollection = ({
 
   return (
     <Dialog>
-      <Button asChild variant="ghost" className="h-8 w-full px-2 hover:bg-red-500 hover:text-gray-50">
+      <Button
+        asChild
+        variant="ghost"
+        className="h-8 w-full px-2 hover:bg-red-500 hover:text-gray-50"
+      >
         <DialogTrigger onClick={() => setIsOpen(true)}>
           <Trash2 size={16} className="mr-2" />
           <div className="text-start w-full">Delete</div>
