@@ -116,7 +116,9 @@ const GroupCell: React.FC<{ row: any }> = ({ row }) => {
               <TooltipTrigger>
                 <CaseSensitive className="text-gray-500 w-5 h-5" />
               </TooltipTrigger>
-              <TooltipContent>Value doesn't match existing groups</TooltipContent>
+              <TooltipContent>
+                Value doesn't match existing groups
+              </TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </>
