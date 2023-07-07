@@ -117,7 +117,7 @@ export const AddLife = () => {
                       <FormLabel>Title</FormLabel>
                       <FormControl>
                         <Input
-                        className='w-[280px]'
+                          className="w-[280px]"
                           placeholder="Root Linjeforening"
                           type="text"
                           {...field}
@@ -131,7 +131,7 @@ export const AddLife = () => {
                   control={form.control}
                   name="type"
                   render={({ field }) => (
-                    <FormItem className='w-[150px]'>
+                    <FormItem className="w-[150px]">
                       <FormLabel>Type</FormLabel>
                       <Select onValueChange={field.onChange}>
                         <FormControl>
