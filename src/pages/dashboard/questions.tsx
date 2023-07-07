@@ -6,12 +6,17 @@ import {
   withAuthUserSSR,
   withAuthUserTokenSSR,
 } from 'next-firebase-auth';
-import ProgramPage from '@/components/program/ProgramPage';
 import FaqPage from '@/components/faq/FaqPage';
 
 const questions = () => {
   return (
     <DashboardLayout>
+      <div className="pb-5">
+        <h2 className="text-2xl font-bold tracking-tight">FAQ</h2>
+        <p className="text-muted-foreground">
+          List of people in need of medical assistance
+        </p>
+      </div>
       <FaqPage />
     </DashboardLayout>
   );
