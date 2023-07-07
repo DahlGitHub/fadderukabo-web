@@ -4,7 +4,7 @@ import { AuthContextProvider } from '../auth/AuthContext';
 import { auth, db } from '../../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Sidebar from '../sidebar/Sidebar';
-import Header from '../layout/Header';
+import Header from '../dashboard/Header';
 import { useRouter } from 'next/router';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
@@ -14,9 +14,7 @@ interface DefaultLayoutProps {
 }
 
 const DashboardLayout = ({ children }: DefaultLayoutProps) => {
-  const auth = getAuth();
-  const router = useRouter();
-  const [user, loading, error] = useAuthState(auth);
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
