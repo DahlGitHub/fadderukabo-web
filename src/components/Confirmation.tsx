@@ -8,6 +8,8 @@ import {
 } from '@/components/ui/dialog';
 
 import { useState } from 'react';
+import { Button } from './ui/button';
+import { Trash2 } from 'lucide-react';
 
 interface ConfirmationProps {
   onConfirm: () => void;
@@ -25,7 +27,16 @@ const Confirmation = ({ onConfirm, message }: ConfirmationProps) => {
   return (
     <div>
       <Dialog>
-        <DialogTrigger onClick={() => setIsOpen(true)}>Delete</DialogTrigger>
+      <Button
+        asChild
+        variant="ghost"
+        className="h-8 w-full px-2 hover:bg-red-500 hover:text-gray-50"
+      >
+        <DialogTrigger onClick={() => setIsOpen(true)}>
+          <Trash2 size={16} className="mr-2" />
+          <div className="text-start w-full">Delete</div>
+        </DialogTrigger>
+      </Button>
 
         <DialogContent>
           <DialogHeader>
