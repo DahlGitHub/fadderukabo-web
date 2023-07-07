@@ -2,21 +2,17 @@ import { AppProps } from 'next/app';
 
 import '@/styles/globals.css';
 
-import initAuth from '@/components/auth/initAuth';
 import { Toaster } from '@/components/ui/toaster';
-import { SSRProvider } from '@react-aria/ssr';
 
-initAuth();
+import { SessionProvider } from 'next-auth/react';
 
-function MyApp({ Component, pageProps }: AppProps) {
+export default function MyApp({ Component, pageProps: {session, ...pageProps} }: AppProps) {
   return (
     <>
-      <SSRProvider>
+      <SessionProvider session={session}>
         <Component {...pageProps} />
         <Toaster />
-      </SSRProvider>
+      </SessionProvider>
     </>
   );
 }
-
-export default MyApp;
