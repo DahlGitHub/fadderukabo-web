@@ -12,6 +12,7 @@ import Layout from '@/components/layout/Layout';
 import Vercel from '/public/svg/vercel.svg';
 import Usn from '/public/svg/usnlogo.svg';
 import Ssn from '/public/svg/ssn.svg';
+import Link from 'next/link';
 
 export default function HomePage() {
   return (
@@ -24,11 +25,11 @@ export default function HomePage() {
           >
             <Usn className="text-[10rem]" />
           </a>
-          <h1 className="mt-4 tracking-widest uppercase font-semibold text-3xl">
-            Coming Soon
+          <h1 className="mt-4 tracking-widest uppercase font-semibold text-xl">
+            Mer info kommer snart, nettsiden er under utvikling
           </h1>
           <p className="mt-2 text-sm text-gray-800 font-semibold uppercase text-xl tracking-widest">
-            Stay tuned
+            Se midlertidig <Link className='text-blue-500 underline' href="/program">program</Link>
           </p>
           <p className="mt-2 text-sm text-gray-700"></p>
         </div>
