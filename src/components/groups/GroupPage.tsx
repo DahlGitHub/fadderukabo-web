@@ -2,14 +2,11 @@ import { useEffect, useState } from 'react';
 import {
   collection,
   onSnapshot,
-  doc,
-  updateDoc,
   query,
   where,
 } from 'firebase/firestore';
-import { auth, db } from '../../../firebase';
+import { db } from '../../../firebase';
 import { columns, DataTable, Group } from './GroupData';
-import AddGroup from './AddGroup';
 
 export default function StudentListPage() {
   const [data, setData] = useState<Group[]>([]);

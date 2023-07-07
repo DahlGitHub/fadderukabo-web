@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { addDoc, collection } from 'firebase/firestore';
+import { collection, addDoc, doc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../../../firebase';
 
 import { Button } from '@/components/ui/button';
@@ -17,56 +17,72 @@ import { Input } from '@/components/ui/input';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { Edit, Plus } from 'lucide-react';
+
+import { Textarea } from '../ui/textarea';
+import { Group } from './GroupData';
 import { HexColorInput, HexColorPicker } from 'react-colorful';
-import { Plus } from 'lucide-react';
+
+interface EditGroupProps {
+    data: Group;
+    docId: string;
+}
 
 const FormSchema = z.object({
-  title: z.string().min(2, {
-    message: 'Title must be at least 2 characters.',
-  }),
+    title: z.string().min(2, {
+      message: 'Title must be at least 2 characters.',
+    }),
+  
+    color: z.string(),
+    url: z.string().url({
+      message: 'Please enter a valid URL.',
+    }),
+  });
 
-  color: z.string(),
-  url: z.string().url({
-    message: 'Please enter a valid URL.',
-  }),
-});
-
-export const AddGroup: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [color, setColor] = useState('#ffffff');
+export const EditFaq: React.FC<EditGroupProps> = ({docId, data}) => {
+    const [currentData, setCurrentData] = useState(data)
+    const [color, setColor] = useState(currentData.hexValue);
+    const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+        title: currentData.title,
+        color: currentData.hexValue,
+        url: currentData.url,
+    }
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    addDoc(collection(db, 'groupdata'), {
-      title: data.title,
-      hexValue: color,
-      url: data.url,
-      authorName: auth?.currentUser?.displayName,
-      authorPhotoURL: auth?.currentUser?.photoURL,
-      authorEmail: auth?.currentUser?.email,
-    });
-    setIsOpen(false);
-  }
 
   function handleColorChange(newColor: string) {
     setColor(newColor);
     form.setValue('color', newColor);
   }
 
+
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    updateDoc(doc(db, 'groupdata', docId), {
+        title: data.title,
+        hexValue: data.color,
+        url: data.url,
+        authorName: auth?.currentUser?.displayName,
+        authorPhotoURL: auth?.currentUser?.photoURL,
+        authorEmail: auth?.currentUser?.email,
+    });
+    setIsOpen(false);
+
+    form.reset();
+  };
+
   return (
     <Dialog>
-      <Button asChild variant="outline" className="h-8 px-2">
-        <DialogTrigger
-          onClick={() => {
-            setIsOpen(true);
-          }}
-        >
-          <Plus size={16} />
+      <Button asChild variant="ghost" className="h-8 w-full px-2">
+        <DialogTrigger onClick={() => setIsOpen(true)}>
+          <Edit size={16} className="mr-2" />
+          <div className="text-start w-full">Edit</div>
         </DialogTrigger>
       </Button>
+
       {isOpen && (
         <DialogContent>
           <Form {...form}>
@@ -78,9 +94,8 @@ export const AddGroup: React.FC = () => {
                   <FormItem>
                     <FormLabel>Title</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input type="text" {...field} value={field.value} onChange={field.onChange} />
                     </FormControl>
-                    <FormDescription>Title of the group.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -92,9 +107,8 @@ export const AddGroup: React.FC = () => {
                   <FormItem>
                     <FormLabel>URL</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} value={field.value} onChange={field.onChange} />
                     </FormControl>
-                    <FormDescription>URL of the group.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -122,14 +136,14 @@ export const AddGroup: React.FC = () => {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Add</Button>
+
+              <Button type="submit">Update</Button>
             </form>
           </Form>
-          <DialogTrigger onClick={() => setIsOpen(false)}>Cancel</DialogTrigger>
         </DialogContent>
       )}
     </Dialog>
   );
 };
 
-export default AddGroup;
+export default EditFaq;

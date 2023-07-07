@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { MoreHorizontal, Crown, UserCircle, Group } from 'lucide-react';
+import { MoreHorizontal, Crown, UserCircle, Group, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -39,12 +39,16 @@ import {
   TooltipTrigger,
 } from '../ui/tooltip';
 import AddGroup from './AddGroup';
+import EditGroup from './EditGroup';
+import DeleteRow from '../DeleteRow';
+import DeleteCollection from '../DeleteCollection';
 
 export type Group = {
   docId: string;
   title: string;
   members: number;
   hexValue: string;
+  url: string;
   authorName: string;
   authorEmail: string;
   authorPhotoURL: string;
@@ -90,6 +94,19 @@ export const columns: ColumnDef<Group>[] = [
             style={{ backgroundColor: group.hexValue }}
           ></div>
           <span className="ml-2 text-xs ">{group.hexValue}</span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: 'url',
+    header: 'URL',
+    cell: ({ row }) => {
+      const group = row.original;
+
+      return (
+        <div className="flex items-center">
+          <span className="ml-2">{group.url}</span>
         </div>
       );
     },
@@ -145,14 +162,19 @@ export const columns: ColumnDef<Group>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
             <DropdownMenuSeparator />
-            {/*
-                           <DropdownMenuItem
-                    onClick={() => handleDeleteEmail(row.getValue("email"))}>
-                        Delete
-                </DropdownMenuItem>
-                 */}
-            <DropdownMenuItem asChild></DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+
+            <DropdownMenuItem asChild>
+              <EditGroup data={row.original} docId={row.original.docId} />
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <DeleteRow
+                docId={row.original.docId}
+                collectionName={'faqdata'}
+                message={`Are you sure you want to delete ${row.getValue(
+                  'question',
+                )}?`}
+              />
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -190,33 +212,35 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="ml-auto">
-            Columns
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          {table
-            .getAllColumns()
-            .filter(column => column.getCanHide())
-            .map(column => {
-              return (
-                <DropdownMenuCheckboxItem
-                  key={column.id}
-                  className="capitalize"
-                  checked={column.getIsVisible()}
-                  onCheckedChange={value => column.toggleVisibility(!!value)}
-                >
-                  {column.id}
-                </DropdownMenuCheckboxItem>
-              );
-            })}
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <div className="flex flex-col sm:flex-row justify-end py-4 space-x-2">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="h-8 px-2">
+              <Eye size={16} />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {table
+              .getAllColumns()
+              .filter(column => column.getCanHide())
+              .map(column => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={value => column.toggleVisibility(!!value)}
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                );
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>
 
-      <AddGroup />
-
+        <AddGroup />
+        <DeleteCollection collectionName={'groupdata'} />
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
