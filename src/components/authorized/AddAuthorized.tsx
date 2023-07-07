@@ -1,48 +1,106 @@
+import React, { useState } from 'react';
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
-import { useState } from 'react';
-import { db } from '../../../firebase';
+import { auth, db } from '../../../firebase';
+import * as z from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Plus } from 'lucide-react';
+import { Button } from '../ui/button';
+import {
+  FormField,
+  FormItem,
+  FormDescription,
+  FormMessage,
+  Form,
+  FormLabel,
+  FormControl,
+} from '../ui/form';
+import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
+import { Input } from '../ui/input';
+import { toast } from '../ui/use-toast';
 
-const AddAuthorized = () => {
-  const [email, setEmail] = useState('');
+const FormSchema = z.object({
+  email: z
+    .string()
+    .email({
+      message: 'Please enter a valid email address.',
+    })
+    .refine(email => email.endsWith('@gmail.com'), {
+      message: 'Please enter a valid Gmail address.',
+    }),
+});
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
+export const AddAuthorized = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+  });
 
-  const handleAddEmail = async () => {
-    try {
-      // Check if the email already exists in the collection
-      const querySnapshot = await getDocs(
-        query(collection(db, 'allowedEmails'), where('email', '==', email)),
-      );
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
 
-      if (querySnapshot.empty) {
-        // Email doesn't exist, add it to the collection
-        const docRef = await addDoc(collection(db, 'allowedEmails'), { email });
-        setEmail('');
-        console.log('Email added with ID: ', docRef.id);
-      } else {
-        setEmail('');
-        console.log('Email already exists.');
-      }
-    } catch (error) {
-      console.error('Error adding email:', error);
-    }
-  };
+    const emailQuery = query(
+      collection(db, "allowedEmails"),
+      where("email", "==", data.email)
+    );
+  
+    const querySnapshot = await getDocs(emailQuery);
+
+    if (querySnapshot.empty) {
+    await addDoc(collection(db, 'allowedEmails'), {
+      email: data.email,
+      authorName: auth?.currentUser?.displayName,
+      authorPhotoURL: auth?.currentUser?.photoURL,
+      authorEmail: auth?.currentUser?.email,
+    });
+    setIsOpen(false);
+
+    form.reset();
+  } else {
+    toast({
+      title: 'Error',
+      description: 'Email already exists.',
+      variant: "destructive"
+    });
+  }
+};
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
-      <h2>Add Authorized Email</h2>
-      <div>
-        <input
-          type="email"
-          value={email}
-          onChange={handleEmailChange}
-          placeholder="Enter email"
-        />
-        <button onClick={handleAddEmail}>Add Email</button>
-      </div>
-    </div>
+    <Dialog>
+      <Button asChild variant="outline" className="h-8 px-2">
+        <DialogTrigger
+          onClick={() => {
+            setIsOpen(true);
+          }}
+        >
+          <Plus size={16} />
+        </DialogTrigger>
+      </Button>
+
+      {isOpen && (
+        <DialogContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input type="email" {...field} />
+                    </FormControl>
+                    <FormDescription>Full name of the person.</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button type="submit">Add</Button>
+            </form>
+          </Form>
+        </DialogContent>
+      )}
+    </Dialog>
   );
 };
 

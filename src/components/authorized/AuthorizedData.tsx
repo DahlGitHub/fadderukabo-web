@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { MoreHorizontal, ArrowUpDown } from 'lucide-react';
+import { MoreHorizontal, ArrowUpDown, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -34,6 +34,7 @@ import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { auth, db } from '../../../firebase';
 import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import AddAuthorized from './AddAuthorized';
 
 export type Authorized = {
   id: string;
@@ -169,7 +170,6 @@ export const columns: ColumnDef<Authorized>[] = [
                 )}?`}
               />
             </DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -205,11 +205,12 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
+      <div className="flex flex-col sm:flex-row justify-end py-4 space-x-2">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="ml-auto">
-            Columns
-          </Button>
+        <Button variant="outline" className="h-8 px-2">
+              <Eye size={16} />
+            </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           {table
@@ -229,7 +230,8 @@ export function DataTable<TData, TValue>({
             })}
         </DropdownMenuContent>
       </DropdownMenu>
-
+      <AddAuthorized />
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
