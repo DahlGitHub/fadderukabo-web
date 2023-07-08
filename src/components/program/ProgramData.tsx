@@ -21,12 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import {
-  MoreHorizontal,
-  ArrowUpDown,
-  ImagePlus,
-  LinkIcon,
-} from 'lucide-react';
+import { MoreHorizontal, ArrowUpDown, ImagePlus, LinkIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -36,18 +31,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Timestamp } from 'firebase/firestore';
-import { db } from '../../../firebase';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '../ui/tooltip';
-
 import DeleteRow from '../DeleteRow';
 import moment from 'moment';
 import Link from 'next/link';
@@ -56,6 +42,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Badge } from '../ui/badge';
 import EditProgram from './EditProgram';
 import { ProgramToolbar } from './ProgramToolbar';
+import AuthorAvatar from '../AuthorAvatar';
 
 export type Program = {
   docId: string;
@@ -69,6 +56,7 @@ export type Program = {
   authorName: string;
   authorEmail: string;
   authorPhotoURL: string;
+  updatedAt: number;
 };
 
 export const columns: ColumnDef<Program>[] = [
@@ -136,7 +124,7 @@ export const columns: ColumnDef<Program>[] = [
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
-    }
+    },
   },
   {
     accessorKey: 'url',
@@ -182,35 +170,14 @@ export const columns: ColumnDef<Program>[] = [
     accessorKey: 'author',
     header: 'Author',
     cell: ({ row }) => {
-      const authorized = row.original;
+      const data = row.original;
       return (
-        <div className="flex items-center">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <Avatar className="h-6 w-6">
-                  <AvatarImage
-                    src={authorized.authorPhotoURL ?? undefined}
-                    alt={authorized.authorName ?? undefined}
-                  />
-                  <AvatarFallback>
-                    {authorized.authorName.charAt(0)}
-                  </AvatarFallback>
-                </Avatar>
-              </TooltipTrigger>
-              <TooltipContent>
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">
-                    {authorized.authorName}
-                  </p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    {authorized.authorEmail}
-                  </p>
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
+        <AuthorAvatar
+          authorName={data.authorName}
+          authorEmail={data.authorEmail}
+          authorPhotoURL={data.authorPhotoURL}
+          updatedAt={data.updatedAt}
+        />
       );
     },
   },

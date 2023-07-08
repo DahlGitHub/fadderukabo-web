@@ -44,6 +44,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import Image from 'next/image';
 import EditArticle from './EditArticle';
+import AuthorAvatar from '../AuthorAvatar';
 
 export type Article = {
   docId: string;
@@ -54,6 +55,7 @@ export type Article = {
   authorName: string;
   authorEmail: string;
   authorPhotoURL: string;
+  updatedAt: number;
 };
 
 export const columns: ColumnDef<Article>[] = [
@@ -118,31 +120,7 @@ export const columns: ColumnDef<Article>[] = [
     cell: ({ row }) => {
       const data = row.original;
       return (
-        <div className="flex items-center">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <Avatar className="h-6 w-6">
-                  <AvatarImage
-                    src={data.authorPhotoURL ?? undefined}
-                    alt={data.authorName ?? undefined}
-                  />
-                  <AvatarFallback>{data.authorName.charAt(0)}</AvatarFallback>
-                </Avatar>
-              </TooltipTrigger>
-              <TooltipContent>
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">
-                    {data.authorName}
-                  </p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    {data.authorEmail}
-                  </p>
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
+        <AuthorAvatar authorName={data.authorName} authorEmail={data.authorEmail} authorPhotoURL={data.authorPhotoURL} updatedAt={data.updatedAt} />
       );
     },
   },

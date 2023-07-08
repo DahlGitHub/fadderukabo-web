@@ -41,6 +41,7 @@ import {
 import DeleteRow from '../DeleteRow';
 import EditFaq from './EditFaq';
 import { FaqToolbar } from './FaqToolbar';
+import AuthorAvatar from '../AuthorAvatar';
 
 export type Faq = {
   docId: string;
@@ -49,6 +50,7 @@ export type Faq = {
   authorName: string;
   authorEmail: string;
   authorPhotoURL: string;
+  updatedAt: number;
 };
 
 export const columns: ColumnDef<Faq>[] = [
@@ -84,31 +86,12 @@ export const columns: ColumnDef<Faq>[] = [
     cell: ({ row }) => {
       const faq = row.original;
       return (
-        <div className="flex items-center">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <Avatar className="h-6 w-6">
-                  <AvatarImage
-                    src={faq.authorPhotoURL ?? undefined}
-                    alt={faq.authorName ?? undefined}
-                  />
-                  <AvatarFallback>{faq.authorName.charAt(0)}</AvatarFallback>
-                </Avatar>
-              </TooltipTrigger>
-              <TooltipContent>
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">
-                    {faq.authorName}
-                  </p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    {faq.authorEmail}
-                  </p>
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
+        <AuthorAvatar
+          authorName={faq.authorName}
+          authorEmail={faq.authorEmail}
+          authorPhotoURL={faq.authorPhotoURL}
+          updatedAt={faq.updatedAt}
+        />
       );
     },
   },

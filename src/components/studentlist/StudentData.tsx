@@ -40,11 +40,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import EditStudent from './EditStudent';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../firebase';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import {
   Tooltip,
   TooltipContent,
@@ -55,6 +54,8 @@ import { StudentToolbar } from './StudentToolbar';
 import DeleteRow from '../DeleteRow';
 import { Badge } from '../ui/badge';
 import { ScrollArea } from '../ui/scroll-area';
+import AuthorAvatar from '../AuthorAvatar';
+
 
 export type Authorized = {
   docId: string;
@@ -64,6 +65,7 @@ export type Authorized = {
   authorName: string;
   authorEmail: string;
   authorPhotoURL: string;
+  updatedAt: number;
 };
 
 interface GroupData {
@@ -191,35 +193,14 @@ export const columns: ColumnDef<Authorized>[] = [
     accessorKey: 'author',
     header: 'Author',
     cell: ({ row }) => {
-      const authorized = row.original;
+      const data = row.original;
       return (
-        <div className="flex items-center">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <Avatar className="h-6 w-6">
-                  <AvatarImage
-                    src={authorized.authorPhotoURL ?? undefined}
-                    alt={authorized.authorName ?? undefined}
-                  />
-                  <AvatarFallback>
-                    {authorized.authorName.charAt(0)}
-                  </AvatarFallback>
-                </Avatar>
-              </TooltipTrigger>
-              <TooltipContent>
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">
-                    {authorized.authorName}
-                  </p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    {authorized.authorEmail}
-                  </p>
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
+        <AuthorAvatar
+          authorName={data.authorName}
+          authorEmail={data.authorEmail}
+          authorPhotoURL={data.authorPhotoURL}
+          updatedAt={data.updatedAt}
+        />
       );
     },
     enableHiding: true,

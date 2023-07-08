@@ -31,34 +31,32 @@ import {
 import moment from 'moment';
 import Confirmation from '../Confirmation';
 import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
-import { auth, db } from '../../../firebase';
-import React from 'react';
+import { db } from '../../../firebase';
+import React, { useRef } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import AddAuthorized from './AddAuthorized';
+import { useSession } from 'next-auth/react';
+import { toast } from '../ui/use-toast';
 
 export type Authorized = {
   id: string;
-  photoURL: string;
-  displayName: string;
+  image: string;
+  name: string;
   email: string;
-  created: number;
-  signedIn: number;
+  createdAt: number;
 };
 
 const handleDeleteEmail = async (email: string): Promise<void> => {
   try {
-    const currentUser = auth.currentUser;
-
-    // Check if the current user is deleting their own email
-    if (currentUser && currentUser.email === email) {
-      console.log('Cannot delete your own email.');
-      return;
-    }
 
     // Check if the email is a protected email that should not be deleted
     const protectedEmail = 'fadderstyretbo@gmail.com';
     if (email === protectedEmail) {
-      console.log(`Cannot delete the protected email: ${protectedEmail}`);
+      toast({
+        title: 'Permission denied',
+        description: `Cannot delete protected email (${protectedEmail})`,
+        variant: "destructive"
+      });
       return;
     }
 
@@ -75,6 +73,7 @@ const handleDeleteEmail = async (email: string): Promise<void> => {
   }
 };
 
+
 export const columns: ColumnDef<Authorized>[] = [
   {
     accessorKey: 'name',
@@ -85,12 +84,12 @@ export const columns: ColumnDef<Authorized>[] = [
         <div className="flex items-center">
           <Avatar className="w-8 h-8 rounded-full">
             <AvatarImage
-              src={authorized.photoURL}
-              alt={authorized.displayName}
+              src={authorized.image}
+              alt={authorized.name}
             />
-            <AvatarFallback>{authorized.displayName.charAt(0)}</AvatarFallback>
+            <AvatarFallback>{authorized.name.charAt(0)}</AvatarFallback>
           </Avatar>
-          <span className="ml-2">{authorized.displayName}</span>
+          <span className="ml-2">{authorized.name}</span>
         </div>
       );
     },
@@ -114,29 +113,15 @@ export const columns: ColumnDef<Authorized>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'created',
+    accessorKey: 'createdAt',
     header: 'Created',
     cell: ({ row }) => {
-      const created = row.getValue('created');
+      const created = row.getValue('createdAt');
       const date = moment(created as number);
 
       return (
         <div className="flex items-center">
           <span>{date.format('MMM D, YYYY')}</span>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: 'signedIn',
-    header: 'Last signed in',
-    cell: ({ row }) => {
-      const signedIn = row.getValue('signedIn');
-      const date = moment(signedIn as number);
-
-      return (
-        <div className="flex items-center">
-          <span>{date.fromNow()}</span>
         </div>
       );
     },
@@ -156,13 +141,9 @@ export const columns: ColumnDef<Authorized>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
             <DropdownMenuSeparator />
-            {/*
-                           <DropdownMenuItem
-                    onClick={() => handleDeleteEmail(row.getValue("email"))}>
-                        Delete
-                </DropdownMenuItem>
-                 */}
             <DropdownMenuItem asChild>
+              
+              
               <Confirmation
                 onConfirm={() => handleDeleteEmail(row.getValue('email'))}
                 message={`Are you sure you want to delete ${row.getValue(

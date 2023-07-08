@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { MoreHorizontal, Crown, UserCircle, Group, Eye } from 'lucide-react';
+import { MoreHorizontal, Group, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -28,20 +28,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import React, { useEffect, useState } from 'react';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
-import { db } from '../../../firebase';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '../ui/tooltip';
+import React from 'react';
 import AddGroup from './AddGroup';
 import EditGroup from './EditGroup';
 import DeleteRow from '../DeleteRow';
 import DeleteCollection from '../DeleteCollection';
+import AuthorAvatar from '../AuthorAvatar';
 
 export type Group = {
   docId: string;
@@ -52,6 +44,7 @@ export type Group = {
   authorName: string;
   authorEmail: string;
   authorPhotoURL: string;
+  updatedAt: number;
 };
 
 export const columns: ColumnDef<Group>[] = [
@@ -115,35 +108,14 @@ export const columns: ColumnDef<Group>[] = [
     accessorKey: 'author',
     header: 'Author',
     cell: ({ row }) => {
-      const authorized = row.original;
+      const data = row.original;
       return (
-        <div className="flex items-center">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <Avatar className="h-6 w-6">
-                  <AvatarImage
-                    src={authorized.authorPhotoURL ?? undefined}
-                    alt={authorized.authorName ?? undefined}
-                  />
-                  <AvatarFallback>
-                    {authorized.authorName.charAt(0)}
-                  </AvatarFallback>
-                </Avatar>
-              </TooltipTrigger>
-              <TooltipContent>
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">
-                    {authorized.authorName}
-                  </p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    {authorized.authorEmail}
-                  </p>
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
+        <AuthorAvatar
+          authorName={data.authorName}
+          authorEmail={data.authorEmail}
+          authorPhotoURL={data.authorPhotoURL}
+          updatedAt={data.updatedAt}
+        />
       );
     },
   },
@@ -169,9 +141,9 @@ export const columns: ColumnDef<Group>[] = [
             <DropdownMenuItem asChild>
               <DeleteRow
                 docId={row.original.docId}
-                collectionName={'faqdata'}
+                collectionName={'groupdata'}
                 message={`Are you sure you want to delete ${row.getValue(
-                  'question',
+                  'title',
                 )}?`}
               />
             </DropdownMenuItem>

@@ -1,18 +1,18 @@
 'use client';
 
 import {
-    ColumnDef,
-    flexRender,
-    getCoreRowModel,
-    useReactTable,
-    SortingState,
-    getSortedRowModel,
-    VisibilityState,
-    ColumnFiltersState,
-    getFilteredRowModel,
-    getFacetedRowModel,
-    getFacetedUniqueValues,
-  } from '@tanstack/react-table';
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+  SortingState,
+  getSortedRowModel,
+  VisibilityState,
+  ColumnFiltersState,
+  getFilteredRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+} from '@tanstack/react-table';
 import {
   Table,
   TableBody,
@@ -33,19 +33,13 @@ import {
 } from '@/components/ui/dropdown-menu';
 import React from 'react';
 
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '../ui/tooltip';
 import DeleteRow from '../DeleteRow';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-import Link from 'next/link';
+
 import Image from 'next/image';
 import { LifeToolbar } from './LifeToolbar';
 import EditLife from './EditLife';
+import AuthorAvatar from '../AuthorAvatar';
 
 export type Life = {
   docId: string;
@@ -56,6 +50,7 @@ export type Life = {
   authorName: string;
   authorEmail: string;
   authorPhotoURL: string;
+  updatedAt: number;
 };
 
 export const columns: ColumnDef<Life>[] = [
@@ -77,7 +72,7 @@ export const columns: ColumnDef<Life>[] = [
     header: 'Type',
     cell: ({ row }) => {
       const life = row.original;
-
+      
       return (
         <div className="flex items-center">
           <span className="ml-2">{life.type}</span>
@@ -129,33 +124,14 @@ export const columns: ColumnDef<Life>[] = [
     accessorKey: 'author',
     header: 'Author',
     cell: ({ row }) => {
-      const faq = row.original;
+      const life = row.original;
       return (
-        <div className="flex items-center">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <Avatar className="h-6 w-6">
-                  <AvatarImage
-                    src={faq.authorPhotoURL ?? undefined}
-                    alt={faq.authorName ?? undefined}
-                  />
-                  <AvatarFallback>{faq.authorName.charAt(0)}</AvatarFallback>
-                </Avatar>
-              </TooltipTrigger>
-              <TooltipContent>
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">
-                    {faq.authorName}
-                  </p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    {faq.authorEmail}
-                  </p>
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
+        <AuthorAvatar
+          authorName={life.authorName}
+          authorEmail={life.authorEmail}
+          authorPhotoURL={life.authorPhotoURL}
+          updatedAt={life.updatedAt}
+        />
       );
     },
   },
@@ -181,9 +157,9 @@ export const columns: ColumnDef<Life>[] = [
             <DropdownMenuItem asChild>
               <DeleteRow
                 docId={row.original.docId}
-                collectionName={'faqdata'}
+                collectionName={'lifedata'}
                 message={`Are you sure you want to delete ${row.getValue(
-                  'question',
+                  'title',
                 )}?`}
               />
             </DropdownMenuItem>
@@ -204,7 +180,9 @@ export function DataTable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([],);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    [],
+  );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({
       author: false,
