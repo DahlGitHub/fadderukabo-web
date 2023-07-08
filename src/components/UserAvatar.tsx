@@ -1,14 +1,16 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { auth } from "../../firebase"
+import { useSession } from "next-auth/react"
 
 export function UserAvatar() {
+
+  const session = useSession();
     return (
         <Avatar className="h-9 w-9">
-        {auth.currentUser?.photoURL ? (
-          <AvatarImage alt="Picture" src={auth.currentUser?.photoURL} />
+        {session.data?.user?.image ? (
+          <AvatarImage alt="Picture" src={session?.data?.user?.image} />
         ) : (
           <AvatarFallback>
-            <AvatarFallback>{auth.currentUser?.displayName?.charAt(0)}</AvatarFallback>
+            <AvatarFallback>{session?.data?.user?.name?.charAt(0)}</AvatarFallback>
           </AvatarFallback>
         )}
       </Avatar>

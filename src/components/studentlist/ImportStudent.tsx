@@ -17,6 +17,7 @@ import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '../ui/dialog'
 import { Loader2, Plus, Sheet, Upload } from 'lucide-react';
 import { ScrollArea } from '../ui/scroll-area';
 import { Input } from '../ui/input';
+import { useSession } from 'next-auth/react';
 
 type Props = {
   nameValue: string;
@@ -24,6 +25,8 @@ type Props = {
 };
 
 export const ImportStudent = () => {
+  const sessionData = useSession();
+  const { name: authorName, image: authorPhotoURL, email: authorEmail } = sessionData?.data?.user || {};
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<Props[]>([]);
   const [isUploading, setIsUploading] = useState(false);
@@ -86,9 +89,9 @@ export const ImportStudent = () => {
           const docRef = await addDoc(collection(db, 'studentdata'), {
             ...docData,
             status: 'fadder',
-            authorName: auth?.currentUser?.displayName,
-            authorPhotoURL: auth?.currentUser?.photoURL,
-            authorEmail: auth?.currentUser?.email,
+            authorName,
+            authorPhotoURL,
+            authorEmail,
           });
           return docRef.id;
         } else {

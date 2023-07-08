@@ -12,20 +12,14 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { auth } from "../../firebase"
+import { useSession, signOut } from "next-auth/react"
 import Link from "next/link"
 import { toast } from "react-toastify"
 import { UserAvatar } from "./UserAvatar"
 
-const signOut = () => {
-    
- auth.signOut().then(() => {
-    toast.info("Signed out successfully");
- })
-}
-
 export function UserNav() {
 
+  const session = useSession()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -36,9 +30,9 @@ export function UserNav() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{auth.currentUser?.displayName}</p>
+            <p className="text-sm font-medium leading-none">{session.data?.user?.name}</p>
             <p className="text-xs leading-none text-muted-foreground">
-              {auth.currentUser?.email}
+              {session.data?.user?.email}
             </p>
           </div>
         </DropdownMenuLabel>
@@ -51,7 +45,7 @@ export function UserNav() {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-        <Link href="./" onClick={signOut} className="hover:text-red-500 w-full flex">
+        <Link href="./" onClick={() => signOut()} className="hover:text-red-500 w-full flex">
           <LogOut className="mr-2 h-4 w-4" />
           <span>Sign out</span>
         </Link>
