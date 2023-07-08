@@ -1,8 +1,5 @@
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
 import React, { useState, useEffect } from 'react';
-import { signInWithGoogle, db, getSessionToken, auth } from '../../../firebase';
+
 import 'firebase/auth';
 import { useRouter } from 'next/router';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -10,36 +7,22 @@ import Image from 'next/image';
 import UsnIcon from 'public/svg/usnicon.svg';
 import { signOut } from 'firebase/auth';
 import GoogleIcon from 'public/svg/google.svg';
+import { signIn, useSession } from 'next-auth/react';
+import { toast } from '../ui/use-toast';
 
 export default function SignInAccont() {
-  const [user, loading, error] = useAuthState(auth); // Assuming you have initialized the Firebase auth instance as `auth`
+  const { status, data: session } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (user) {
-      getSessionToken(user)
-        .then(sessionToken => {
-          if (sessionToken) {
-            toast.success('Successfully signed in.');
-            window.location.reload();
-            console.log(sessionToken);
-          } else {
-            signOut(auth)
-              .then(() => {
-                toast.error(
-                  'Access denied. You are not authorized to access this site.',
-                );
-              })
-              .catch(error => {
-                toast.error('Error signing out:', error);
-              });
-          }
-        })
-        .catch(error => {
-          toast.error('Error getting session token:', error);
-        });
+    if (status === 'authenticated') {
+      router.push('/dashboard');
+      toast({
+        title: 'Success',
+        description: 'Signed in successfully.',
+      });
     }
-  }, [user, loading, router]);
+  }, [status, router]);
 
   return (
     <div className="flex justify-center">
@@ -94,7 +77,7 @@ export default function SignInAccont() {
                 <div>
                   <button
                     className="inline-flex items-center justify-center px-5 w-48 py-2 w-full text-base font-medium text-center text-gray-600 rounded-lg border border-gray-300 focus:ring-4 focus:ring-gray-500 hover:bg-gray-50 hover:focus:ring-4 hover:border-blue-500"
-                    onClick={signInWithGoogle}
+                    onClick={() => signIn('google')}
                   >
                     <GoogleIcon className="w-3 h-3 mr-2" />
                     <span className="text-[13px] font-semibold">
@@ -124,3 +107,5 @@ export default function SignInAccont() {
     </div>
   );
 }
+
+
