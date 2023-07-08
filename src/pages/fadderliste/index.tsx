@@ -18,6 +18,7 @@ export default function FadderListe() {
         doc =>
           ({
             docId: doc.id,
+            status: doc.data().status,
             name: doc.data().name,
             group: doc.data().group,
           } as Authorized),
