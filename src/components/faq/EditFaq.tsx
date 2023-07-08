@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { collection, addDoc, doc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../../../firebase';
@@ -21,10 +21,11 @@ import { Edit, Plus } from 'lucide-react';
 
 import { Textarea } from '../ui/textarea';
 import { Faq } from './FaqData';
+import { useSession } from 'next-auth/react';
 
 interface EditDataProps {
-    data: Faq;
-    docId: string;
+  data: Faq;
+  docId: string;
 }
 
 const FormSchema = z.object({
@@ -46,78 +47,99 @@ const FormSchema = z.object({
     }),
 });
 
-export const EditFaq: React.FC<EditDataProps> = ({docId, data}) => {
-    const [currentData, setCurrentData] = useState(data)
+export const EditFaq = React.forwardRef<HTMLDivElement, EditDataProps>(
+  ({ docId, data }, ref) => {
+    const sessionData = useSession();
+    const {
+      name: authorName,
+      image: authorPhotoURL,
+      email: authorEmail,
+    } = sessionData?.data?.user || {};
+    const [currentData, setCurrentData] = useState(data);
     const [isOpen, setIsOpen] = useState(false);
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
+    const form = useForm<z.infer<typeof FormSchema>>({
+      resolver: zodResolver(FormSchema),
+      defaultValues: {
         question: currentData.question,
         answer: currentData.answer,
-    }
-  });
-
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    updateDoc(doc(db, 'faqdata', docId), {
-      question: data.question,
-      answer: data.answer,
-      authorName: auth?.currentUser?.displayName,
-      authorPhotoURL: auth?.currentUser?.photoURL,
-      authorEmail: auth?.currentUser?.email,
+      },
     });
-    setIsOpen(false);
 
-    form.reset();
-  };
+    function onSubmit(data: z.infer<typeof FormSchema>) {
+      updateDoc(doc(db, 'faqdata', docId), {
+        question: data.question,
+        answer: data.answer,
+        authorName,
+        authorPhotoURL,
+        authorEmail,
+        updatedAt: Date.now(),
+      });
+      setIsOpen(false);
 
-  return (
-    <Dialog>
-      <Button asChild variant="ghost" className="h-8 w-full px-2">
-        <DialogTrigger onClick={() => setIsOpen(true)}>
-          <Edit size={16} className="mr-2" />
-          <div className="text-start w-full">Edit</div>
-        </DialogTrigger>
-      </Button>
+      form.reset();
+    }
 
-      {isOpen && (
-        <DialogContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <FormField
-                control={form.control}
-                name="question"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Question</FormLabel>
-                    <FormControl>
-                      <Input type="text" {...field} value={field.value} onChange={field.onChange} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="answer"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Answer</FormLabel>
-                    <FormControl>
-                      <Textarea {...field} value={field.value} onChange={field.onChange} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+    return (
+      <Dialog>
+        <Button asChild variant="ghost" className="h-8 w-full px-2">
+          <DialogTrigger onClick={() => setIsOpen(true)}>
+            <Edit size={16} className="mr-2" />
+            <div className="text-start w-full">Edit</div>
+          </DialogTrigger>
+        </Button>
 
-              <Button type="submit">Update</Button>
-            </form>
-          </Form>
-        </DialogContent>
-      )}
-    </Dialog>
-  );
-};
+        {isOpen && (
+          <DialogContent>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-8"
+              >
+                <FormField
+                  control={form.control}
+                  name="question"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Question</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          {...field}
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="answer"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Answer</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          {...field}
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button type="submit">Update</Button>
+              </form>
+            </Form>
+          </DialogContent>
+        )}
+      </Dialog>
+    );
+  },
+);
 
 export default EditFaq;

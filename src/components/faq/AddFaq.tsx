@@ -20,6 +20,7 @@ import { useForm } from 'react-hook-form';
 import { Plus } from 'lucide-react';
 
 import { Textarea } from '../ui/textarea';
+import { useSession } from 'next-auth/react';
 
 const FormSchema = z.object({
   question: z
@@ -41,6 +42,8 @@ const FormSchema = z.object({
 });
 
 export const AddFaq = () => {
+  const sessionData = useSession();
+  const { name: authorName, image: authorPhotoURL, email: authorEmail } = sessionData?.data?.user || {};
   const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -51,9 +54,10 @@ export const AddFaq = () => {
     await addDoc(collection(db, 'faqdata'), {
       question: data.question,
       answer: data.answer,
-      authorName: auth?.currentUser?.displayName,
-      authorPhotoURL: auth?.currentUser?.photoURL,
-      authorEmail: auth?.currentUser?.email,
+      authorName,
+      authorPhotoURL,
+      authorEmail,
+      updatedAt: Date.now(),
     });
     setIsOpen(false);
 

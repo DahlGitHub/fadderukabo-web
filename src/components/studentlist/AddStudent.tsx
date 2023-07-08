@@ -30,6 +30,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Plus } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 
 interface AddDataProps {
   groupOptions: string[];
@@ -48,6 +49,8 @@ const FormSchema = z.object({
 });
 
 export const AddStudent: React.FC<AddDataProps> = ({ groupOptions }) => {
+  const sessionData = useSession();
+  const { name: authorName, image: authorPhotoURL, email: authorEmail } = sessionData?.data?.user || {};
   const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -59,9 +62,10 @@ export const AddStudent: React.FC<AddDataProps> = ({ groupOptions }) => {
       name: data.name,
       group: data.group,
       status: data.status,
-      authorName: auth?.currentUser?.displayName,
-      authorPhotoURL: auth?.currentUser?.photoURL,
-      authorEmail: auth?.currentUser?.email,
+      authorName,
+      authorPhotoURL,
+      authorEmail,
+      updatedAt: Date.now(),
     });
     setIsOpen(false);
   }

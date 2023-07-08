@@ -27,6 +27,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Edit } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 
 interface EditDataProps {
   data: Authorized;
@@ -45,140 +46,154 @@ const FormSchema = z.object({
   }),
 });
 
-export const EditStudent: React.FC<EditDataProps> = ({ docId, data }) => {
-  const [currentData, setCurrentData] = React.useState(data);
-  const [groupOptions, setGroupOptions] = useState<string[]>([]);
-  const [isOpen, setIsOpen] = useState(false);
+export const EditStudent = React.forwardRef<HTMLDivElement, EditDataProps>(
+  ({ docId, data }, ref) => {
+    const sessionData = useSession();
+    const {
+      name: authorName,
+      image: authorPhotoURL,
+      email: authorEmail,
+    } = sessionData?.data?.user || {};
+    const [currentData, setCurrentData] = React.useState(data);
+    const [groupOptions, setGroupOptions] = useState<string[]>([]);
+    const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, 'groupdata'), snapshot => {
-      const titles = snapshot.docs.map(doc => doc.data().title);
-      setGroupOptions(titles);
+    useEffect(() => {
+      const unsubscribe = onSnapshot(collection(db, 'groupdata'), snapshot => {
+        const titles = snapshot.docs.map(doc => doc.data().title);
+        setGroupOptions(titles);
+      });
+
+      return () => unsubscribe();
+    }, []);
+
+    const form = useForm<z.infer<typeof FormSchema>>({
+      defaultValues: {
+        name: currentData.name,
+        group: currentData.group,
+        status: currentData.status,
+      },
+      resolver: zodResolver(FormSchema),
     });
 
-    return () => unsubscribe();
-  }, []);
+    function onSubmit(data: z.infer<typeof FormSchema>) {
+      console.log(data);
+      updateDoc(doc(db, 'studentdata', docId), {
+        name: data.name,
+        group: data.group,
+        status: data.status,
+        authorName,
+        authorPhotoURL,
+        authorEmail,
+        updatedAt: Date.now(),
+      });
+      setIsOpen(false);
+    }
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    defaultValues: {
-      name: currentData.name,
-      group: currentData.group,
-      status: currentData.status,
-    },
-    resolver: zodResolver(FormSchema),
-  });
-
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
-    updateDoc(doc(db, 'studentdata', docId), {
-      name: data.name,
-      group: data.group,
-      status: data.status,
-      authorName: auth?.currentUser?.displayName,
-      authorPhotoURL: auth?.currentUser?.photoURL,
-      authorEmail: auth?.currentUser?.email,
-    });
-    setIsOpen(false);
-  }
-
-  return (
-    <Dialog>
-      <Button asChild variant="ghost" className="h-8 w-full px-2">
-        <DialogTrigger onClick={() => setIsOpen(true)}>
-          <Edit size={16} className="mr-2" />
-          <div className="text-start w-full">Edit</div>
-        </DialogTrigger>
-      </Button>
-      {isOpen && (
-        <DialogContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value}
-                        onChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormDescription>Fullname of the person.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="group"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Group</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={currentData.group}
-                    >
+    return (
+      <Dialog>
+        <Button asChild variant="ghost" className="h-8 w-full px-2">
+          <DialogTrigger onClick={() => setIsOpen(true)}>
+            <Edit size={16} className="mr-2" />
+            <div className="text-start w-full">Edit</div>
+          </DialogTrigger>
+        </Button>
+        {isOpen && (
+          <DialogContent>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-8"
+              >
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a group" />
-                        </SelectTrigger>
+                        <Input
+                          {...field}
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
                       </FormControl>
-                      <SelectContent>
-                        <div className="overflow-y-auto">
-                          {groupOptions.map(group => (
-                            <SelectItem key={group} value={group}>
-                              {group}
-                            </SelectItem>
-                          ))}
-                        </div>
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      Group section for the person.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Status</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={currentData.status}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a status" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="fadder">Fadder</SelectItem>
-                        <SelectItem value="faddersjef">Faddersjef</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      Fadderstatus for the person.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit">Update</Button>
-            </form>
-          </Form>
+                      <FormDescription>Fullname of the person.</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="group"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Group</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={currentData.group}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a group" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <div className="overflow-y-auto">
+                            {groupOptions.map(group => (
+                              <SelectItem key={group} value={group}>
+                                {group}
+                              </SelectItem>
+                            ))}
+                          </div>
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        Group section for the person.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="status"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Status</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={currentData.status}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a status" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="fadder">Fadder</SelectItem>
+                          <SelectItem value="faddersjef">Faddersjef</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        Fadderstatus for the person.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit">Update</Button>
+              </form>
+            </Form>
 
-          <DialogTrigger onClick={() => setIsOpen(false)}>Cancel</DialogTrigger>
-        </DialogContent>
-      )}
-    </Dialog>
-  );
-};
+            <DialogTrigger onClick={() => setIsOpen(false)}>
+              Cancel
+            </DialogTrigger>
+          </DialogContent>
+        )}
+      </Dialog>
+    );
+  },
+);
 
 export default EditStudent;

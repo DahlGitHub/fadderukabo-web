@@ -18,6 +18,7 @@ import {
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
 import { Input } from '../ui/input';
 import { toast } from '../ui/use-toast';
+import { useSession } from 'next-auth/react';
 
 const FormSchema = z.object({
   email: z
@@ -31,9 +32,14 @@ const FormSchema = z.object({
 });
 
 export const AddAuthorized = () => {
+  const sessionData = useSession();
+  const { name: authorName, image: authorPhotoURL, email: authorEmail } = sessionData?.data?.user || {};
   const [isOpen, setIsOpen] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      email: '',
+    },
   });
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
@@ -48,12 +54,15 @@ export const AddAuthorized = () => {
     if (querySnapshot.empty) {
     await addDoc(collection(db, 'allowedEmails'), {
       email: data.email,
-      authorName: auth?.currentUser?.displayName,
-      authorPhotoURL: auth?.currentUser?.photoURL,
-      authorEmail: auth?.currentUser?.email,
+      authorName,
+      authorPhotoURL,
+      authorEmail,
     });
     setIsOpen(false);
-
+    toast({
+      title: 'Success',
+      description: 'Email added.',
+    })
     form.reset();
   } else {
     toast({

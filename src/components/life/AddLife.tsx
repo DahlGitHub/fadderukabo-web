@@ -27,6 +27,7 @@ import {
 import { Plus } from 'lucide-react';
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { Loader2 } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 
 const FormSchema = z.object({
   title: z
@@ -47,6 +48,8 @@ const FormSchema = z.object({
 });
 
 export const AddLife = () => {
+  const sessionData = useSession();
+  const { name: authorName, image: authorPhotoURL, email: authorEmail } = sessionData?.data?.user || {};
   const [isOpen, setIsOpen] = useState(false);
   const [fileUrl, setFileUrl] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -77,9 +80,10 @@ export const AddLife = () => {
             type: data.type,
             image: downloadURL,
             url: data.url,
-            authorName: auth?.currentUser?.displayName,
-            authorPhotoURL: auth?.currentUser?.photoURL,
-            authorEmail: auth?.currentUser?.email,
+            authorName,
+            authorPhotoURL,
+            authorEmail,
+            updatedAt: Date.now(),
           });
           setIsOpen(false);
           setFileUrl(null);
