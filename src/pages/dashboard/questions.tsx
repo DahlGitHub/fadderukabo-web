@@ -7,6 +7,7 @@ import {
   withAuthUserTokenSSR,
 } from 'next-firebase-auth';
 import FaqPage from '@/components/faq/FaqPage';
+import { getSession } from 'next-auth/react';
 
 const questions = () => {
   return (
@@ -22,9 +23,20 @@ const questions = () => {
   );
 };
 
-export const getServerSideProps = withAuthUserTokenSSR({})();
+export default questions;
 
-export default withAuthUser({
-  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
-  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-})(questions);
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login", // Redirect to login page
+        permanent: false,
+      },
+    };
+  }
+
+  // If the user is authenticated, return the props
+  return { props: {} };
+}

@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
-import {
-  AuthAction,
-  withAuthUser,
-  withAuthUserSSR,
-  withAuthUserTokenSSR,
-} from 'next-firebase-auth';
 import { TableSkeleton } from '@/components/TableSkeleton';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { DataTable, columns, Article } from '@/components/articles/ArticleData';
+import { getSession } from 'next-auth/react';
 
 const article = () => {
   const [data, setData] = useState<Article[]>([]);
@@ -44,15 +39,26 @@ const article = () => {
       {isLoading ? (
         <TableSkeleton columnCount={2} />
       ) : (
-        <DataTable columns={columns} data={data} />
+        data && <DataTable columns={columns} data={data} />
       )}
     </DashboardLayout>
   );
 };
 
-export const getServerSideProps = withAuthUserTokenSSR({})();
+export default article;
 
-export default withAuthUser({
-  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
-  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-})(article);
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login", // Redirect to login page
+        permanent: false,
+      },
+    };
+  }
+
+  // If the user is authenticated, return the props
+  return { props: {} };
+}

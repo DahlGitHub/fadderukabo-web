@@ -1,11 +1,7 @@
 import React from 'react';
 import Dashboard from '@/components/dashboard/Dashboard';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
-import {
-  AuthAction,
-  withAuthUser,
-  withAuthUserTokenSSR,
-} from 'next-firebase-auth';
+import { getSession } from 'next-auth/react';
 
 const index = () => {
   return (
@@ -15,9 +11,20 @@ const index = () => {
   );
 };
 
-export const getServerSideProps = withAuthUserTokenSSR({})();
+export default index;
 
-export default withAuthUser({
-  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
-  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-})(index);
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login", // Redirect to login page
+        permanent: false,
+      },
+    };
+  }
+
+  // If the user is authenticated, return the props
+  return { props: {} };
+}

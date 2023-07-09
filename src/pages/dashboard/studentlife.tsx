@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
-import {
-  AuthAction,
-  withAuthUser,
-  withAuthUserSSR,
-  withAuthUserTokenSSR,
-} from 'next-firebase-auth';
 import { TableSkeleton } from '@/components/TableSkeleton';
 import { DataTable, Life, columns } from '@/components/life/LifeData';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../firebase';
+import { getSession } from 'next-auth/react';
 
 const studentlife = () => {
   const [data, setData] = useState<Life[]>([]);
@@ -44,15 +39,26 @@ const studentlife = () => {
       {isLoading ? (
         <TableSkeleton columnCount={5} />
       ) : (
-        <DataTable columns={columns} data={data} />
+        data && <DataTable columns={columns} data={data} />
       )}
     </DashboardLayout>
   );
 };
 
-export const getServerSideProps = withAuthUserTokenSSR({})();
+export default studentlife;
 
-export default withAuthUser({
-  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
-  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-})(studentlife);
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login", // Redirect to login page
+        permanent: false,
+      },
+    };
+  }
+
+  // If the user is authenticated, return the props
+  return { props: {} };
+}

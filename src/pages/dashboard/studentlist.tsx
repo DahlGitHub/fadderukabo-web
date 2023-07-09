@@ -10,6 +10,7 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { set } from 'date-fns';
 import { TableSkeleton } from '@/components/TableSkeleton';
+import { getSession } from 'next-auth/react';
 
 const studentlist = () => {
   const [data, setData] = useState<Authorized[]>([]);
@@ -61,15 +62,26 @@ const studentlist = () => {
       {isLoading ? (
         <TableSkeleton columnCount={3} />
       ) : (
-        <DataTable columns={columns} data={data} showActions={true} />
+        data && <DataTable columns={columns} data={data} showActions={true} />
       )}
     </DashboardLayout>
   );
 };
 
-export const getServerSideProps = withAuthUserTokenSSR({})();
+export default studentlist
 
-export default withAuthUser({
-  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
-  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-})(studentlist);
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login", // Redirect to login page
+        permanent: false,
+      },
+    };
+  }
+
+  // If the user is authenticated, return the props
+  return { props: {} };
+}

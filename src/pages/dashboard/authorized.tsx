@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import {
-  AuthAction,
-  withAuthUser,
-  withAuthUserTokenSSR,
-} from 'next-firebase-auth';
-import {
   Authorized,
   DataTable,
   columns,
@@ -18,8 +13,11 @@ import {
   where,
 } from 'firebase/firestore';
 import { db } from '../../../firebase';
+import { TableSkeleton } from '@/components/TableSkeleton';
+import { getSession } from 'next-auth/react';
 
 const authorized = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [users, setUsers] = useState<Authorized[]>([]);
   const [allowedEmails, setAllowedEmails] = useState<string[]>([]);
 
@@ -59,6 +57,7 @@ const authorized = () => {
     };
 
     fetchData();
+    setIsLoading(false);
   }, []);
 
   // Map all emails in allowedEmails and check if each exists in users
@@ -69,12 +68,11 @@ const authorized = () => {
     } else {
       return {
         id: email,
-        photoURL:
+        image:
           'https://www.gstatic.com/identity/boq/profilepicturepicker/photo_silhouette_e02a5f5deb3ffc173119a01bc9575490.png',
-        displayName: 'Invalid name',
+        name: 'Invalid name',
         email: email,
-        created: 9999999999999999,
-        signedIn: 9999999999999999,
+        createdAt: 9999999999999999,
       };
     }
   });
@@ -87,14 +85,29 @@ const authorized = () => {
           List of people with access to the dashboard
         </p>
       </div>
-      <DataTable columns={columns} data={listedEmails} />
+      {isLoading ? (
+        <TableSkeleton columnCount={3} />
+      ) : (
+        listedEmails && <DataTable columns={columns} data={listedEmails} />
+      )}
     </DashboardLayout>
   );
 };
 
-export const getServerSideProps = withAuthUserTokenSSR({})();
+export default authorized;
 
-export default withAuthUser({
-  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
-  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-})(authorized);
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login", // Redirect to login page
+        permanent: false,
+      },
+    };
+  }
+
+  // If the user is authenticated, return the props
+  return { props: {} };
+}

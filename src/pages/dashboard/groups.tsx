@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
-import {
-  AuthAction,
-  withAuthUser,
-  withAuthUserTokenSSR,
-} from 'next-firebase-auth';
-import GroupPage from '@/components/groups/GroupPage';
 import { DataTable, Group, columns } from '@/components/groups/GroupData';
 import { onSnapshot, collection, query, where } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { TableSkeleton } from '@/components/TableSkeleton';
+import { getSession } from 'next-auth/react';
 
 const groups = () => {
   const [data, setData] = useState<Group[]>([]);
@@ -60,15 +55,27 @@ const groups = () => {
       {isLoading ? (
         <TableSkeleton columnCount={4} />
       ) : (
-        <DataTable columns={columns} data={data} />
+        data && <DataTable columns={columns} data={data} />
       )}
     </DashboardLayout>
   );
 };
 
-export const getServerSideProps = withAuthUserTokenSSR({})();
+export default groups;
 
-export default withAuthUser({
-  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
-  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-})(groups);
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login", // Redirect to login page
+        permanent: false,
+      },
+    };
+  }
+
+  // If the user is authenticated, return the props
+  return { props: {} };
+}
+

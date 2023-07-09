@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
-import {
-  AuthAction,
-  withAuthUser,
-  withAuthUserSSR,
-  withAuthUserTokenSSR,
-} from 'next-firebase-auth';
 import { TableSkeleton } from '@/components/TableSkeleton';
 import { DataTable, Program, columns } from '@/components/program/ProgramData';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../firebase';
+import { getSession } from 'next-auth/react';
+
+export const metadata = {
+  title: 'Program',
+  description: 'List of people in need of medical assistance',
+};
 
 const program = () => {
   const [data, setData] = useState<Program[]>([]);
@@ -44,15 +44,27 @@ const program = () => {
       {isLoading ? (
         <TableSkeleton columnCount={5} />
       ) : (
-        <DataTable columns={columns} data={data} />
+        data && <DataTable columns={columns} data={data} />
       )}
     </DashboardLayout>
   );
 };
 
-export const getServerSideProps = withAuthUserTokenSSR({})();
+export default program
 
-export default withAuthUser({
-  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
-  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-})(program);
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login", // Redirect to login page
+        permanent: false,
+      },
+    };
+  }
+
+  // If the user is authenticated, return the props
+  return { props: {} };
+}
+
