@@ -24,8 +24,7 @@ const Header = (props: {
         </div>
         <div className="flex-1 text-sm">
           <span className="flex flex-row">
-            <LayoutGrid className="mr-2 w-4 h-4" />
-            Dashboard / Authorized
+
           </span>
         </div>
         <div className="flex justify-end space-x-2 rounded-full hover:bg-gray-200 p-1.5">
