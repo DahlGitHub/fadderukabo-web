@@ -6,7 +6,7 @@ import { db } from '../../../firebase';
 import { TableSkeleton } from '@/components/TableSkeleton';
 import { getSession } from 'next-auth/react';
 
-const groups = () => {
+const Groups = () => {
   const [data, setData] = useState<Group[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -61,7 +61,7 @@ const groups = () => {
   );
 };
 
-export default groups;
+export default Groups;
 
 export async function getServerSideProps(context: any) {
   const session = await getSession(context);
@@ -69,7 +69,7 @@ export async function getServerSideProps(context: any) {
   if (!session) {
     return {
       redirect: {
-        destination: "/login", // Redirect to login page
+        destination: '/login', // Redirect to login page
         permanent: false,
       },
     };
@@ -78,4 +78,3 @@ export async function getServerSideProps(context: any) {
   // If the user is authenticated, return the props
   return { props: {} };
 }
-

@@ -5,14 +5,18 @@ import {
   withAuthUser,
   withAuthUserTokenSSR,
 } from 'next-firebase-auth';
-import { columns, DataTable, Authorized } from '@/components/studentlist/StudentData';
+import {
+  columns,
+  DataTable,
+  Authorized,
+} from '@/components/studentlist/StudentData';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { set } from 'date-fns';
 import { TableSkeleton } from '@/components/TableSkeleton';
 import { getSession } from 'next-auth/react';
 
-const studentlist = () => {
+const Studentlist = () => {
   const [data, setData] = useState<Authorized[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -68,7 +72,7 @@ const studentlist = () => {
   );
 };
 
-export default studentlist
+export default Studentlist;
 
 export async function getServerSideProps(context: any) {
   const session = await getSession(context);
@@ -76,7 +80,7 @@ export async function getServerSideProps(context: any) {
   if (!session) {
     return {
       redirect: {
-        destination: "/login", // Redirect to login page
+        destination: '/login', // Redirect to login page
         permanent: false,
       },
     };

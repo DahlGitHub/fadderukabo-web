@@ -19,6 +19,7 @@ interface ConfirmationProps {
 
 const Confirmation = React.forwardRef<HTMLDivElement, ConfirmationProps>(
   ({ onConfirm, message }, ref) => {
+    Confirmation.displayName = 'Confirmation';
     const [isOpen, setIsOpen] = useState(false);
     const handleConfirm = () => {
       onConfirm();

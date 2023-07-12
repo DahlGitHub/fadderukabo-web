@@ -9,7 +9,7 @@ import {
 import FaqPage from '@/components/faq/FaqPage';
 import { getSession } from 'next-auth/react';
 
-const questions = () => {
+const Questions = () => {
   return (
     <DashboardLayout>
       <div className="pb-5">
@@ -23,7 +23,7 @@ const questions = () => {
   );
 };
 
-export default questions;
+export default Questions;
 
 export async function getServerSideProps(context: any) {
   const session = await getSession(context);

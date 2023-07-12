@@ -6,12 +6,7 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { getSession } from 'next-auth/react';
 
-export const metadata = {
-  title: 'Program',
-  description: 'List of people in need of medical assistance',
-};
-
-const program = () => {
+const Program = () => {
   const [data, setData] = useState<Program[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -50,7 +45,7 @@ const program = () => {
   );
 };
 
-export default program
+export default Program;
 
 export async function getServerSideProps(context: any) {
   const session = await getSession(context);
@@ -58,7 +53,7 @@ export async function getServerSideProps(context: any) {
   if (!session) {
     return {
       redirect: {
-        destination: "/login", // Redirect to login page
+        destination: '/login', // Redirect to login page
         permanent: false,
       },
     };
@@ -67,4 +62,3 @@ export async function getServerSideProps(context: any) {
   // If the user is authenticated, return the props
   return { props: {} };
 }
-

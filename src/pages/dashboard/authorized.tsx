@@ -16,7 +16,7 @@ import { db } from '../../../firebase';
 import { TableSkeleton } from '@/components/TableSkeleton';
 import { getSession } from 'next-auth/react';
 
-const authorized = () => {
+const Authorized = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [users, setUsers] = useState<Authorized[]>([]);
   const [allowedEmails, setAllowedEmails] = useState<string[]>([]);
@@ -94,7 +94,7 @@ const authorized = () => {
   );
 };
 
-export default authorized;
+export default Authorized;
 
 export async function getServerSideProps(context: any) {
   const session = await getSession(context);

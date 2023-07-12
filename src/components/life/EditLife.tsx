@@ -59,8 +59,9 @@ const FormSchema = z.object({
   }),
 });
 
-export const EditProgram = React.forwardRef<HTMLDivElement, EditDataProps>(
+export const EditLife= React.forwardRef<HTMLDivElement, EditDataProps>(
   ({ docId, data }, ref) => {
+    EditLife.displayName = 'EditLife';
     const sessionData = useSession();
     const {
       name: authorName,
@@ -272,4 +273,4 @@ export const EditProgram = React.forwardRef<HTMLDivElement, EditDataProps>(
   },
 );
 
-export default EditProgram;
+export default EditLife;

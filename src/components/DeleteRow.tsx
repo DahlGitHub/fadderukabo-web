@@ -23,6 +23,7 @@ interface DeleteRowProps {
 
 const DeleteCollection = React.forwardRef<HTMLDivElement, DeleteRowProps>(
   ({ collectionName, docId, message, imageUrl }, ref) => {
+    DeleteCollection.displayName = 'DeleteCollection';
     const [isOpen, setIsOpen] = useState(false);
 
     const deleteRow = async () => {

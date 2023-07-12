@@ -6,7 +6,7 @@ import { db } from '../../../firebase';
 import { DataTable, columns, Article } from '@/components/articles/ArticleData';
 import { getSession } from 'next-auth/react';
 
-const article = () => {
+const Article = () => {
   const [data, setData] = useState<Article[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -45,7 +45,7 @@ const article = () => {
   );
 };
 
-export default article;
+export default Article;
 
 export async function getServerSideProps(context: any) {
   const session = await getSession(context);

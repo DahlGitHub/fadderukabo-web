@@ -6,7 +6,7 @@ import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { getSession } from 'next-auth/react';
 
-const studentlife = () => {
+const Studentlife = () => {
   const [data, setData] = useState<Life[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -45,7 +45,7 @@ const studentlife = () => {
   );
 };
 
-export default studentlife;
+export default Studentlife;
 
 export async function getServerSideProps(context: any) {
   const session = await getSession(context);
