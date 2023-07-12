@@ -38,8 +38,9 @@ const FormSchema = z.object({
   }),
 });
 
-export const EditFaq = React.forwardRef<HTMLDivElement, EditGroupProps>(
+export const EditGroup = React.forwardRef<HTMLDivElement, EditGroupProps>(
   ({ docId, data }, ref) => {
+    EditGroup.displayName = 'EditGroup';
     const sessionData = useSession();
     const {
       name: authorName,
@@ -164,4 +165,4 @@ export const EditFaq = React.forwardRef<HTMLDivElement, EditGroupProps>(
   },
 );
 
-export default EditFaq;
+export default EditGroup;
