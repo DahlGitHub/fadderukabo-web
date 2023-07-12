@@ -235,7 +235,7 @@ export const AddProgram = () => {
                         <SelectContent>
                           <SelectItem value="Fest">Fest</SelectItem>
                           <SelectItem value="Sport">Sport</SelectItem>
-                          <SelectItem value="Aktivitet">Aktivitet</SelectItem>
+                          <SelectItem value="Sosialt">Sosialt</SelectItem>
                           <SelectItem value="Universitetet">
                             Universitetet
                           </SelectItem>
