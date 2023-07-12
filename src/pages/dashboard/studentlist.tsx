@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import {
-  AuthAction,
-  withAuthUser,
-  withAuthUserTokenSSR,
-} from 'next-firebase-auth';
-import {
   columns,
   DataTable,
   Authorized,
 } from '@/components/studentlist/StudentData';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../firebase';
-import { set } from 'date-fns';
 import { TableSkeleton } from '@/components/TableSkeleton';
 import { getSession } from 'next-auth/react';
 

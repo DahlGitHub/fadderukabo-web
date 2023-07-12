@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import Sidebar from '../sidebar/Sidebar';
 import Header from '../dashboard/Header';
 

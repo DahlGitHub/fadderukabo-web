@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import 'firebase/auth';
 import { useRouter } from 'next/router';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import Image from 'next/image';
 import UsnIcon from 'public/svg/usnicon.svg';
-import { signOut } from 'firebase/auth';
 import GoogleIcon from 'public/svg/google.svg';
 import { signIn, useSession } from 'next-auth/react';
 import { toast } from '../ui/use-toast';

@@ -33,14 +33,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import React from 'react';
-
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '../ui/tooltip';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import Image from 'next/image';
 import EditArticle from './EditArticle';
@@ -120,7 +112,12 @@ export const columns: ColumnDef<Article>[] = [
     cell: ({ row }) => {
       const data = row.original;
       return (
-        <AuthorAvatar authorName={data.authorName} authorEmail={data.authorEmail} authorPhotoURL={data.authorPhotoURL} updatedAt={data.updatedAt} />
+        <AuthorAvatar
+          authorName={data.authorName}
+          authorEmail={data.authorEmail}
+          authorPhotoURL={data.authorPhotoURL}
+          updatedAt={data.updatedAt}
+        />
       );
     },
   },

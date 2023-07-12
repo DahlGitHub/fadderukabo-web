@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { TableSkeleton } from '@/components/TableSkeleton';
 import { DataTable, Life, columns } from '@/components/life/LifeData';
-import { collection, doc, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { getSession } from 'next-auth/react';
 

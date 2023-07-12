@@ -3,9 +3,8 @@ import {
   collection,
   onSnapshot,
 } from 'firebase/firestore';
-import { auth, db } from '../../../firebase';
+import { db } from '../../../firebase';
 import { columns, DataTable, Faq } from './FaqData';
-import AddFaq from './AddFaq';
 
 export default function StudentListPage() {
   const [data, setData] = useState<Faq[]>([]);

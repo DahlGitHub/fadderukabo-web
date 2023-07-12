@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { collection, addDoc } from 'firebase/firestore';
-import { auth, db } from '../../../firebase';
+import { db } from '../../../firebase';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -19,7 +18,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import * as z from 'zod';
+import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import {

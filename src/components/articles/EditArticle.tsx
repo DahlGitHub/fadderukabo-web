@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
-import { auth, db } from '../../../firebase';
+import { collection, doc, updateDoc } from 'firebase/firestore';
+import { db } from '../../../firebase';
 
 import { Button } from '@/components/ui/button';
 import {

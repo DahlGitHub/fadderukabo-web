@@ -1,23 +1,22 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { collection, addDoc, doc, updateDoc } from 'firebase/firestore';
-import { auth, db } from '../../../firebase';
+import { doc, updateDoc } from 'firebase/firestore';
+import {  db } from '../../../firebase';
 
 import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import * as z from 'zod';
+import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Edit, Plus } from 'lucide-react';
+import { Edit} from 'lucide-react';
 
 import { Textarea } from '../ui/textarea';
 import { Faq } from './FaqData';

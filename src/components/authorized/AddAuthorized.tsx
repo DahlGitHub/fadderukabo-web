@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
-import { auth, db } from '../../../firebase';
-import * as z from 'zod';
+import { db } from '../../../firebase';
+import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus } from 'lucide-react';

@@ -1,4 +1,4 @@
-import { AlignLeft, LayoutGrid } from 'lucide-react';
+import { AlignLeft } from 'lucide-react';
 import { UserNav } from '../UserNav';
 
 const Header = (props: {

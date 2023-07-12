@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import * as XLSX from 'xlsx';
+import XLSX from 'xlsx';
 import { toast } from '../ui/use-toast';
 
 import {
@@ -11,7 +11,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { addDoc, collection } from 'firebase/firestore';
-import { auth, db } from '../../../firebase';
+import { db } from '../../../firebase';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '../ui/dialog';
 import { Loader2, Plus, Sheet, Upload } from 'lucide-react';

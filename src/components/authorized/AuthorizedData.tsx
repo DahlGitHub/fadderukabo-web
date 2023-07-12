@@ -32,10 +32,9 @@ import moment from 'moment';
 import Confirmation from '../Confirmation';
 import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { db } from '../../../firebase';
-import React, { useRef } from 'react';
+import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import AddAuthorized from './AddAuthorized';
-import { useSession } from 'next-auth/react';
 import { toast } from '../ui/use-toast';
 
 export type Authorized = {
