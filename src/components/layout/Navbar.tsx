@@ -21,40 +21,17 @@ const components: {
   id?: string;
 }[] = [
   {
-    title: 'Alert Dialog',
-    href: '/program',
+    title: '1',
+    href: '/',
     description:
-      'A modal dialog that interrupts the user with important content and expects a response.',
-    id: 'alert-dialog',
+      '',
+    id: '',
   },
   {
-    title: 'Hover Card',
-    href: '/docs/primitives/hover-card',
+    title: '',
+    href: '/',
     description:
-      'For sighted users to preview content available behind a link.',
-  },
-  {
-    title: 'Progress',
-    href: '/docs/primitives/progress',
-    description:
-      'Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.',
-  },
-  {
-    title: 'Scroll-area',
-    href: '/docs/primitives/scroll-area',
-    description: 'Visually or semantically separates content.',
-  },
-  {
-    title: 'Tabs',
-    href: '/docs/primitives/tabs',
-    description:
-      'A set of layered sections of content—known as tab panels—that are displayed one at a time.',
-  },
-  {
-    title: 'Tooltip',
-    href: '/docs/primitives/tooltip',
-    description:
-      'A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.',
+      '',
   },
 ];
 
@@ -79,24 +56,17 @@ export function Navbar() {
                     className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
                     href="/"
                   >
-                    <div className="mb-2 mt-4 text-lg font-medium">
-                      shadcn/ui
-                    </div>
-                    <p className="text-sm leading-tight text-muted-foreground">
-                      Beautifully designed components built with Radix UI and
-                      Tailwind CSS.
-                    </p>
                   </Link>
                 </NavigationMenuLink>
               </li>
-              <ListItem href="/docs" title="Introduction">
-                Re-usable components built using Radix UI and Tailwind CSS.
+              <ListItem href="/" title="Introduction">
+                R.
               </ListItem>
-              <ListItem href="/docs/installation" title="Installation">
-                How to install dependencies and structure your app.
+              <ListItem href="/" title="Installation">
+                H.
               </ListItem>
-              <ListItem href="/docs/primitives/typography" title="Typography">
-                Styles for headings, paragraphs, lists...etc
+              <ListItem href="/" title="Typography">
+                S.
               </ListItem>
             </ul>
           </NavigationMenuContent>
