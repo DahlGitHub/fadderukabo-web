@@ -1,11 +1,5 @@
 import React from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
-import {
-  AuthAction,
-  withAuthUser,
-  withAuthUserSSR,
-  withAuthUserTokenSSR,
-} from 'next-firebase-auth';
 import FaqPage from '@/components/faq/FaqPage';
 import { getSession } from 'next-auth/react';
 

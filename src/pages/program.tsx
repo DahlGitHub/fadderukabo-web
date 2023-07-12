@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Timestamp, collection, getDocs } from 'firebase/firestore';
+import { Timestamp, collection, getDocs } from 'firebase/firestore/lite';
 import { db } from '../../firebase';
 import { format, getDate, getMonth } from 'date-fns';
 import { nb } from 'date-fns/locale';

@@ -33,7 +33,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import React from 'react';
 
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp } from 'firebase/firestore/lite';
 import DeleteRow from '../DeleteRow';
 import moment from 'moment';
 import Link from 'next/link';
