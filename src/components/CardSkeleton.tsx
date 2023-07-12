@@ -25,9 +25,9 @@ const ProgramCard = () => {
       <Card
         className={cn('w-[280px] hover:scale-105 trasition-all duration-200')}
       >
-        <div className="h-[125px] overflow-hidden">
+        <div className="h-[125px] overflow-hidden rounded-lg">
           <Skeleton
-            className="object-cover h-32 w-96 rounded-t-lg"
+            className="object-cover h-32 w-96 rounded-lg"
           />
         </div>
         <div className="flex">
@@ -47,8 +47,8 @@ const ProgramCard = () => {
                 <Skeleton className='w-20 h-3'/>
               </div>
             </CardHeader>
-            <CardFooter className="flex justify-end py-1">
-              <Skeleton className="uppercase mr-0.5 text-sm"/>
+            <CardFooter className="flex justify-end py-1.5">
+              <Skeleton className="h-5 mr-0.5 text-sm"/>
             </CardFooter>
           </div>
         </div>
