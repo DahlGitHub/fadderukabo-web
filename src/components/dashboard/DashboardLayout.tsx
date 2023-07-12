@@ -1,13 +1,6 @@
 import React, { ReactNode, useEffect, useState } from 'react';
-import Dashboard from './Dashboard';
-import { AuthContextProvider } from '../auth/AuthContext';
-import { auth, db } from '../../../firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import Sidebar from '../sidebar/Sidebar';
 import Header from '../dashboard/Header';
-import { useRouter } from 'next/router';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
 
 interface DefaultLayoutProps {
   children: ReactNode;
