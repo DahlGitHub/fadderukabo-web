@@ -1,20 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Timestamp,
-  collection,
-  getDocs,
-  orderBy,
-  query,
-} from 'firebase/firestore';
+import { Timestamp, collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
-import { format } from 'date-fns';
+import { format, getDate, getMonth } from 'date-fns';
 import { nb } from 'date-fns/locale';
+import ProgramCard from '@/components/ProgramCard';
+import CardSkeleton from '@/components/CardSkeleton';
+import { GraduationCap, Heart, PartyPopper, Trophy } from 'lucide-react';
+import ProgramList from '@/components/ProgramList';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import Layout from '@/components/layout/Layout';
 
 type DataType = {
-  date: Timestamp;
-  time: string;
   title: string;
-  description: string;
+  date: Timestamp;
+  day: Timestamp;
+  time: string;
+  category: string;
+  location: string;
+  image: string;
+  url: string;
+};
+
+const categoryIcon = {
+  Fest: { icon: <PartyPopper size={16} />, color: '#f87171' },
+  Sport: { icon: <Trophy size={16} />, color: '#facc15' },
+  Sosialt: { icon: <Heart size={16} />, color: '#a3e635' },
+  Universitetet: { icon: <GraduationCap size={16} />, color: '#a78bfa' },
 };
 
 const App = () => {
@@ -27,10 +45,10 @@ const App = () => {
       const dataCollection = collection(db, 'programdata');
       const dataSnapshot = await getDocs(dataCollection);
       const docs = dataSnapshot.docs.map(doc => doc.data() as DataType);
-  
+
       // Sort the data by date in ascending order
       docs.sort((a, b) => a.date.toMillis() - b.date.toMillis());
-  
+
       // Sort the data by time within each date in ascending order
       docs.sort((a, b) => {
         if (a.date.toMillis() === b.date.toMillis()) {
@@ -38,10 +56,10 @@ const App = () => {
         }
         return 0;
       });
-  
+
       setData(docs);
     };
-  
+
     fetchData();
   }, []);
 
@@ -55,7 +73,9 @@ const App = () => {
   const map = new Map<string, Map<string, DataType[]>>();
 
   data.forEach(item => {
-    const formattedDate = format(item.date.toDate(), 'do MMM', { locale: nb });
+    const formattedDate = format(item.date.toDate(), 'EEEE, do MMM', {
+      locale: nb,
+    });
 
     if (!map.has(formattedDate)) {
       map.set(formattedDate, new Map<string, DataType[]>());
@@ -82,6 +102,7 @@ const App = () => {
         ]);
 
   return (
+    <Layout>
     <div className="p-6">
       <div className="flex justify-center pb-5">
         <label className="max-w-3xl">
@@ -89,21 +110,23 @@ const App = () => {
             Program
           </h2>
           <p className="text-gray-600 dark:text-gray-400">Dato</p>
-          <select
-            className="mt-1 block w-[150px] py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            value={selectedDate}
-            onChange={e => setSelectedDate(e.target.value)}
-          >
-            <option value="All">Alle</option>
-            {dates.map(date => (
-              <option key={date} value={date}>
-                {date}
-              </option>
-            ))}
-          </select>
+          <Select value={selectedDate} onValueChange={setSelectedDate}>
+            <SelectTrigger>
+              <SelectValue defaultValue="All">All</SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="All">All</SelectItem>
+                {dates.map(date => (
+                  <SelectItem key={date} value={date}>
+                    {date}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </label>
       </div>
-
       {Array.from(filteredMap.entries())
         .sort(
           ([dateA], [dateB]) =>
@@ -111,34 +134,41 @@ const App = () => {
         )
         .map(([date, dateMap]) => (
           <div key={date} className="mb-8">
-            <div className="max-w-3xl mx-auto">
-              <span className='text-muted-foreground'>NB! Mini oversikt, mer info kommer!</span>
-              <h2 className="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
-                {date}
-              </h2>
-              <div className="-my-4 divide-y divide-gray-200 dark:divide-gray-700">
+            <div className="mx-auto">
+              <div className="py-4">
+                <h2 className="text-xl capitalize font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
+                  {date}
+                </h2>
+              </div>
+              <div className="flex md:flex-row">
                 {Array.from(dateMap).map(([time, dataItems]) =>
-                  dataItems.map((item: DataType, index: number) => (
-                    <div
-                      key={index}
-                      className="flex flex-col gap-2 py-4 sm:gap-6 sm:flex-row sm:items-center"
-                    >
-                      <p className="w-32 text-lg font-normal text-gray-500 sm:text-right dark:text-gray-400 shrink-0">
-                        {item.time}
-                      </p>
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                        <a href="#" className="hover:underline">
-                          {item.title}
-                        </a>
-                      </h3>
-                    </div>
-                  )),
+                  dataItems.map((item: DataType, index: number) => {
+                    const { icon, color } =
+                      categoryIcon[item.category as keyof typeof categoryIcon];
+                    return (
+                      <ProgramCard
+                        category={item.category}
+                        location={item.location}
+                        image={item.image}
+                        url={item.url}
+                        key={index}
+                        time={time}
+                        title={item.title}
+                        date={item.date}
+                        day={item.date}
+                        icon={icon}
+                        color={color}
+                      />
+                    );
+                  }),
                 )}
               </div>
             </div>
           </div>
         ))}
     </div>
+    <p id='alert-dialog'></p>
+    </Layout>
   );
 };
 
