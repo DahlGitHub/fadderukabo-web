@@ -67,19 +67,3 @@ const Studentlist = () => {
 };
 
 export default Studentlist;
-
-export async function getServerSideProps(context: any) {
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login', // Redirect to login page
-        permanent: false,
-      },
-    };
-  }
-
-  // If the user is authenticated, return the props
-  return { props: {} };
-}

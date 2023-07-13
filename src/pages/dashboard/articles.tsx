@@ -4,7 +4,6 @@ import { TableSkeleton } from '@/components/TableSkeleton';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { DataTable, columns, Article } from '@/components/articles/ArticleData';
-import { getSession } from 'next-auth/react';
 
 const Article = () => {
   const [data, setData] = useState<Article[]>([]);
@@ -46,19 +45,3 @@ const Article = () => {
 };
 
 export default Article;
-
-export async function getServerSideProps(context: any) {
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/login", // Redirect to login page
-        permanent: false,
-      },
-    };
-  }
-
-  // If the user is authenticated, return the props
-  return { props: {} };
-}

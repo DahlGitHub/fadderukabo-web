@@ -1,7 +1,6 @@
 import React from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import FaqPage from '@/components/faq/FaqPage';
-import { getSession } from 'next-auth/react';
 
 const Questions = () => {
   return (
@@ -18,19 +17,3 @@ const Questions = () => {
 };
 
 export default Questions;
-
-export async function getServerSideProps(context: any) {
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/login", // Redirect to login page
-        permanent: false,
-      },
-    };
-  }
-
-  // If the user is authenticated, return the props
-  return { props: {} };
-}

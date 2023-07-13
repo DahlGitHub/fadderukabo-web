@@ -3,8 +3,8 @@ import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { TableSkeleton } from '@/components/TableSkeleton';
 import { DataTable, Program, columns } from '@/components/program/ProgramData';
 import { collection, onSnapshot } from 'firebase/firestore';
-import { db } from '../../../firebase';
-import { getSession } from 'next-auth/react';
+import { auth, db } from '../../../firebase';
+import { useRouter } from 'next/router';
 
 const Program = () => {
   const [data, setData] = useState<Program[]>([]);
@@ -24,7 +24,6 @@ const Program = () => {
       setIsLoading(false);
     });
 
-    // Detach the listener when the component unmounts
     return () => unsubscribe();
   }, []);
 
@@ -46,19 +45,3 @@ const Program = () => {
 };
 
 export default Program;
-
-export async function getServerSideProps(context: any) {
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login', // Redirect to login page
-        permanent: false,
-      },
-    };
-  }
-
-  // If the user is authenticated, return the props
-  return { props: {} };
-}
