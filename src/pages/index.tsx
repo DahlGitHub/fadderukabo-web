@@ -2,38 +2,24 @@ import * as React from 'react';
 
 import Layout from '@/components/layout/Layout';
 
-/**
- * SVGR Support
- * Caveat: No React Props Type.
- *
- * You can override the next-env if the type is important to you
- * @see https://stackoverflow.com/questions/68103844/how-to-override-next-js-svg-module-declaration
- */
-import Vercel from '/public/svg/vercel.svg';
-import Usn from '/public/svg/usnlogo.svg';
-import Ssn from '/public/svg/ssn.svg';
-import Link from 'next/link';
+
+import { SectionCard } from '@/components/SectionCard';
+import { LandingSection } from '@/components/LandingSection';
 
 export default function HomePage() {
   return (
     <Layout>
-      <section>
-        <div className="relative flex flex-col items-center justify-center py-12 text-center">
-          <a
-            href="https://www.usn.no"
-            className="hover:text-gray-800 dark:hover:text-gray-400"
-          >
-            <Usn className="text-[10rem]" />
-          </a>
-          <h1 className="mt-4 tracking-widest uppercase font-semibold text-xl">
-            Mer info kommer snart, nettsiden er under utvikling
-          </h1>
-          <p className="mt-2 text-sm text-gray-800 font-semibold uppercase text-xl tracking-widest">
-            Se midlertidig <Link className='text-blue-500 underline' href="/program">program</Link>
-          </p>
-          <p className="mt-2 text-sm text-gray-700"></p>
-        </div>
-      </section>
+      <LandingSection />
+      <SectionCard
+        id={'01.'}
+        title={'Fadderuka'}
+        description={
+          'Velkommen til studiestart, og gratulerer med studieplassen! Alle studenter på Universitetet i Sørøst-Norge er velkommen til å delta i fadderuka. Studenter som blir med på det som skjer i studiestarten øker sjansen for å knytte gode sosiale nettverk, som igjen gir bedre psykisk helse, høyere studiemestring og bedre trivsel.'
+        }
+        image={
+          'https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/usnfadder.jpg?alt=media&token=0c000d64-6a89-46ee-af3f-58e08cd73883'
+        }
+      />
     </Layout>
   );
 }
