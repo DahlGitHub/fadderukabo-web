@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { collection, addDoc, doc } from 'firebase/firestore';
-import { db } from '../../../firebase';
+import { auth, db } from '../../../firebase';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -20,7 +20,6 @@ import { useForm } from 'react-hook-form';
 import { Plus } from 'lucide-react';
 
 import { Textarea } from '../ui/textarea';
-import { useSession } from 'next-auth/react';
 
 const FormSchema = z.object({
   question: z
@@ -42,8 +41,6 @@ const FormSchema = z.object({
 });
 
 export const AddFaq = () => {
-  const sessionData = useSession();
-  const { name: authorName, image: authorPhotoURL, email: authorEmail } = sessionData?.data?.user || {};
   const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -54,9 +51,9 @@ export const AddFaq = () => {
     await addDoc(collection(db, 'faqdata'), {
       question: data.question,
       answer: data.answer,
-      authorName,
-      authorPhotoURL,
-      authorEmail,
+      authorName: auth?.currentUser?.displayName,
+      authorPhotoURL: auth?.currentUser?.photoURL,
+      authorEmail: auth?.currentUser?.email,
       updatedAt: Date.now(),
     });
     setIsOpen(false);

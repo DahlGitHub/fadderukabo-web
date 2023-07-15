@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { collection, doc, updateDoc } from 'firebase/firestore';
-import {  db } from '../../../firebase';
+import {  auth, db } from '../../../firebase';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -34,7 +34,6 @@ import {
   ref as r,
   uploadBytesResumable,
 } from 'firebase/storage';
-import { useSession } from 'next-auth/react';
 
 interface EditDataProps {
   data: Life;
@@ -62,12 +61,6 @@ const FormSchema = z.object({
 export const EditLife= React.forwardRef<HTMLDivElement, EditDataProps>(
   ({ docId, data }, ref) => {
     EditLife.displayName = 'EditLife';
-    const sessionData = useSession();
-    const {
-      name: authorName,
-      image: authorPhotoURL,
-      email: authorEmail,
-    } = sessionData?.data?.user || {};
     const [currentData, setCurrentData] = React.useState(data);
     const [isOpen, setIsOpen] = useState(false);
     const [fileUrl, setFileUrl] = useState<File | null>(null);
@@ -113,9 +106,9 @@ export const EditLife= React.forwardRef<HTMLDivElement, EditDataProps>(
           type: data.type,
           image: data.image,
           url: data.url,
-          authorName,
-          authorPhotoURL,
-          authorEmail,
+          authorName: auth?.currentUser?.displayName,
+          authorPhotoURL: auth?.currentUser?.photoURL,
+          authorEmail: auth?.currentUser?.email,
           updatedAt: Date.now(),
         });
         setIsOpen(false); // Close the dialog

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { addDoc, collection } from 'firebase/firestore';
-import { db } from '../../../firebase';
+import { auth, db } from '../../../firebase';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -19,7 +19,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { HexColorInput, HexColorPicker } from 'react-colorful';
 import { Plus } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 
 const FormSchema = z.object({
   title: z.string().min(2, {
@@ -33,12 +32,6 @@ const FormSchema = z.object({
 });
 
 export const AddGroup: React.FC = () => {
-  const sessionData = useSession();
-  const {
-    name: authorName,
-    image: authorPhotoURL,
-    email: authorEmail,
-  } = sessionData?.data?.user || {};
   const [isOpen, setIsOpen] = useState(false);
   const [color, setColor] = useState('#ffffff');
 
@@ -51,9 +44,9 @@ export const AddGroup: React.FC = () => {
       title: data.title,
       hexValue: color,
       url: data.url,
-      authorName,
-      authorPhotoURL,
-      authorEmail,
+      authorName: auth?.currentUser?.displayName,
+      authorPhotoURL: auth?.currentUser?.photoURL,
+      authorEmail: auth?.currentUser?.email,
       updatedAt: Date.now(),
     });
     setIsOpen(false);

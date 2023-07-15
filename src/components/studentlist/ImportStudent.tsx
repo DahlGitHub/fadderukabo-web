@@ -11,13 +11,12 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { addDoc, collection } from 'firebase/firestore';
-import { db } from '../../../firebase';
+import { auth, db } from '../../../firebase';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '../ui/dialog';
 import { Loader2, Plus, Sheet, Upload } from 'lucide-react';
 import { ScrollArea } from '../ui/scroll-area';
 import { Input } from '../ui/input';
-import { useSession } from 'next-auth/react';
 
 type Props = {
   nameValue: string;
@@ -25,8 +24,6 @@ type Props = {
 };
 
 export const ImportStudent = () => {
-  const sessionData = useSession();
-  const { name: authorName, image: authorPhotoURL, email: authorEmail } = sessionData?.data?.user || {};
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<Props[]>([]);
   const [isUploading, setIsUploading] = useState(false);
@@ -89,9 +86,10 @@ export const ImportStudent = () => {
           const docRef = await addDoc(collection(db, 'studentdata'), {
             ...docData,
             status: 'fadder',
-            authorName,
-            authorPhotoURL,
-            authorEmail,
+            authorName: auth?.currentUser?.displayName,
+            authorPhotoURL: auth?.currentUser?.photoURL,
+            authorEmail: auth?.currentUser?.email,
+            updatedAt: Date.now(),
           });
           return docRef.id;
         } else {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { collection, addDoc, doc } from 'firebase/firestore';
-import { db, storage } from '../../../firebase';
+import { auth, db, storage } from '../../../firebase';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -31,7 +31,6 @@ import { format } from 'date-fns';
 import { Calendar } from '../ui/calendar';
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { Loader2 } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 
 const FormSchema = z.object({
   title: z
@@ -64,12 +63,6 @@ const FormSchema = z.object({
 });
 
 export const AddProgram = () => {
-  const sessionData = useSession();
-  const {
-    name: authorName,
-    image: authorPhotoURL,
-    email: authorEmail,
-  } = sessionData?.data?.user || {};
   const [isOpen, setIsOpen] = useState(false);
   const [fileUrl, setFileUrl] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -103,9 +96,9 @@ export const AddProgram = () => {
             location: data.location,
             image: downloadURL,
             url: data.url,
-            authorName,
-            authorPhotoURL,
-            authorEmail,
+            authorName: auth?.currentUser?.displayName,
+            authorPhotoURL: auth?.currentUser?.photoURL,
+            authorEmail: auth?.currentUser?.email,
             updatedAt: Date.now(),
           });
           setIsOpen(false);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Authorized } from './StudentData';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
-import { db } from '../../../firebase';
+import { auth, db } from '../../../firebase';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -27,7 +27,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Edit } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 
 interface EditDataProps {
   data: Authorized;
@@ -49,12 +48,6 @@ const FormSchema = z.object({
 export const EditStudent = React.forwardRef<HTMLDivElement, EditDataProps>(
   ({ docId, data }, ref) => {
     EditStudent.displayName = 'EditStudent';
-    const sessionData = useSession();
-    const {
-      name: authorName,
-      image: authorPhotoURL,
-      email: authorEmail,
-    } = sessionData?.data?.user || {};
     const [currentData, setCurrentData] = React.useState(data);
     const [groupOptions, setGroupOptions] = useState<string[]>([]);
     const [isOpen, setIsOpen] = useState(false);
@@ -83,9 +76,9 @@ export const EditStudent = React.forwardRef<HTMLDivElement, EditDataProps>(
         name: data.name,
         group: data.group,
         status: data.status,
-        authorName,
-        authorPhotoURL,
-        authorEmail,
+        authorName: auth?.currentUser?.displayName,
+        authorPhotoURL: auth?.currentUser?.photoURL,
+        authorEmail: auth?.currentUser?.email,
         updatedAt: Date.now(),
       });
       setIsOpen(false);

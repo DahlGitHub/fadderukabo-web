@@ -5,7 +5,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { collection, addDoc } from 'firebase/firestore';
-import { db } from '../../../firebase';
+import { auth, db } from '../../../firebase';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -29,7 +29,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Plus } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 
 interface AddDataProps {
   groupOptions: string[];
@@ -48,8 +47,6 @@ const FormSchema = z.object({
 });
 
 export const AddStudent: React.FC<AddDataProps> = ({ groupOptions }) => {
-  const sessionData = useSession();
-  const { name: authorName, image: authorPhotoURL, email: authorEmail } = sessionData?.data?.user || {};
   const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -61,9 +58,9 @@ export const AddStudent: React.FC<AddDataProps> = ({ groupOptions }) => {
       name: data.name,
       group: data.group,
       status: data.status,
-      authorName,
-      authorPhotoURL,
-      authorEmail,
+      authorName: auth?.currentUser?.displayName,
+      authorPhotoURL: auth?.currentUser?.photoURL,
+      authorEmail: auth?.currentUser?.email,
       updatedAt: Date.now(),
     });
     setIsOpen(false);

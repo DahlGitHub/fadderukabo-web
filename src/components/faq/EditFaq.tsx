@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { doc, updateDoc } from 'firebase/firestore';
-import {  db } from '../../../firebase';
+import {  auth, db } from '../../../firebase';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -49,12 +49,6 @@ const FormSchema = z.object({
 export const EditFaq = React.forwardRef<HTMLDivElement, EditDataProps>(
   ({ docId, data }, ref) => {
     EditFaq.displayName = 'EditFaq';
-    const sessionData = useSession();
-    const {
-      name: authorName,
-      image: authorPhotoURL,
-      email: authorEmail,
-    } = sessionData?.data?.user || {};
     const [currentData, setCurrentData] = useState(data);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -70,9 +64,9 @@ export const EditFaq = React.forwardRef<HTMLDivElement, EditDataProps>(
       updateDoc(doc(db, 'faqdata', docId), {
         question: data.question,
         answer: data.answer,
-        authorName,
-        authorPhotoURL,
-        authorEmail,
+        authorName: auth?.currentUser?.displayName,
+        authorPhotoURL: auth?.currentUser?.photoURL,
+        authorEmail: auth?.currentUser?.email,
         updatedAt: Date.now(),
       });
       setIsOpen(false);

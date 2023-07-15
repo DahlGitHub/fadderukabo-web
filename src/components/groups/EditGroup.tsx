@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '../../../firebase';
+import { auth, db } from '../../../firebase';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -41,12 +41,6 @@ const FormSchema = z.object({
 export const EditGroup = React.forwardRef<HTMLDivElement, EditGroupProps>(
   ({ docId, data }, ref) => {
     EditGroup.displayName = 'EditGroup';
-    const sessionData = useSession();
-    const {
-      name: authorName,
-      image: authorPhotoURL,
-      email: authorEmail,
-    } = sessionData?.data?.user || {};
     const [currentData, setCurrentData] = useState(data);
     const [color, setColor] = useState(currentData.hexValue);
     const [isOpen, setIsOpen] = useState(false);
@@ -70,9 +64,9 @@ export const EditGroup = React.forwardRef<HTMLDivElement, EditGroupProps>(
         title: data.title,
         hexValue: data.color,
         url: data.url,
-        authorName,
-        authorPhotoURL,
-        authorEmail,
+        authorName: auth?.currentUser?.displayName,
+        authorPhotoURL: auth?.currentUser?.photoURL,
+        authorEmail: auth?.currentUser?.email,
         updatedAt: Date.now(),
       });
       setIsOpen(false);
