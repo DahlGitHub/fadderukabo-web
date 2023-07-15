@@ -1,6 +1,8 @@
 import React, { ReactNode, useState } from 'react';
 import Sidebar from '../sidebar/Sidebar';
 import Header from '../dashboard/Header';
+import useAuth from '../auth/useAuth';
+import Loading from '../Loading';
 
 interface DefaultLayoutProps {
   children: ReactNode;
@@ -9,6 +11,11 @@ interface DefaultLayoutProps {
 const DashboardLayout = ({ children }: DefaultLayoutProps) => {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const loading = useAuth();
+
+  if (loading) {
+    return <div><Loading/></div>;
+  }
 
   return (
     <div>
