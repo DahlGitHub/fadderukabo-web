@@ -10,8 +10,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-40 w-full border-b bg-background">
-        <div className="container flex h-16 items-Scenter space-x-4 sm:justify-between sm:space-x-0">
+      <header className="sticky top-0 z-40 w-full border-b border-gray-100 backdrop-blur bg-white/80">
+        <div className="container flex h-14 items-center space-x-4 sm:justify-between sm:space-x-0">
           
           <Link href="/">
               <Image 

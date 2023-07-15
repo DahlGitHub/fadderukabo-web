@@ -21,17 +21,17 @@ const components: {
   id?: string;
 }[] = [
   {
-    title: '1',
+    title: 'FAQ',
     href: '/',
     description:
-      '',
+      'Coming soon.',
     id: '',
   },
   {
-    title: '',
+    title: 'Student Sørøst',
     href: '/',
     description:
-      '',
+      'Coming soon.',
   },
 ];
 
@@ -40,41 +40,32 @@ export function Navbar() {
     <NavigationMenu>
       <NavigationMenuList>
       <NavigationMenuItem>
-          <Link href="/" legacyBehavior passHref>
+          <Link href="/program" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Home
+              Program
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
+          <NavigationMenuTrigger>Fadder</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-              <li className="row-span-3">
-                <NavigationMenuLink asChild>
-                  <Link
-                    className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                    href="/"
-                  >
-                  </Link>
-                </NavigationMenuLink>
-              </li>
-              <ListItem href="/" title="Introduction">
-                R.
+            <ul className="grid grid-col-1 gap-3 p-6 md:w-[200px] lg:w-[300px]">
+              <ListItem href="/" title="Fadder">
+                Coming soon.
               </ListItem>
-              <ListItem href="/" title="Installation">
-                H.
+              <ListItem href="/" title="Faddergrupper">
+                Coming soon.
               </ListItem>
-              <ListItem href="/" title="Typography">
-                S.
+              <ListItem href="/" title="Trygg Fadder">
+                Coming soon.
               </ListItem>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+          <NavigationMenuTrigger>Ny Student</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+            <ul className="grid grid-col-1 gap-3 p-6 md:w-[200px] lg:w-[300px]">
               {components.map(component => (
                 <ListItem
                   key={component.title}
@@ -89,13 +80,6 @@ export function Navbar() {
               ))}
             </ul>
           </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Link href="/program" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Program
-            </NavigationMenuLink>
-          </Link>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
