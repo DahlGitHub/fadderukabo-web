@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { ArrowUpRight } from 'lucide-react';
 import { format } from 'date-fns';
+import { Button } from './ui/button';
 
 interface ProgramCardProps {
   title: string;
@@ -47,9 +48,9 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
       <Card
         className={cn('w-[330px] hover:scale-105 trasition-all duration-200')}
       >
-        <div className="h-[125px] overflow-hidden rounded-lg">
+        <div className="h-[125px] overflow-hidden rounded mx-2 mt-2">
           <Image
-            className="object-cover h-32 w-96 rounded-lg"
+            className="object-cover h-32 w-96 rounded"
             src={image}
             alt={''}
             height={500}
@@ -58,8 +59,8 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
         </div>
         <div className="flex">
           <div className="flex flex items-center justify-center">
-            <div className="flex flex-col items-center mx-3 px-1">
-              <span className="text-xl font-semibold my-[-5px] font-mono">{dayDisplay}</span>
+            <div className="flex flex-col items-center mx-1 px-1">
+              <Button variant="outline" className="text-xl font-semibold p-3">{dayDisplay}</Button>
               <span className="uppercase text-sm font-bold" style={{color: `${color}`}}>{monthDisplay}</span>
             </div>
           </div>
@@ -70,7 +71,7 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
                   {icon}
                 </span>
               </div>
-              <CardTitle className="text-xl balance">{title}</CardTitle>
+              <CardTitle className="text-md balance font-[poppins] uppercase">{title}</CardTitle>
               <CardDescription>
                 <span className="mr-2">{time}</span>
                 <span>{location}</span>

@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Timestamp, collection, getDocs } from 'firebase/firestore/lite';
+import { Timestamp, collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
-import { format, getDate, getMonth } from 'date-fns';
+import { format } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import ProgramCard from '@/components/ProgramCard';
-import CardSkeleton from '@/components/CardSkeleton';
 import { GraduationCap, Heart, PartyPopper, Trophy } from 'lucide-react';
-import ProgramList from '@/components/ProgramList';
 import {
   Select,
   SelectContent,
@@ -16,6 +14,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import Layout from '@/components/layout/Layout';
+import { TableSkeleton } from '@/components/TableSkeleton';
+import CardSkeleton from '@/components/CardSkeleton';
 
 type DataType = {
   title: string;
@@ -39,9 +39,11 @@ const App = () => {
   const [data, setData] = useState<DataType[]>([]);
   const [selectedDate, setSelectedDate] = useState('All');
   const [dates, setDates] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       const dataCollection = collection(db, 'programdata');
       const dataSnapshot = await getDocs(dataCollection);
       const docs = dataSnapshot.docs.map(doc => doc.data() as DataType);
@@ -58,6 +60,7 @@ const App = () => {
       });
 
       setData(docs);
+      setIsLoading(false);
     };
 
     fetchData();
@@ -95,79 +98,86 @@ const App = () => {
       ? map
       : new Map([
           [
-            format(new Date(selectedDate), 'do MMM', { locale: nb }),
-            map.get(format(new Date(selectedDate), 'do MMM', { locale: nb })) ||
-              new Map(),
+            format(new Date(selectedDate), 'EEEE, do MMM', { locale: nb }),
+            map.get(
+              format(new Date(selectedDate), 'EEEE, do MMM', { locale: nb }),
+            ) || new Map(),
           ],
         ]);
 
   return (
     <Layout>
-    <div className="p-6">
-      <div className="flex justify-center pb-5">
-        <label className="max-w-3xl">
-          <h2 className="text-4xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
-            Program
+      <div className="p-6">
+        <div className="flex justify-center pb-5">
+          <label className="max-w-3xl">
+            <h2 className="text-4xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
+              Program
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400">Dato</p>
+            <Select value={selectedDate} onValueChange={setSelectedDate}>
+              <SelectTrigger>
+                <SelectValue defaultValue="All">All</SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="All">All</SelectItem>
+                  {dates.map(date => (
+                    <SelectItem key={date} value={date}>
+                      {date}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </label>
+        </div>
+        {Array.from(filteredMap.entries())
+  .sort(
+    ([dateA], [dateB]) =>
+      new Date(dateA).getTime() - new Date(dateB).getTime(),
+  )
+  .map(([date, dateMap]) => (
+    <div key={date} className="mb-8">
+      <div className="mx-auto">
+        <div className="py-4">
+          <h2 className="text-xl capitalize font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
+            {date}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400">Dato</p>
-          <Select value={selectedDate} onValueChange={setSelectedDate}>
-            <SelectTrigger>
-              <SelectValue defaultValue="All">All</SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="All">All</SelectItem>
-                {dates.map(date => (
-                  <SelectItem key={date} value={date}>
-                    {date}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </label>
+        </div>
+        <div className="flex md:flex-row">
+          {Array.from(dateMap).map(([time, dataItems]) =>
+            dataItems.map((item: DataType, index: number) => {
+              if (isLoading) {
+                return <CardSkeleton key={index} />;
+              } else {
+                const { icon, color } =
+                  categoryIcon[
+                    item.category as keyof typeof categoryIcon
+                  ];
+                return (
+                  <ProgramCard
+                    category={item.category}
+                    location={item.location}
+                    image={item.image}
+                    url={item.url}
+                    key={index}
+                    time={time}
+                    title={item.title}
+                    date={item.date}
+                    day={item.date}
+                    icon={icon}
+                    color={color}
+                  />
+                );
+              }
+            }),
+          )}
+        </div>
       </div>
-      {Array.from(filteredMap.entries())
-        .sort(
-          ([dateA], [dateB]) =>
-            new Date(dateA).getTime() - new Date(dateB).getTime(),
-        )
-        .map(([date, dateMap]) => (
-          <div key={date} className="mb-8">
-            <div className="mx-auto">
-              <div className="py-4">
-                <h2 className="text-xl capitalize font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
-                  {date}
-                </h2>
-              </div>
-              <div className="flex md:flex-row">
-                {Array.from(dateMap).map(([time, dataItems]) =>
-                  dataItems.map((item: DataType, index: number) => {
-                    const { icon, color } =
-                      categoryIcon[item.category as keyof typeof categoryIcon];
-                    return (
-                      <ProgramCard
-                        category={item.category}
-                        location={item.location}
-                        image={item.image}
-                        url={item.url}
-                        key={index}
-                        time={time}
-                        title={item.title}
-                        date={item.date}
-                        day={item.date}
-                        icon={icon}
-                        color={color}
-                      />
-                    );
-                  }),
-                )}
-              </div>
-            </div>
-          </div>
-        ))}
     </div>
-    <p id='alert-dialog'></p>
+  ))}
+      </div>
+      <p id="alert-dialog"></p>
     </Layout>
   );
 };
