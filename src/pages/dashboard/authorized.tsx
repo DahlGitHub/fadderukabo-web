@@ -14,7 +14,6 @@ import {
 } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { TableSkeleton } from '@/components/TableSkeleton';
-import { getSession } from 'next-auth/react';
 
 const Authorized = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -55,9 +54,8 @@ const Authorized = () => {
         console.log('Error fetching data:', error);
       }
     };
-
+    setIsLoading(false)
     fetchData();
-    setIsLoading(false);
   }, []);
 
   // Map all emails in allowedEmails and check if each exists in users
@@ -68,11 +66,12 @@ const Authorized = () => {
     } else {
       return {
         id: email,
-        image:
+        photoURL:
           'https://www.gstatic.com/identity/boq/profilepicturepicker/photo_silhouette_e02a5f5deb3ffc173119a01bc9575490.png',
-        name: 'Invalid name',
+        displayName: 'Invalid name',
         email: email,
-        createdAt: 9999999999999999,
+        created: 9999999999999999,
+        signedIn: 9999999999999999,
       };
     }
   });

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '../../../firebase';
+import { auth, db } from '../../../firebase';
 import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,7 +18,6 @@ import {
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
 import { Input } from '../ui/input';
 import { toast } from '../ui/use-toast';
-import { useSession } from 'next-auth/react';
 
 const FormSchema = z.object({
   email: z
@@ -32,8 +31,6 @@ const FormSchema = z.object({
 });
 
 export const AddAuthorized = () => {
-  const sessionData = useSession();
-  const { name: authorName, image: authorPhotoURL, email: authorEmail } = sessionData?.data?.user || {};
   const [isOpen, setIsOpen] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -54,9 +51,10 @@ export const AddAuthorized = () => {
     if (querySnapshot.empty) {
     await addDoc(collection(db, 'allowedEmails'), {
       email: data.email,
-      authorName,
-      authorPhotoURL,
-      authorEmail,
+      authorName: auth.currentUser?.displayName,
+      authorPhotoURL: auth.currentUser?.photoURL,
+      authorEmail: auth.currentUser?.email,
+      updatedAt: Date.now(),
     });
     setIsOpen(false);
     toast({

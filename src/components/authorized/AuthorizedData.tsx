@@ -31,7 +31,7 @@ import {
 import moment from 'moment';
 import Confirmation from '../Confirmation';
 import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
-import { db } from '../../../firebase';
+import { auth, db } from '../../../firebase';
 import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import AddAuthorized from './AddAuthorized';
@@ -39,22 +39,32 @@ import { toast } from '../ui/use-toast';
 
 export type Authorized = {
   id: string;
-  image: string;
-  name: string;
+  photoURL: string;
+  displayName: string;
   email: string;
-  createdAt: number;
+  created: number;
+  signedIn: number;
 };
 
 const handleDeleteEmail = async (email: string): Promise<void> => {
   try {
+    const currentUser = auth.currentUser;
+
+    // Check if the current user is deleting their own email
+    if (currentUser && currentUser.email === email) {
+      toast({
+        title: 'Error',
+        description: 'You cannot delete your own email',
+      });
+      return;
+    }
 
     // Check if the email is a protected email that should not be deleted
     const protectedEmail = 'fadderstyretbo@gmail.com';
     if (email === protectedEmail) {
       toast({
-        title: 'Permission denied',
-        description: `Cannot delete protected email (${protectedEmail})`,
-        variant: "destructive"
+        title: 'Denied',
+        description: `Cannot delete the protected email: ${protectedEmail}`,
       });
       return;
     }
@@ -68,10 +78,12 @@ const handleDeleteEmail = async (email: string): Promise<void> => {
       await deleteDoc(doc(db, 'allowedEmails', docToDelete.id));
     }
   } catch (error) {
-    console.error('Error deleting email:', error);
+    toast({
+      title: 'Error',
+      description: `${error}`	,
+    })
   }
 };
-
 
 export const columns: ColumnDef<Authorized>[] = [
   {
@@ -83,12 +95,12 @@ export const columns: ColumnDef<Authorized>[] = [
         <div className="flex items-center">
           <Avatar className="w-8 h-8 rounded-full">
             <AvatarImage
-              src={authorized.image}
-              alt={authorized.name}
+              src={authorized.photoURL}
+              alt={authorized.displayName}
             />
-            <AvatarFallback>{authorized.name.charAt(0)}</AvatarFallback>
+            <AvatarFallback>{authorized.displayName.charAt(0)}</AvatarFallback>
           </Avatar>
-          <span className="ml-2">{authorized.name}</span>
+          <span className="ml-2">{authorized.displayName}</span>
         </div>
       );
     },
@@ -112,15 +124,29 @@ export const columns: ColumnDef<Authorized>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'createdAt',
+    accessorKey: 'created',
     header: 'Created',
     cell: ({ row }) => {
-      const created = row.getValue('createdAt');
+      const created = row.getValue('created');
       const date = moment(created as number);
 
       return (
         <div className="flex items-center">
           <span>{date.format('MMM D, YYYY')}</span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: 'signedIn',
+    header: 'Last signed in',
+    cell: ({ row }) => {
+      const signedIn = row.getValue('signedIn');
+      const date = moment(signedIn as number);
+
+      return (
+        <div className="flex items-center">
+          <span>{date.fromNow()}</span>
         </div>
       );
     },
@@ -140,9 +166,13 @@ export const columns: ColumnDef<Authorized>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
             <DropdownMenuSeparator />
+            {/*
+                           <DropdownMenuItem
+                    onClick={() => handleDeleteEmail(row.getValue("email"))}>
+                        Delete
+                </DropdownMenuItem>
+                 */}
             <DropdownMenuItem asChild>
-              
-              
               <Confirmation
                 onConfirm={() => handleDeleteEmail(row.getValue('email'))}
                 message={`Are you sure you want to delete ${row.getValue(
@@ -186,31 +216,31 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       <div className="flex flex-col sm:flex-row justify-end py-4 space-x-2">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="h-8 px-2">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="h-8 px-2">
               <Eye size={16} />
             </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          {table
-            .getAllColumns()
-            .filter(column => column.getCanHide())
-            .map(column => {
-              return (
-                <DropdownMenuCheckboxItem
-                  key={column.id}
-                  className="capitalize"
-                  checked={column.getIsVisible()}
-                  onCheckedChange={value => column.toggleVisibility(!!value)}
-                >
-                  {column.id}
-                </DropdownMenuCheckboxItem>
-              );
-            })}
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <AddAuthorized />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {table
+              .getAllColumns()
+              .filter(column => column.getCanHide())
+              .map(column => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={value => column.toggleVisibility(!!value)}
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                );
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <AddAuthorized />
       </div>
       <div className="rounded-md border">
         <Table>
