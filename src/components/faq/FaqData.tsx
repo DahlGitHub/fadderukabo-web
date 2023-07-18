@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { MoreHorizontal } from 'lucide-react';
+import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -33,11 +33,13 @@ import DeleteRow from '../DeleteRow';
 import EditFaq from './EditFaq';
 import { FaqToolbar } from './FaqToolbar';
 import AuthorAvatar from '../AuthorAvatar';
+import { Badge } from '../ui/badge';
 
 export type Faq = {
   docId: string;
   question: string;
   answer: string;
+  category: string;
   authorName: string;
   authorEmail: string;
   authorPhotoURL: string;
@@ -69,6 +71,31 @@ export const columns: ColumnDef<Faq>[] = [
           <span className="ml-2">{faq.answer}</span>
         </div>
       );
+    },
+  },
+  {
+    accessorKey: 'category',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Category
+          <ArrowUpDown className="ml-2" size={16} />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const faq = row.original;
+      return (
+        <div className="flex items-center">
+          <Badge className="ml-2">{faq.category}</Badge>
+        </div>
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
     },
   },
   {

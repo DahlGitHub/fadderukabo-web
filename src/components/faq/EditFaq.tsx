@@ -21,6 +21,7 @@ import { Edit} from 'lucide-react';
 import { Textarea } from '../ui/textarea';
 import { Faq } from './FaqData';
 import { useSession } from 'next-auth/react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
 interface EditDataProps {
   data: Faq;
@@ -44,6 +45,7 @@ const FormSchema = z.object({
     .max(500, {
       message: 'Answer must be no longer than 500 characters.',
     }),
+    category: z.string(),
 });
 
 export const EditFaq = React.forwardRef<HTMLDivElement, EditDataProps>(
@@ -64,6 +66,7 @@ export const EditFaq = React.forwardRef<HTMLDivElement, EditDataProps>(
       updateDoc(doc(db, 'faqdata', docId), {
         question: data.question,
         answer: data.answer,
+        category: data.category,
         authorName: auth?.currentUser?.displayName,
         authorPhotoURL: auth?.currentUser?.photoURL,
         authorEmail: auth?.currentUser?.email,
@@ -125,7 +128,31 @@ export const EditFaq = React.forwardRef<HTMLDivElement, EditDataProps>(
                     </FormItem>
                   )}
                 />
-
+                <FormField
+                    control={form.control}
+                    name="category"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Category</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={currentData.category}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a category" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="Generelt">Generelt</SelectItem>
+                            <SelectItem value="Fadderuka">Fadderuka</SelectItem>
+                            <SelectItem value="Studentlivet">Studentlivet</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 <Button type="submit">Update</Button>
               </form>
             </Form>

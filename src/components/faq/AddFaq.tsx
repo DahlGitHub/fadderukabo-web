@@ -20,6 +20,7 @@ import { useForm } from 'react-hook-form';
 import { Plus } from 'lucide-react';
 
 import { Textarea } from '../ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
 const FormSchema = z.object({
   question: z
@@ -38,6 +39,7 @@ const FormSchema = z.object({
     .max(500, {
       message: 'Answer must be no longer than 500 characters.',
     }),
+    category: z.string(),
 });
 
 export const AddFaq = () => {
@@ -51,6 +53,7 @@ export const AddFaq = () => {
     await addDoc(collection(db, 'faqdata'), {
       question: data.question,
       answer: data.answer,
+      category: data.category,
       authorName: auth?.currentUser?.displayName,
       authorPhotoURL: auth?.currentUser?.photoURL,
       authorEmail: auth?.currentUser?.email,
@@ -105,7 +108,28 @@ export const AddFaq = () => {
                   </FormItem>
                 )}
               />
-
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                  <FormLabel>Category</FormLabel>
+                  <Select onValueChange={field.onChange}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Generelt">Generelt</SelectItem>
+                      <SelectItem value="Fadderuka">Fadderuka</SelectItem>
+                      <SelectItem value="Studentlivet">Studentlivet</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+                )}
+              />
               <Button type="submit">Add</Button>
             </form>
           </Form>
