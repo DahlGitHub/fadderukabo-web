@@ -37,7 +37,7 @@ const components: {
 
 export function Navbar() {
   return (
-    <NavigationMenu>
+    <NavigationMenu className='font-poppins'>
       <NavigationMenuList>
       <NavigationMenuItem>
           <Link href="/program" legacyBehavior passHref>
@@ -47,7 +47,7 @@ export function Navbar() {
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Fadder</NavigationMenuTrigger>
+          <NavigationMenuTrigger className='text-sm font-light uppercase'>Fadder</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid grid-col-1 gap-3 p-6 md:w-[200px] lg:w-[300px]">
               <ListItem href="/" title="Fadder">

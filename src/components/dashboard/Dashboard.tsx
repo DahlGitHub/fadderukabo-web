@@ -1,4 +1,5 @@
 import { auth } from "../../../firebase";
+import { Button } from "../ui/button";
 
 const Dashboard = () => {
 
@@ -6,7 +7,10 @@ const Dashboard = () => {
     <div className="bg-white dark:bg-gray-900 text-black dark:text-white">
       <div>
         Welcome {auth.currentUser?.displayName}!
-        The dashboard is still in development. <span className='text-4xl'>Also Nati sucks.</span>
+        <div>
+          <Button onClick={() => auth.signOut()}>Sign out</Button>
+        </div>
+        The dashboard is still in development. <span className='text-1xl'>Also Nati sucks.</span>
       </div>
     </div>
   );

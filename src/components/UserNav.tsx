@@ -16,12 +16,20 @@ import { toast } from "./ui/use-toast"
 
 const signOut = () => {
     
-  auth.signOut().then(() => {
-     toast({
-      title: "Signed out",
-      description: "You have been signed out.",
-     })
-  })
+  auth.signOut()
+    .then(() => {
+      toast({
+        title: 'Signed out',
+        description: 'You have been signed out',
+      });
+    })
+    .catch((error) => {
+      // Handle sign out error
+      toast({
+        title: 'Error signing out',
+        description: error.message,
+      })
+    });
  }
 
 export function UserNav() {
@@ -51,7 +59,7 @@ export function UserNav() {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-        <Link href="./" onClick={() => signOut} className="hover:text-red-500 w-full flex">
+        <Link href="./" onClick={signOut} className="hover:text-red-500 w-full flex">
           <LogOut className="mr-2 h-4 w-4" />
           <span>Sign out</span>
         </Link>

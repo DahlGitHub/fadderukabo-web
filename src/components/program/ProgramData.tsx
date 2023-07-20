@@ -118,7 +118,7 @@ export const columns: ColumnDef<Program>[] = [
       const data = row.original;
       return (
         <div className="flex items-center">
-          <Badge className="text-xs bg-purple-700">{data.category}</Badge>
+          <Badge className="text-xs">{data.category}</Badge>
         </div>
       );
     },
