@@ -3,6 +3,7 @@ interface SectionCardProps {
   title: string;
   description: string;
   image: string;
+  color?: string;
   reverse?: boolean;
 }
 
@@ -11,6 +12,7 @@ export const SectionCard: React.FC<SectionCardProps> = ({
   title,
   description,
   image,
+  color,
   reverse,
 }) => {
   return (
@@ -23,13 +25,13 @@ export const SectionCard: React.FC<SectionCardProps> = ({
             </div>
             <div className="md:w-1/2">
               <div className="pb-5 container flex flex-col font-poppins">
-                <span className="font-bold text-xl text-purple-600">
+                <span className={`font-semibold text-2xl ${color}`}>
                   {id}
                 </span>
                 <span className="text-4xl font-bold text-gray-900">
                   {title}
                 </span>
-                <p className="py-5 text-gray-800 tracking-wide leading-6.5 break-normal">
+                <p className="py-5 text-gray-800 tracking-wide leading-6.5 break-normal whitespace-pre-line">
                   {description}
                 </p>
               </div>
@@ -39,13 +41,13 @@ export const SectionCard: React.FC<SectionCardProps> = ({
           <>
             <div className="md:w-1/2">
               <div className="pb-5 container flex flex-col font-poppins">
-                <span className="font-semibold text-2xl text-purple-600">
+                <span className={`font-semibold text-2xl ${color}`}>
                   {id}
                 </span>
                 <span className="text-4xl font-bold text-gray-900">
                   {title}
                 </span>
-                <p className="py-5 text-gray-800 tracking-wide leading-6.5 break-normal">
+                <p className="py-5 text-gray-800 tracking-wide leading-6.5 break-normal whitespace-pre-line">
                   {description}
                 </p>
               </div>
