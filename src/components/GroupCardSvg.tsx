@@ -12,7 +12,7 @@ export const GroupCardSvg: React.FC<GroupCardSvgProps> = ({ hexValue }) => {
         viewBox="0 0 1600 800"
       >
         <rect fill={`${hexValue}/`} width="1600" height="800" />
-        <g fill-opacity="1">
+        <g fillOpacity="1">
           <path
             fill={hexValue}
             opacity="0.7499999999999999"
