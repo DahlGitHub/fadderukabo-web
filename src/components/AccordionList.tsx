@@ -32,7 +32,7 @@ export const AccordionList = ({ accordionData }: AccordionListProps) => {
       {accordionData.map(({ category, items }) => (
         <div key={category} className="mb-10">
           <h2 className="text-sm font-medium text-red-400">{category}</h2>
-          <Accordion type="multiple" collapsible>
+          <Accordion type="multiple">
             {items.map((item, index) => (
               <AccordionItem key={index} value={`item-${index}`}>
                 <AccordionTrigger>{item.question}</AccordionTrigger>
