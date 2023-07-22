@@ -1,29 +1,30 @@
 import React from "react";
-import { AtSign, Boxes, ExternalLink, Facebook, List, PinIcon } from "lucide-react";
+import Link from "next/link";
 
 const FooterItems = () => {
   const sections = [
     {
       title: "Fadderuka",
       links: [
-        { text: "Program", url: "https://flowbite.com/", icon: <ExternalLink /> },
-        { text: "Fadderliste", url: "https://tailwindcss.com/", icon: <List size={16} /> },
-        { text: "Faddergrupper", url: "https://vitejs.dev/", icon: <Boxes size={16} /> },
+        { text: "Program", url: "/program"},
+        { text: "Fadderliste", url: "/fadderliste" },
+        { text: "Faddergrupper", url: "/" },
       ],
     },
     {
       title: "Ny student?",
       links: [
-        { text: "Ofte stilte spørsmål", url: "https://github.com/themesberg/flowbite", icon: <ExternalLink /> },
-        { text: "Student-Sørøst", url: "https://discord.gg/4eeurUVvTy", icon: <ExternalLink /> },
+        { text: "Studentlivet", url: "https://github.com/themesberg/flowbite" },
+        { text: "Student-Sørøst", url: "https://discord.gg/4eeurUVvTy" },
+        { text: "Ofte stilte spørsmål", url: "/info", id:"faq"},
       ],
     },
     {
       title: "Kontakt oss",
       links: [
-        { text: "Gullbringvegen 36, 3800 Bø, Norge", url: "#", icon: <PinIcon size={16} /> },
-        { text: "fadderstyretbo@gmail.com", url: "#", icon: <AtSign size={16} /> },
-        { text: "facebook.com/fadderstyretbo", url: "#", icon: <Facebook size={16} /> },
+        { text: "Gullbringvegen 36, 3800 Bø, Norge", url: "#"},
+        { text: "fadderstyretbo@gmail.com", url: "#" },
+        { text: "facebook.com/fadderstyretbo", url: "#" },
       ],
     },
   ];
@@ -36,10 +37,10 @@ const FooterItems = () => {
           <ul className="text-gray-800 text-xs font-medium">
             {section.links.map((link) => (
               <li key={link.text} className="mb-4 flex items-center">
-                {link.icon}
-                <a href={link.url} className="hover:underline ml-2">
+                
+                <Link href={link.url} className="hover:underline">
                   {link.text}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
