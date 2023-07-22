@@ -1,4 +1,6 @@
 import { AccordionList } from '@/components/AccordionList';
+import FeatureSection from '@/components/FeatureSection';
+import { SSNApp } from '@/components/SSNApp';
 import { SectionCard } from '@/components/SectionCard';
 import Layout from '@/components/layout/Layout';
 import {
@@ -7,9 +9,32 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { Calendar, GraduationCap, HelpingHand } from 'lucide-react';
 import { useState } from 'react';
 
 // Assuming you have data from the database in the following format
+const campusFeatures = [
+  {
+    title: 'Faddergrupper',
+    description: 'Faddergruppe',
+    icon: (
+      <GraduationCap className="text-purple-600" size={32} strokeWidth="1.5" />
+    ),
+  },
+  {
+    title: 'Trygg Fadder',
+    description: 'T',
+    icon: <Calendar className="text-purple-600" size={32} strokeWidth="1.5" />,
+  },
+  {
+    title: 'Fadder',
+    description: 'F',
+    icon: (
+      <HelpingHand className="text-purple-600" size={32} strokeWidth="1.5" />
+    ),
+  },
+];
+
 const accordionData = [
   {
     category: 'Category 1',
@@ -43,29 +68,11 @@ export default function Info() {
         }
         color="text-blue-600"
       />
+      <FeatureSection title={'Campus Bø'} sectionNumber={'02.'} color={'text-red-400'} textColor={'text-slate-900'} titleColor={''} bgColor={'bg-orange-50'} features={campusFeatures} iconBgColor={''} />
+      <div id='faq'>
       <AccordionList accordionData={accordionData} />
-      <SectionCard
-        id={'05.'}
-        title={'Student i Sørøst-Norge?'}
-        description={
-          'Last ned appen "Student Sørøst" for å finne alt av arragamenteter, tilbud, leieforhold, snarveier til Canvas, TimeEdit, Min USN, Sikresiden og mye mer annet!\n\nAppen ble nylig lansert i 2021, og er fortsatt under utvikling! Over 90% av alle studentene ved USN har allerede tatt i bruk av appen.'
-        }
-        image={
-          'https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/studentapp.webp?alt=media&token=1f5fbd2a-bd2b-4a2b-9ac1-07eed585438b'
-        }
-        color="text-gray-600"
-      />
-      <div className='flex flex-col text-center items-center'>
-      <span className="text-2xl font-bold text-gray-900">Last ned Student Sørøst</span>
-      <div className='flex flex-row'>
-        <a href="https://apps.apple.com/us/app/student-s%C3%B8r%C3%B8st/id1531470703" target="_blank" rel="noopener noreferrer">
-            <img className='w-1/2 mx-auto' src="https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/apple.png?alt=media&token=8cfa5355-3bee-4cd8-a55e-8f902f782f13" alt="App Store" />
-        </a>
-        <a href="https://play.google.com/store/apps/details?id=no.ssn.studentsorost&gl=NO" target="_blank" rel="noopener noreferrer">
-            <img className='w-1/2 mx-auto' src="https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/googleplay.png?alt=media&token=55d33494-b487-4e90-8220-3e1239bff309" alt="Google Play" />
-        </a>
       </div>
-      </div>
+      <SSNApp />
     </Layout>
   );
 }

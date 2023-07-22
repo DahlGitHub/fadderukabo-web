@@ -2,32 +2,104 @@ import * as React from 'react';
 
 import Layout from '@/components/layout/Layout';
 
-
 import { SectionCard } from '@/components/SectionCard';
 import { LandingSection } from '@/components/LandingSection';
 import FeatureSection from '@/components/FeatureSection';
 import { Calendar, GraduationCap, HelpingHand } from 'lucide-react';
 import { GroupCard } from '@/components/GroupCard';
+import Testimonials from '@/components/Testimonials';
+import { useEffect, useState } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../firebase';
 
 const fadderukafeatures = [
   {
-    title: 'Faddergrupper',
-    description: 'Faddergruppe',
-    icon: <GraduationCap className='text-purple-600' size={32} stroke-width='1.5' />,
+    title: 'Faddere',
+    description: 'Campus med mange faddere, alle fadderne gleder seg til å møte dere!',
+    icon: (
+      <GraduationCap className="text-gray-100" size={24} strokeWidth="1.5" />
+    ),
   },
   {
     title: 'Trygg Fadder',
-    description: 'T',
-    icon: <Calendar className='text-purple-600' size={32} stroke-width='1.5'  />,
+    description: 'Aktiviteter på dagen og kvelden, vi ønsker en uke for alle.',
+    icon: <Calendar className="text-gray-100" size={24} strokeWidth="1.5" />,
   },
   {
-    title: 'Fadder',
-    description: 'F',
-    icon: <HelpingHand className='text-purple-600' size={32} stroke-width='1.5'  />,
+    title: 'Faddergrupper',
+    description: 'Faddergruppene dekker mange studier, alt fra års-, bachelor- og masterstudier.',
+    icon: (
+      <HelpingHand className="text-gray-100" size={24} strokeWidth="1.5" />
+    ),
   },
 ];
 
+interface TestimonialData {
+  docId: string;
+  name: string;
+  major: string;
+  color: string;
+  message: string;
+}
+
 export default function HomePage() {
+  const [testimonialsData, setTestimonialsData] = React.useState<
+    TestimonialData[]
+  >([]);
+  const [faddereCount, setFaddereCount] = useState(0);
+  const [programDataCount, setProgramDataCount] = useState(0);
+  const [groupDataCount, setGroupDataCount] = useState(0);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'testimonials'));
+        const testimonials = querySnapshot.docs.map(
+          doc => doc.data() as TestimonialData,
+        );
+        setTestimonialsData(testimonials);
+      } catch (error) {
+        console.error('Error fetching testimonials:', error);
+      }
+    };
+
+    const fetchFaddereCount = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'studentdata'));
+        setFaddereCount(querySnapshot.size);
+      } catch (error) {
+        console.error('Error fetching faddere count:', error);
+      }
+    };
+
+    const fetchProgramDataCount = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'programdata'));
+        setProgramDataCount(querySnapshot.size);
+      } catch (error) {
+        console.error('Error fetching programdata count:', error);
+      }
+    };
+
+    const fetchGroupDataCount = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'groupdata'));
+        setGroupDataCount(querySnapshot.size);
+      } catch (error) {
+        console.error('Error fetching groupdata count:', error);
+      }
+    };
+
+    fetchTestimonials();
+    fetchFaddereCount();
+    fetchProgramDataCount();
+    fetchGroupDataCount();
+  }, []);
+
+  fadderukafeatures[0].title = `${faddereCount} Faddere`;
+  fadderukafeatures[1].title = `${programDataCount} Arrangementer`;
+  fadderukafeatures[2].title = `${groupDataCount} Faddergrupper`;
+
   return (
     <Layout>
       <LandingSection />
@@ -42,13 +114,20 @@ export default function HomePage() {
           'https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/usnfadder.jpg?alt=media&token=0c000d64-6a89-46ee-af3f-58e08cd73883'
         }
       />
-      <div className='bg-gray-800 py-10'>
-      <FeatureSection title={'Fadderuka'} sectionNumber={'02.'} color={"text-purple-600"} features={fadderukafeatures} />
-    </div>
-    <GroupCard />
-    <div className='min-h-screen'>
-        Hello
-    </div>
+      <div className="py-10">
+        <FeatureSection
+          title={'Fadderuka'}
+          sectionNumber={'02.'}
+          color={'text-purple-600'}
+          features={fadderukafeatures}
+          bgColor="bg-slate-800"
+          textColor={'text-slate-400'}
+          titleColor={'text-slate-200'}
+          iconBgColor='bg-purple-600/40'
+        />
+      </div>
+
+      <Testimonials testimonials={testimonialsData} />
     </Layout>
   );
 }
