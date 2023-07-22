@@ -36,6 +36,7 @@ const components: {
 ];
 
 export function Navbar() {
+  const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false)
   return (
     <NavigationMenu className='font-poppins'>
       <NavigationMenuList>
@@ -47,39 +48,19 @@ export function Navbar() {
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className='text-sm font-light uppercase'>Fadder</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid grid-col-1 gap-3 p-6 md:w-[200px] lg:w-[300px]">
-              <ListItem href="/" title="Fadder">
-                Coming soon.
-              </ListItem>
-              <ListItem href="/" title="Faddergrupper">
-                Coming soon.
-              </ListItem>
-              <ListItem href="/" title="Trygg Fadder">
-                Coming soon.
-              </ListItem>
-            </ul>
-          </NavigationMenuContent>
+          
+        <Link href="/fadder" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Fadder
+            </NavigationMenuLink>
+          </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Ny Student</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid grid-col-1 gap-3 p-6 md:w-[200px] lg:w-[300px]">
-              {components.map(component => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
-                  id={`component-${component.title
-                    .toLowerCase()
-                    .replace(/\s/g, '-')}`}
-                >
-                  {component.description}
-                </ListItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
+        <Link href="/info" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Ny Student
+            </NavigationMenuLink>
+          </Link>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
