@@ -1,34 +1,7 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
-type MainNavItem = {
-    title: string;
-    href: string;
-    description: string;
-    id?: string;
-};
-
-const mainNavItems: MainNavItem[] = [
-    {
-        title: 'Program',
-        href: '/program',
-        description: 'Se programmet for fadderuka',
-        id: '',
-    },
-    {
-        title: 'Fadder',
-        href: '/fadder',
-        description: 'Bli kjent med fadderne',
-        id: '',
-    },
-];
-
-interface MobileNavProps {
-    items: MainNavItem[];
-    children?: React.ReactNode;
-}
-
-export function MobileNav({ items, children }: MobileNavProps) {
+export function MobileNav() {
 
     return (
       <div
@@ -42,20 +15,15 @@ export function MobileNav({ items, children }: MobileNavProps) {
             <span className="font-bold">He</span>
           </Link>
           <nav className="grid grid-flow-row auto-rows-max text-sm">
-            {items.map((item, index) => (
               <Link
-                key={index}
-                href={item.disabled ? "#" : item.href}
+                href="/"
                 className={cn(
-                  "flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline",
-                  item.disabled && "cursor-not-allowed opacity-60"
+                  "flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline"
                 )}
               >
-                {item.title}
+                Title
               </Link>
-            ))}
           </nav>
-          {children}
         </div>
       </div>
     )
