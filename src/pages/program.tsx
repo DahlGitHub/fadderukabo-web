@@ -5,19 +5,13 @@ import { format } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import ProgramCard from '@/components/ProgramCard';
 import { GraduationCap, Heart, PartyPopper, Trophy } from 'lucide-react';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+
 import Layout from '@/components/layout/Layout';
-import { TableSkeleton } from '@/components/TableSkeleton';
-import CardSkeleton from '@/components/CardSkeleton';
+
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { DatePicker } from '@/components/DateProgram';
+import { CategoryButtons } from '@/components/CategoryButtons';
+import { cn } from '@/lib/utils';
 
 type DataType = {
   title: string;
@@ -39,16 +33,12 @@ const categoryIcon = {
 
 const App = () => {
   const [data, setData] = useState<DataType[]>([]);
-  const [selectedDate, setSelectedDate] = useState('All');
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [dates, setDates] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // New State for Categories
   const [selectedCategories, setSelectedCategories] = useState(
     new Set<string>(),
   );
 
-  // New Function for category buttons
   const toggleCategory = (category: string) => {
     if (selectedCategories.has(category)) {
       setSelectedCategories(prev => {
@@ -63,15 +53,12 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
       const dataCollection = collection(db, 'programdata');
       const dataSnapshot = await getDocs(dataCollection);
       const docs = dataSnapshot.docs.map(doc => doc.data() as DataType);
 
-      // Sort the data by date in ascending order
       docs.sort((a, b) => a.date.toMillis() - b.date.toMillis());
 
-      // Sort the data by time within each date in ascending order
       docs.sort((a, b) => {
         if (a.date.toMillis() === b.date.toMillis()) {
           return a.time.localeCompare(b.time);
@@ -80,7 +67,6 @@ const App = () => {
       });
 
       setData(docs);
-      setIsLoading(false);
     };
 
     fetchData();
@@ -90,7 +76,7 @@ const App = () => {
     const uniqueDates = Array.from(
       new Set(data.map(item => format(item.date.toDate(), 'yyyy-MM-dd'))),
     );
-    setDates(uniqueDates); // Removed sort call
+    setDates(uniqueDates);
   }, [data]);
 
   const map = new Map<string, Map<string, DataType[]>>();
@@ -114,126 +100,101 @@ const App = () => {
   });
 
   const filteredMap =
-    selectedDate === 'All'
+    selectedDate === undefined
       ? map
       : new Map([
           [
-            format(new Date(selectedDate), 'EEEE, do MMM', { locale: nb }),
-            map.get(
-              format(new Date(selectedDate), 'EEEE, do MMM', { locale: nb }),
-            ) || new Map(),
+            format(selectedDate, 'EEEE, do MMM', { locale: nb }),
+            map.get(format(selectedDate, 'EEEE, do MMM', { locale: nb })) ||
+              new Map(),
           ],
         ]);
 
   return (
     <Layout>
       <div className="p-6">
-        <div className="flex justify-center pb-5">
+        <div className="flex justify-center pb-5 z-10 font-poppins">
           <label className="max-w-3xl">
             <h2 className="text-4xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
               Program
             </h2>
-            <p className="text-gray-600 dark:text-gray-400">Dato</p>
-            <Select value={selectedDate} onValueChange={setSelectedDate}>
-              <SelectTrigger>
-                <SelectValue defaultValue="All">All</SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="All">All</SelectItem>
-                  {dates.map(date => (
-                    <SelectItem key={date} value={date}>
-                      {date}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            <DatePicker
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              dates={dates}
+            />
           </label>
         </div>
-
-        <div className="grid grid-cols-4 gap-4 mb-5 max-w-xl mx-auto font-poppins">
-          {Object.entries(categoryIcon).map(([category, { icon, color }]) => (
-            <Button
-              className='h-20' style = {{borderColor: color}}
-              key={category}
-              variant={selectedCategories.has(category) ? 'secondary' : 'outline'}
-              onClick={() => toggleCategory(category)}
-            ><div className='flex flex-col justify-center items-center'>
-              <span className='my-2'>{icon}</span>
-              <span className='text-xs'>{category}</span>
-            </div>
-              
-            </Button>
-          ))}
-        </div>
+        <CategoryButtons
+          selectedCategories={selectedCategories}
+          toggleCategory={toggleCategory}
+        />
         {Array.from(filteredMap.entries())
-  .sort(
-    ([dateA], [dateB]) =>
-      new Date(dateA).getTime() - new Date(dateB).getTime(),
-  )
-  .map(([date, dateMap]) => {
-    // Get all items in current dateMap
-    const allItemsInCurrentDate = Array.from(dateMap).reduce(
-      (acc, [time, dataItems]) => [...acc, ...dataItems],
-      [] as DataType[],
-    );
+          .sort(
+            ([dateA], [dateB]) =>
+              new Date(dateA).getTime() - new Date(dateB).getTime(),
+          )
+          .map(([date, dateMap]) => {
+            // Get all items in current dateMap
+            const allItemsInCurrentDate = Array.from(dateMap).reduce(
+              (acc, [time, dataItems]) => [...acc, ...dataItems],
+              [] as DataType[],
+            );
 
-    // Check if there's any item in the selected categories
-    const hasItemInSelectedCategories = allItemsInCurrentDate.some(
-      (item: DataType) => selectedCategories.has(item.category),
-    );
+            // Check if there's any item in the selected categories
+            const hasItemInSelectedCategories = allItemsInCurrentDate.some(
+              (item: DataType) => selectedCategories.has(item.category),
+            );
 
-    // If there's no item in the selected categories, don't render the date section
-    if (!hasItemInSelectedCategories && selectedCategories.size > 0) return null;
+            // If there's no item in the selected categories, don't render the date section
+            if (!hasItemInSelectedCategories && selectedCategories.size > 0)
+              return null;
 
-    return (
-      <div key={date} className="mb-8">
-        <div className="mx-auto md:max-w-xl">
-          <div className="py-4">
-            <h2 className="text-2xl capitalize font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
-              {date}
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 gap-4">
-            {Array.from(dateMap).map(([time, dataItems]) =>
-              dataItems.map((item: DataType, index: number) => {
-                // Added filtering here
-                if (
-                  isLoading ||
-                  selectedCategories.size === 0 ||
-                  selectedCategories.has(item.category)
-                ) {
-                  const { icon, color } =
-                    categoryIcon[
-                      item.category as keyof typeof categoryIcon
-                    ];
-                  return (
-                    <Card className="w-full text-left">
-                      <ProgramCard
-                        category={item.category}
-                        location={item.location}
-                        image={item.image}
-                        url={item.url}
-                        key={index}
-                        time={time}
-                        title={item.title}
-                        day={item.date}
-                        icon={icon}
-                        color={color}
-                      />
-                    </Card>
-                  );
-                }
-              }),
-            )}
-          </div>
-        </div>
+            return (
+              <div key={date} className="mb-8 z-10">
+                <div className="mx-auto md:max-w-xl">
+                  <div className="py-4">
+                    <h2 className="text-2xl capitalize font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
+                      {date}
+                    </h2>
+                  </div>
+                  <div className="grid grid-cols-1 gap-4">
+                    {Array.from(dateMap).map(([time, dataItems]) =>
+                      dataItems.map((item: DataType, index: number) => {
+                        // Added filtering here
+                        if (
+                          selectedCategories.size === 0 ||
+                          selectedCategories.has(item.category)
+                        ) {
+                          const { icon, color } =
+                            categoryIcon[
+                              item.category as keyof typeof categoryIcon
+                            ];
+                          return (
+                            <Card key={index}>
+                              <ProgramCard
+                                category={item.category}
+                                location={item.location}
+                                image={item.image}
+                                url={item.url}
+                                key={index}
+                                time={time}
+                                title={item.title}
+                                day={item.date}
+                                icon={icon}
+                                color={color}
+                              />
+                            </Card>
+                          );
+                        }
+                      }),
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
       </div>
-    );
-  })}
-      </div>
-      <p id="alert-dialog"></p>
     </Layout>
   );
 };

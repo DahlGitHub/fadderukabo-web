@@ -12,6 +12,7 @@ import Image from 'next/image';
 import { ArrowUpRight } from 'lucide-react';
 import { format } from 'date-fns';
 import { nb } from 'date-fns/locale';
+import Link from 'next/link';
 
 interface ProgramCardProps {
   title: string;
@@ -40,9 +41,10 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
 
   return (
     <div className="relative">
+      <Link href={url} target="_blank">
       <ArrowUpRight className="absolute top-0 right-0 m-2" size={20} />
       <div>
-        <Card className={cn('flex flex-row border-none shadow-none')}>
+        <Card className={cn('flex flex-row border-none shadow-none hover:bg-slate-100')}>
           <div className="relative w-24 h-24 overflow-hidden rounded m-2">
             <Image
               className="object-cover rounded"
@@ -72,6 +74,7 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
           </CardHeader>
         </Card>
       </div>
+      </Link>
     </div>
   );
 };
