@@ -47,7 +47,7 @@ export const LandingSection = () => {
   };
 
   return (
-    <div className="container py-5 pb-5 min-h-screen">
+    <div className="container py-5 pb-5 min-h-screen flex justify-center mt-20">
       <div
         aria-hidden="true"
         className="absolute inset-0 top-60 grid grid-cols-2 -space-x-52 opacity-50 dark:opacity-30"
@@ -81,7 +81,7 @@ export const LandingSection = () => {
         <div className="md:w-2/3 container">
           <img
             src={
-              'https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/usnfadder.jpg?alt=media&token=0c000d64-6a89-46ee-af3f-58e08cd73883'
+              'https://cdn.discordapp.com/attachments/1075240291226890384/1132791490679165060/Studiestart-illustrasjon-16-9.png_article.png'
             }
             className="w-full rounded"
           />

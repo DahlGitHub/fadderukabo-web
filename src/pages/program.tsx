@@ -168,54 +168,70 @@ const App = () => {
           ))}
         </div>
         {Array.from(filteredMap.entries())
-          .sort(
-            ([dateA], [dateB]) =>
-              new Date(dateA).getTime() - new Date(dateB).getTime(),
-          )
-          .map(([date, dateMap]) => (
-            <div key={date} className="mb-8">
-              <div className="mx-auto md:max-w-xl">
-                <div className="py-4">
-                  <h2 className="text-2xl capitalize font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
-                    {date}
-                  </h2>
-                </div>
-                <div className="grid grid-cols-1 gap-4">
-                  {Array.from(dateMap).map(([time, dataItems]) =>
-                    dataItems.map((item: DataType, index: number) => {
-                      // Added filtering here
-                      if (
-                        isLoading ||
-                        selectedCategories.size === 0 ||
-                        selectedCategories.has(item.category)
-                      ) {
-                        const { icon, color } =
-                          categoryIcon[
-                            item.category as keyof typeof categoryIcon
-                          ];
-                        return (
-                          <Card className="w-full text-left">
-                            <ProgramCard
-                              category={item.category}
-                              location={item.location}
-                              image={item.image}
-                              url={item.url}
-                              key={index}
-                              time={time}
-                              title={item.title}
-                              day={item.date}
-                              icon={icon}
-                              color={color}
-                            />
-                          </Card>
-                        );
-                      }
-                    }),
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
+  .sort(
+    ([dateA], [dateB]) =>
+      new Date(dateA).getTime() - new Date(dateB).getTime(),
+  )
+  .map(([date, dateMap]) => {
+    // Get all items in current dateMap
+    const allItemsInCurrentDate = Array.from(dateMap).reduce(
+      (acc, [time, dataItems]) => [...acc, ...dataItems],
+      [] as DataType[],
+    );
+
+    // Check if there's any item in the selected categories
+    const hasItemInSelectedCategories = allItemsInCurrentDate.some(
+      (item: DataType) => selectedCategories.has(item.category),
+    );
+
+    // If there's no item in the selected categories, don't render the date section
+    if (!hasItemInSelectedCategories && selectedCategories.size > 0) return null;
+
+    return (
+      <div key={date} className="mb-8">
+        <div className="mx-auto md:max-w-xl">
+          <div className="py-4">
+            <h2 className="text-2xl capitalize font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
+              {date}
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 gap-4">
+            {Array.from(dateMap).map(([time, dataItems]) =>
+              dataItems.map((item: DataType, index: number) => {
+                // Added filtering here
+                if (
+                  isLoading ||
+                  selectedCategories.size === 0 ||
+                  selectedCategories.has(item.category)
+                ) {
+                  const { icon, color } =
+                    categoryIcon[
+                      item.category as keyof typeof categoryIcon
+                    ];
+                  return (
+                    <Card className="w-full text-left">
+                      <ProgramCard
+                        category={item.category}
+                        location={item.location}
+                        image={item.image}
+                        url={item.url}
+                        key={index}
+                        time={time}
+                        title={item.title}
+                        day={item.date}
+                        icon={icon}
+                        color={color}
+                      />
+                    </Card>
+                  );
+                }
+              }),
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  })}
       </div>
       <p id="alert-dialog"></p>
     </Layout>

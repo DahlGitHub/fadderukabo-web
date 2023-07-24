@@ -102,7 +102,9 @@ export default function HomePage() {
 
   return (
     <Layout>
+      <div className='bg-gradiant-to-b from-white to-slate-100'>
       <LandingSection />
+      </div>
       <SectionCard
         color="text-purple-600"
         id={'01.'}
