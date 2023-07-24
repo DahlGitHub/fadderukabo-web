@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Avatar, AvatarFallback } from './ui/avatar';
 
 interface Testimonial {
   docId: string;
@@ -81,8 +82,14 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
               {chunk.map((testimonial, index) => (
                 <li key={index} className="text-sm leading-6">
                   <div className="relative group">
-                    <div className="relative p-6 space-y-6 leading-none rounded-lg bg-slate-50">
-                      <div className="flex items-center space-x-4">
+                    <div className="relative p-4 space-y-6 leading-none rounded-lg bg-slate-50">
+                      <div className="flex items-center space-x-2">
+                        <Avatar>
+                            <AvatarFallback>
+                                <span className='font-poppins'>{testimonial.name.charAt(0)}</span>
+                                
+                            </AvatarFallback>
+                        </Avatar>
                         <div className="font-poppins">
                           <h3 className="text-sm font-semibold">
                             {testimonial.name}
