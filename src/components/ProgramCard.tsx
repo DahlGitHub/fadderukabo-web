@@ -54,7 +54,7 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
             />
           </div>
           <CardHeader className="relative space-y-0">
-            <div className="absolute z-50 top-[75px] left-[-25px] flex items-center justify-center rounded-full bg-white p-1">
+            <div className="absolute z-10 top-[75px] left-[-25px] flex items-center justify-center rounded-full bg-white p-1">
               <span
                 style={{ backgroundColor: `${color}` }}
                 className="rounded-full p-1 text-white"
