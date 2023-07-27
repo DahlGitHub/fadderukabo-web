@@ -1,63 +1,36 @@
 import * as React from "react"
 
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { GroupCardSvg } from "./GroupCardSvg"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { ExternalLink } from "lucide-react"; // import arrow icon
+import { GroupCardSvg } from "./GroupCardSvg";
+import Link from "next/link";
 
-export const GroupCard = () => {
+interface GroupCardProps {
+  title: string;
+  color: string;
+  url: string;
+}
+
+export const GroupCard: React.FC<GroupCardProps> = ({ title, color, url }) => {
   return (
-    <Card className="w-[350px]">
-        <div className="rounded">
-            <GroupCardSvg hexValue={"#ff9a12"} />
+    <Link href={url}>
+    <Card className="w-[350px] h-[80px] flex flex-row items-center font-poppins hover:bg-slate-50">
+      <div className="bg-gray-100 p-1 rounded-full w-10 h-10 mx-2">
+        <div className="bg-slate-800 w-8 h-8 rounded-full">
+        <GroupCardSvg hexValue={color} />
         </div>
-        <CardHeader>
-        <CardTitle>Create project</CardTitle>
-        <CardDescription>Deploy your new project in one-click.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form>
-          <div className="grid w-full items-center gap-4">
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" placeholder="Name of your project" />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="framework">Framework</Label>
-              <Select>
-                <SelectTrigger id="framework">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent position="popper">
-                  <SelectItem value="next">Next.js</SelectItem>
-                  <SelectItem value="sveltekit">SvelteKit</SelectItem>
-                  <SelectItem value="astro">Astro</SelectItem>
-                  <SelectItem value="nuxt">Nuxt.js</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </form>
+      </div>
+      <div className="flex-grow">
+        <CardTitle className="font-semibold text-sm">{title}</CardTitle>
+      </div>
+      <CardContent className="flex justify-end mt-2">
+        <div className="mx-2">
+          <ExternalLink />
+        </div>
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline">Cancel</Button>
-        <Button>Deploy</Button>
-      </CardFooter>
+      
     </Card>
+    </Link>
   )
 }
