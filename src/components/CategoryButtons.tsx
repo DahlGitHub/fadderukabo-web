@@ -12,7 +12,7 @@ const categoryIcon = {
   Fest: { icon: <PartyPopper size={16} />, color: '#f87171' },
   Sport: { icon: <Trophy size={16} />, color: '#facc15' },
   Sosialt: { icon: <Heart size={16} />, color: '#a3e635' },
-  USN: { icon: <GraduationCap size={16} />, color: '#a78bfa' },
+  Universitetet: { icon: <GraduationCap size={16} />, color: '#a78bfa' },
 };
 
 export const CategoryButtons: React.FC<CategoryButtonsProps> = ({
