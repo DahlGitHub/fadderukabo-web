@@ -1,4 +1,5 @@
 import { AccordionList } from '@/components/AccordionList';
+import CarouselList from '@/components/CarouselList';
 import FeatureSection from '@/components/FeatureSection';
 import { SSNApp } from '@/components/SSNApp';
 import { SectionCard } from '@/components/SectionCard';
@@ -69,6 +70,7 @@ export default function Info() {
         color="text-blue-600"
       />
       <FeatureSection title={'Campus Bø'} sectionNumber={'02.'} color={'text-red-400'} textColor={'text-slate-900'} titleColor={''} bgColor={'bg-orange-50'} features={campusFeatures} iconBgColor={''} />
+      <CarouselList />
       <div id='faq'>
       <AccordionList accordionData={accordionData} />
       </div>
