@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar, AvatarFallback } from './ui/avatar';
+import { Separator } from './ui/separator';
+import { Quote } from 'lucide-react';
 
 interface Testimonial {
   docId: string;
@@ -82,13 +84,14 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
               {chunk.map((testimonial, index) => (
                 <li key={index} className="text-sm leading-6">
                   <div className="relative group">
-                    <div className="relative p-4 space-y-6 leading-none rounded-lg bg-slate-50">
+                    <div className="relative p-4 space-y-3 leading-none rounded-lg bg-slate-50">
                       <div className="flex items-center space-x-2">
                         <Avatar>
-                            <AvatarFallback>
-                                <span className='font-poppins'>{testimonial.name.charAt(0)}</span>
-                                
-                            </AvatarFallback>
+                          <AvatarFallback>
+                            <span className="font-poppins">
+                              {testimonial.name.charAt(0)}
+                            </span>
+                          </AvatarFallback>
                         </Avatar>
                         <div className="font-poppins">
                           <h3 className="text-sm font-semibold">
@@ -102,19 +105,28 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
                           </p>
                         </div>
                       </div>
+
+                      <Separator />
                       <p className="leading-normal font-poppins flex flex-col">
                         <span
-                          className="text-4xl h-5"
+                          className="h-5"
                           style={{ color: testimonial.color }}
                         >
-                          "
+                          <Quote
+                            fill="currentColor"
+                            size={16}
+                            strokeWidth={0.25}
+                            className="rotate-180"
+                          />
                         </span>
-                        {testimonial.message}
+                        <span className="px-2">
+                          {testimonial.message}
+                        </span>
+
                         <span
-                          className="text-4xl h-5 text-right"
+                          className="h-5 flex justify-end"
                           style={{ color: testimonial.color }}
                         >
-                          "
                         </span>
                       </p>
                     </div>
@@ -125,16 +137,16 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
           ))}
           <div className="absolute inset-x-0 bottom-0 h-96 pointer-events-none bg-gradient-to-t from-white to-transparent rounded-lg"></div>
           {testimonials.length > visibleCount && ( // Add this condition to render the div only when there are more testimonials to show
-          <div className="inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-white pt-32 pb-8 pointer-events-none dark:from-slate-900 absolute">
-            <button
-              type="button"
-              onClick={showMoreTestimonials}
-              className="relative bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 text-sm text-white font-semibold h-12 px-6 rounded-lg flex items-center dark:bg-slate-700 dark:hover:bg-slate-600 pointer-events-auto"
-            >
-              {showMore ? 'Show less...' : 'Show more...'}
-            </button>
-          </div>
-        )}
+            <div className="inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-white pt-32 pb-8 pointer-events-none dark:from-slate-900 absolute">
+              <button
+                type="button"
+                onClick={showMoreTestimonials}
+                className="relative bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 text-sm text-white font-semibold h-12 px-6 rounded-lg flex items-center dark:bg-slate-700 dark:hover:bg-slate-600 pointer-events-auto"
+              >
+                {showMore ? 'Show less...' : 'Show more...'}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>
