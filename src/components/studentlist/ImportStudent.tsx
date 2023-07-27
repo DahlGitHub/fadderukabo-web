@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import XLSX from 'xlsx';
+import * as XLSX from 'xlsx';
 import { toast } from '../ui/use-toast';
 
 import {
