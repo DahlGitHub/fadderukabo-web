@@ -10,7 +10,7 @@ const Dashboard = () => {
         <div>
           <Button onClick={() => auth.signOut()}>Sign out</Button>
         </div>
-        The dashboard is still in development. <span className='text-1xl'>Also Nati sucks.</span>
+        The dashboard is still in development.
       </div>
     </div>
   );

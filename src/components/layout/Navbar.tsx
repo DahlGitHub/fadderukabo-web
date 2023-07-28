@@ -46,7 +46,7 @@ const menuItems: {
   },
   {
     title: 'Fadder',
-    href: '#component1',
+    href: '/fadder',
     description: 'Component 1 description.',
     category: 'Fadder',
   },
