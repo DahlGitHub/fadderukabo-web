@@ -16,23 +16,24 @@ import { useState } from 'react';
 // Assuming you have data from the database in the following format
 const campusFeatures = [
   {
-    title: 'Faddergrupper',
-    description: 'Faddergruppe',
+    title: '39 Studietilbud',
+    description:
+      'Campus Bø har et bredt utvalg av årstudier, bachelorstudier og masterstudier.',
     icon: (
-      <GraduationCap className="text-purple-600" size={32} strokeWidth="1.5" />
+      <GraduationCap className="text-blue-600" size={24} strokeWidth="1.5" />
     ),
   },
   {
-    title: 'Trygg Fadder',
-    description: 'T',
-    icon: <Calendar className="text-purple-600" size={32} strokeWidth="1.5" />,
+    title: '2200+ Studenter',
+    description:
+      'Campus Bø består av over 2000 studenter delt på tre fakulteter.',
+    icon: <Calendar className="text-blue-600" size={24} strokeWidth="1.5" />,
   },
   {
-    title: 'Fadder',
-    description: 'F',
-    icon: (
-      <HelpingHand className="text-purple-600" size={32} strokeWidth="1.5" />
-    ),
+    title: '10+ Organisasjoner',
+    description:
+      'Mye liv året rundt for alle studentene med over 10 aktive organisasjoner.',
+    icon: <HelpingHand className="text-blue-600" size={24} strokeWidth="1.5" />,
   },
 ];
 
@@ -40,8 +41,8 @@ const accordionData = [
   {
     category: 'Category 1',
     items: [
-      { question: 'Question 1', answer: 'Yaay' },
-      { question: 'Question 2', answer: 'eee' },
+      { question: 'Question 1', answer: 'Ja det er mulig [link](https://www.fadderukabo.no) viser deg veien' },
+      { question: 'Question 2', answer: 'eee now let add one [more]() and\n\n one moreeee [yay]()' },
     ],
   },
   {
@@ -69,10 +70,19 @@ export default function Info() {
         }
         color="text-blue-600"
       />
-      <FeatureSection title={'Campus Bø'} sectionNumber={'02.'} color={'text-red-400'} textColor={'text-slate-900'} titleColor={''} bgColor={'bg-orange-50'} features={campusFeatures} iconBgColor={''} />
+      <FeatureSection
+        title={'Campus Bø'}
+        sectionNumber={'02.'}
+        color={'text-blue-600'}
+        textColor={'text-slate-900'}
+        titleColor={''}
+        bgColor={'bg-orange-50'}
+        features={campusFeatures}
+        iconBgColor={'bg-blue-300/30'}
+      />
       <CarouselList />
-      <div id='faq'>
-      <AccordionList accordionData={accordionData} />
+      <div id="faq">
+        <AccordionList accordionData={accordionData} />
       </div>
       <SSNApp />
     </Layout>

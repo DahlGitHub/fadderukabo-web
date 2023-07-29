@@ -73,7 +73,7 @@ const FeatureSection: React.FC<FeatureSectionProps> = ({
                 <h3 className={`mb-2 text-lg font-semibold text-gray-800 ${titleColor}`}>
                   {feature.title}
                 </h3>
-                <p className={`text-gray-500 ${textColor} mx-20`}>
+                <p className={`text-gray-500 ${textColor} md:mx-20`}>
                   {feature.description}
                 </p>
                 </div>
