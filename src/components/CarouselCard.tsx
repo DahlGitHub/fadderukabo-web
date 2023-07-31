@@ -6,18 +6,17 @@ interface CarouselCardProps {
 
 export const CarouselCard = ({ title, image, link }: CarouselCardProps) => {
     return (
-        <a href={link} className="group">
-            <div className="relative h-full w-full rounded-lg overflow-hidden shadow-md">
-                <img
-                    src={image}
-                    alt={title}
-                    className="w-full h-full object-cover transition duration-300 group-hover:opacity-75"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-black/0"></div>
-                <div className="absolute bottom-0 mb-2 ml-4 text-white">
-                    <p className="text-lg font-semibold font-poppins">{title}</p>
+        <a href={link} className="group flex flex-col items-center space-y-2 group-hover:border-blue-500 transition-all duration-300">
+            <div className="relative w-36 h-36 rounded-full border-2 border-slate-500 flex items-center justify-center">
+                <div className="relative w-32 h-32 rounded-full overflow-hidden">
+                    <img
+                        src={image}
+                        alt={title}
+                        className="w-full h-full object-cover"
+                    />
                 </div>
             </div>
+            <p className="text-xs text-center font-poppins text-muted-foreground">{title}</p>
         </a>
     );
 }
