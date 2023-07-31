@@ -25,7 +25,7 @@ export const CategoryButtons: React.FC<CategoryButtonsProps> = ({
         className="h-20"
         style={{ borderColor: color }}
         key={category}
-        variant={selectedCategories.has(category) ? 'secondary' : 'outline'}
+        variant={selectedCategories.has(category) ? 'outline' : 'secondary'}
         onClick={() => toggleCategory(category)}
       >
         <div className="flex flex-col justify-center items-center">
