@@ -70,7 +70,7 @@ const FeatureSection: React.FC<FeatureSectionProps> = ({
                   <span className={`p-4 rounded-full ${iconBgColor}`}>{feature.icon}</span>
                 </div>
                 <div className="text-center">
-                <h3 className={`mb-2 text-lg font-semibold text-gray-800 ${titleColor}`}>
+                <h3 className={`mb-2 text-lg font-semibold ${titleColor}`}>
                   {feature.title}
                 </h3>
                 <p className={`text-gray-500 ${textColor} md:mx-20`}>

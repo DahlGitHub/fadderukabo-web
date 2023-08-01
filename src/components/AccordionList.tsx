@@ -47,11 +47,11 @@ const parseAnswerLinks = (answer: string) => {
         <span className="font-semibold text-2xl text-blue-400">02.</span>
         <span className="text-4xl font-bold text-gray-900">Noe du lurer på?</span>
       </div>
-      {accordionData.map(({ category, items }) => (
+      {accordionData?.map(({ category, items }) => (
         <div key={category} className="mb-10">
           <h2 className="text-sm font-medium text-blue-400">{category}</h2>
           <Accordion type="multiple">
-            {items.map((item, index) => (
+            {items?.map((item, index) => (
               <AccordionItem key={index} value={`item-${index}`}>
                 <AccordionTrigger>{item.question}</AccordionTrigger>
                 <AccordionContent>

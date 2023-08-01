@@ -29,8 +29,9 @@ const CarouselList: React.FC<CarouselListProps> = ({ cards }) => {
                 spaceBetween={25}
                 slidesPerView={2}
                 loop={true}
-                autoplay={{ delay: 1500 }}
-                speed={2000}
+                autoplay={{ delay: 2000 }}
+                speed={700}
+      
                 breakpoints={{
                     320: {
                         slidesPerView: 2,
