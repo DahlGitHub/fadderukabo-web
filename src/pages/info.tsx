@@ -10,8 +10,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { collection, getDocs } from 'firebase/firestore';
 import { Calendar, GraduationCap, HelpingHand } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { db } from '../../firebase';
+import { type } from 'os';
 
 // Assuming you have data from the database in the following format
 const campusFeatures = [
@@ -37,25 +40,85 @@ const campusFeatures = [
   },
 ];
 
-const accordionData = [
-  {
-    category: 'Category 1',
-    items: [
-      { question: 'Question 1', answer: 'Ja det er mulig [link](https://www.fadderukabo.no) viser deg veien' },
-      { question: 'Question 2', answer: 'eee now let add one [more]() and\n\n one moreeee [yay]()' },
-    ],
-  },
-  {
-    category: 'Category 2',
-    items: [
-      { question: 'Question 3', answer: 'Answer 3' },
-      { question: 'Question 4', answer: 'Answer 4' },
-    ],
-  },
-  // Add more categories and items as needed
-];
+// Define the structure of a single FAQ item
+interface FAQItem {
+  question: string;
+  answer: string;
+  category: string;
+}
+
+// Define the structure of a single accordion item
+interface AccordionItem {
+  category: string;
+  items: FAQItem[];
+}
+
+interface CarouselCardProps {
+  title: string;
+  image: string;
+  url: string;
+  type: string;
+}
 
 export default function Info() {
+  const [accordionData, setAccordionData] = useState<AccordionItem[]>([]);
+  const [carouselData, setCarouselData] = useState<CarouselCardProps[]>([]);
+  const [carouselDataStudentLife, setCarouselDataStudentLife] = useState<CarouselCardProps[]>([]);
+
+  useEffect(() => {
+    const fetchAccordionData = async () => {
+      const data: AccordionItem[] = [];
+      const querySnapshot = await getDocs(collection(db, 'faqdata'));
+
+      querySnapshot.forEach(doc => {
+        const item = doc.data() as FAQItem;
+        const categoryIndex = data.findIndex(
+          categoryItem => categoryItem.category === item.category,
+        );
+
+        if (categoryIndex === -1) {
+          data.push({ category: item.category, items: [item] });
+        } else {
+          data[categoryIndex].items.push(item);
+        }
+      });
+
+      setAccordionData(data);
+    };
+
+    const fetchCarouselData = async () => {
+      const data: CarouselCardProps[] = [];
+      const querySnapshot = await getDocs(collection(db, 'lifedata'));
+
+      querySnapshot.forEach(doc => {
+        const item = doc.data() as CarouselCardProps;
+        if (item.type === 'Organisasjon') {
+          data.push(item);
+        }
+      });
+
+      setCarouselData(data);
+    };
+
+    const fetchCarouselDataStudentLife = async () => {
+      const data: CarouselCardProps[] = [];
+      const querySnapshot = await getDocs(collection(db, 'lifedata'));
+  
+      querySnapshot.forEach((doc) => {
+        const item = doc.data() as CarouselCardProps;
+        if(item.type === "Studentmiljø") {
+          data.push(item);
+        }
+      });
+  
+      setCarouselDataStudentLife(data);
+    };
+
+    fetchAccordionData();
+    fetchCarouselData();
+    fetchCarouselDataStudentLife();
+  }, []);
+
   return (
     <Layout>
       <SectionCard
@@ -80,11 +143,13 @@ export default function Info() {
         features={campusFeatures}
         iconBgColor={'bg-blue-300/30'}
       />
-      <CarouselList />
+      <CarouselList cards={carouselData} />
       <div id="faq">
         <AccordionList accordionData={accordionData} />
       </div>
+      <CarouselList cards={carouselDataStudentLife} />
       <SSNApp />
+      
     </Layout>
   );
 }

@@ -124,7 +124,7 @@ export default function HomePage() {
           features={fadderukafeatures}
           bgColor="bg-slate-800"
           textColor={'text-slate-400'}
-          titleColor={'text-slate-200'}
+          titleColor={'text-gray-100'}
           iconBgColor='bg-purple-600/40'
         />
       </div>
