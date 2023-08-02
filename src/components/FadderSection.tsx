@@ -1,49 +1,21 @@
 import * as React from 'react';
-import { Heart } from 'lucide-react';
-
-const pointsData = [
-  {
-    title: 'Title for first point',
-    text: 'Some decent text for the first point',
-    icon: <Heart />,
-  },
-  {
-    title: 'Title for second point',
-    text: 'Some decent text for the second point',
-    icon: <Heart />,
-  },
-  {
-    title: 'Title for third point',
-    text: 'Some decent text for the third point',
-    icon: <Heart />,
-  },
-];
 
 export const FadderSection = () => {
   return (
-    <div className="container py-5 pb-5">
-      <div className="flex flex-col md:flex-row">
+    <div className="container py-5 pb-5 justify-center relative">
+      <div
+        aria-hidden="true"
+        className="absolute z-10 inset-0 top-60 grid grid-cols-2 -space-x-52 opacity-50 dark:opacity-30"
+      >
+        <div className="h-60 z-10 bg-gradient-to-br from-primary to-red-400 blur-[106px]"></div>
+        <div className="h-40 z-10 bg-gradient-to-r from-red-900 to-orange-200 blur-[106px]"></div>
+      </div>
+      <div className="flex flex-col md:flex-row z-50">
         <div className="md:w-1/2">
-          <div className="pb-5 container flex flex-col font-poppins">
-            <span className="font-semibold text-2xl text-red-400">01.</span>
-            <span className="text-4xl font-bold text-gray-900">Fadder</span>
-            <div className="py-5 text-gray-800 tracking-wide leading-6.5 break-normal whitespace-pre-line">
-              {pointsData.map((point, index) => (
-                <div key={index} className="flex flex-col py-2">
-                  <div className="flex items-center">
-                    <span className='bg-red-200/40 p-2 m-2 rounded-full mr-5 text-red-500'>{point.icon}</span>
-                    <div>
-                      <span className="font-semibold">{point.title}</span>
-                      <p>{point.text}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+            <div>Title</div>
         </div>
-        <div className="md:w-1/2 container">
-          <img src="" className="w-full rounded" />
+        <div className="md:w-1/2">
+          <img src="https://cdn.discordapp.com/attachments/1075240291226890384/1136097503436079194/Component_115.png" />
         </div>
       </div>
     </div>
