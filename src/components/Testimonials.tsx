@@ -16,17 +16,17 @@ interface TestimonialsProps {
 }
 
 const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
-  const [visibleCount, setVisibleCount] = useState(9);
+  const [visibleCount, setVisibleCount] = useState(6);
   const [showMore, setShowMore] = useState(false);
 
   const showMoreTestimonials = () => {
     if (showMore) {
       setVisibleCount(
-        prevCount => prevCount - (window.innerWidth <= 768 ? 1 : 3),
+        prevCount => prevCount - (window.innerWidth <= 768 ? 2 : 3),
       );
     } else {
       setVisibleCount(
-        prevCount => prevCount + (window.innerWidth <= 768 ? 1 : 3),
+        prevCount => prevCount + (window.innerWidth <= 768 ? 2 : 3),
       );
     }
     setShowMore(prevState => !prevState);
@@ -34,8 +34,8 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
 
   // split testimonials into chunks of 3 for column view
   const chunks = [];
-  for (let i = 0; i < testimonials.length; i += 3) {
-    chunks.push(testimonials.slice(i, i + 3));
+  for (let i = 0; i < testimonials.length; i += 2) {
+    chunks.push(testimonials.slice(i, i + 2));
   }
 
   return (
@@ -79,7 +79,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 relative">
-          {chunks.slice(0, visibleCount / 3).map((chunk, i) => (
+          {chunks.slice(0, visibleCount / 2).map((chunk, i) => (
             <ul className="space-y-8" key={i}>
               {chunk.map((testimonial, index) => (
                 <li key={index} className="text-sm leading-6">
