@@ -41,10 +41,10 @@ const parseAnswerLinks = (answer: string) => {
 };
 
   return (
-    <div className='bg-gray-50 my-10 py-10'>
-    <div className="container max-w-2xl font-poppins">
+    <div className='my-10 py-10'>
+    <div className="container my-10 max-w-2xl font-poppins">
       <div className="pb-5 flex flex-col font-poppins text-center">
-        <span className="font-semibold text-2xl text-blue-400">02.</span>
+        <span className="font-semibold text-2xl text-blue-400">04.</span>
         <span className="text-4xl font-bold text-gray-900">Noe du lurer på?</span>
       </div>
       {accordionData?.map(({ category, items }) => (

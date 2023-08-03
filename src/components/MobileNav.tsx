@@ -6,23 +6,23 @@ import { Separator } from './ui/separator';
 const links = [
   {
     title: 'Fadderuka',
-    children: [{ title: 'Program', href: '/' }],
+    children: [{ title: 'Program', href: '/program' }],
   },
   {
     title: 'Fadder',
     children: [
-      { title: 'Min Fadder', href: '/' },
-      { title: 'Trygg Fadder', href: '/' },
-      { title: 'Faddergrupper', href: '/' },
+      { title: 'Fadder', href: '/fadder' },
+      { title: 'Trygg Fadder', href: '/fadder#trygg-fadder' },
+      { title: 'Faddergrupper', href: '/fadder#faddergrupper' },
     ],
   },
   {
     title: 'Ny Student',
     children: [
-      { title: 'Studentlivet', href: '/' },
-      { title: 'Ofte stilte spørsmål', href: '/' },
-      { title: 'Studentorganisasjoner', href: '/' },
-      { title: 'Student Sørøst Appen', href: '/' },
+      { title: 'Studentorg.', href: '/student#organisasjoner' },
+      { title: 'Ofte stilte spørsmål', href: '/student#faq' },
+      { title: 'Studentlivet', href: '/student#studentlivet' },
+      { title: 'Student Sørøst Appen', href: '/student#appen' },
     ],
   },
 ];
