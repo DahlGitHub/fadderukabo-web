@@ -1,5 +1,7 @@
 import { ChevronRight } from 'lucide-react';
 import { Button } from './ui/button';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export const TryggFadder = () => {
   return (
@@ -7,14 +9,15 @@ export const TryggFadder = () => {
       <div className="container py-10 my-10">
         <div className="flex flex-col md:flex-row">
           <div className="md:w-1/2 container items-center">
-            <div className='w-40 h-40 bg-red-400 flex mx-auto'>
-              <img
+            <div className="w-40 h-40 bg-red-400 flex mx-auto">
+              <Image
                 src={
-                  'https://cdn.discordapp.com/attachments/1075240291226890384/1134073886389059624/tryggfadder.png'
+                  'https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/tryggfadder.png?alt=media&token=1db2a1d5-46d7-4e84-b9aa-c07d0f4e68d5'
                 }
-                width={125}
-                height={125}
+                width={500}
+                height={500}
                 className="w-full rounded"
+                alt='Trygg Fadder logo'
               />
             </div>
           </div>
@@ -34,9 +37,11 @@ export const TryggFadder = () => {
           </div>
         </div>
         <div className="flex justify-center">
-          <Button className="rounded-full bg-slate-800" size={'lg'}>
-            <span className="font-poppins">SIKRESIDEN.NO</span>
-          </Button>
+          <Link href="https://sikresiden.no" target="_blank">
+            <Button className="rounded-full bg-slate-800" size={'lg'}>
+              <span className="font-poppins">SIKRESIDEN.NO</span>
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

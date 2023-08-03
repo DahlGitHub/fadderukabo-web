@@ -5,29 +5,29 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 const pointsData = [
   {
     value: '1',
-    title: 'Rollen som fadder',
-    text: 'En fadder ved USN fungerer som en bro mellom de nye studentene og studentmiljøet på campus. Fadderen skal ta imot nye studenter og være med på å gi deg en god start på studiehverdagen.',
+    title: 'Din Guide på Campus',
+    text: 'En fadder ved Universitetet i Sørøst-Norge er en nøkkelperson i å bygge bro mellom nye studenter og campusets studentmiljø. Deres hovedrolle er å gi en hjelpende hånd til nye studenter, og sikre at de har en jevn og behagelig overgang til studentlivet.',
     icon: <HeartHandshake size={32} strokeWidth={1.5} />,
     image:
-      'https://cdn.discordapp.com/attachments/1075240291226890384/1136368036119588864/Component_1161.png',
+      'https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/Component%201(16)(1).png?alt=media&token=d5111f17-706e-447d-889b-2c624f846226',
     header: 'Rolle',
   },
   {
     value: '2',
-    title: 'Nati er fuckings gay og gravid',
-    text: 'Some decent text for the second point',
+    title: 'En Knallstart på Studietiden',
+    text: 'Begynnelsen på studietiden kan være litt overveldende, men det er her din fadder kommer inn. Deres oppgave er å gjøre overgangen til studentlivet så glatt som mulig. Fra dag én vil fadderen din introdusere deg for campus, dele verdifulle tips og sikre at du føler deg hjemme i ditt nye miljø.',
     icon: <ShieldCheck size={32} strokeWidth={1.5} />,
     image:
-      'https://cdn.discordapp.com/attachments/1075240291226890384/1136368035343646884/Component_1171.png',
+      'https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/Component%201(17)(1).png?alt=media&token=1ac1d297-9d2d-4b26-b335-feec1f0d640a',
     header: 'Oppgave',
   },
   {
     value: '3',
-    title: 'Faddergruppene',
-    text: 'Some decent text for the third point',
+    title: 'Din Billett til Fellesskapet',
+    text: 'Et robust sosialt nettverk er avgjørende for en berikende studieopplevelse. Ved å være en del av en faddergruppe, vil du ikke bare bli kjent med dine medstudenter, men du vil også ha en innebygd støttegruppe gjennom hele studietiden. Du vil finne faddergrupper spesielt rettet mot ditt studieprogram nedenfor.',
     icon: <Users2 size={32} strokeWidth={1.5} />,
     image:
-      'https://cdn.discordapp.com/attachments/1075240291226890384/1136368035654013059/Component_1181.png',
+      'https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/Component%201(18)(1).png?alt=media&token=7c2077c2-2c7b-43ed-868e-a44faa40c335',
     header: 'Gruppe',
   },
 ];
@@ -83,7 +83,7 @@ export const FadderTabs = () => {
               </div>
               <div className="md:w-1/2">
                 <div className="pb-5 container flex flex-col font-poppins">
-                  <span className="font-semibold text-xl text-red-400">
+                  <span className="font-semibold text-2xl text-red-400 uppercase">
                     {point.title}
                   </span>
                   <div className="py-5 text-gray-800 tracking-wide leading-6.5 break-normal whitespace-pre-line">

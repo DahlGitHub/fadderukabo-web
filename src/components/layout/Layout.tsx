@@ -34,7 +34,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 {showMobileMenu ? <X/> : <AlignLeft/>}
               </button>
               </div>
-              {showMobileMenu && <MobileNav />}
+              {showMobileMenu && <MobileNav closeMenu={() => setShowMobileMenu(false)} />}
               
             </div>
           </div>

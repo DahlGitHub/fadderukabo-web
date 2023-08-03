@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 export const SSNApp = () => {
   return (
@@ -16,7 +17,7 @@ export const SSNApp = () => {
               }
             </p>
             <div className="flex flex-row mx-4 justify-center">
-              <a
+              <Link
                 href="https://apps.apple.com/us/app/student-s%C3%B8r%C3%B8st/id1531470703"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -27,7 +28,7 @@ export const SSNApp = () => {
                   src="https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/apple.png?alt=media&token=8cfa5355-3bee-4cd8-a55e-8f902f782f13"
                   alt="App Store"
                 />
-              </a>
+              </Link>
               <a
                 href="https://play.google.com/store/apps/details?id=no.ssn.studentsorost&gl=NO"
                 target="_blank"

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { Timestamp, doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { ChevronRight } from 'lucide-react';
+import Image from 'next/image';
 
 export const LandingSection = () => {
   const [targetDate, setTargetDate] = useState(null);
@@ -73,21 +74,21 @@ export const LandingSection = () => {
             </div>
             <div className='grid grid-cols-2 gap-5 text-center z-10'>
             <Link href="/program">
-              <Button variant="default" className='bg-slate-800 rounded-full tracking-wide' size={"lg"}>FADDERPROGRAM</Button>
+              <Button variant="default" className='bg-slate-800 rounded-full tracking-wide' size={"lg"}>PROGRAM</Button>
             </Link>
             <Link href="/fadder#faddergrupper">
-              <Button variant="default" className='bg-slate-800 rounded-full tracking-wide' size={"lg"}>FADDERGRUPPER</Button>
+              <Button variant="default" className='bg-slate-800 rounded-full tracking-wide' size={"lg"}>GRUPPER</Button>
             </Link>
             </div>
           </div>
         </div>
         <div className="md:w-2/3 container">
-          <img
-            src={
-              'https://cdn.discordapp.com/attachments/1075240291226890384/1132791490679165060/Studiestart-illustrasjon-16-9.png_article.png'
-            }
-            className="w-full rounded"
-          />
+          <Image
+            src={'https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/Studiestart.png?alt=media&token=242da57b-8b58-4639-b225-d71ce6684777'}
+            className="w-full rounded" alt={'Studiestart'}
+            width={1000}
+            height={1000}
+            />
         </div>
       </div>
     </div>

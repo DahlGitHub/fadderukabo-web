@@ -2,6 +2,7 @@ import { cn } from '@/lib/utils';
 import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from './ui/separator';
+import { MouseEventHandler } from 'react';
 
 const links = [
   {
@@ -27,7 +28,7 @@ const links = [
   },
 ];
 
-export function MobileNav() {
+export function MobileNav(props: { closeMenu: MouseEventHandler<HTMLAnchorElement> | undefined; }) {
   return (
     <div
       className={cn(
@@ -49,6 +50,7 @@ export function MobileNav() {
                         className={cn(
                           'flex w-full items-center justify-between rounded-md p-2 text-sm font-medium hover:bg-slate-100',
                         )}
+                        onClick={props.closeMenu}
                       >
                         <span className="mx-2">{childLink.title}</span>
                         <ChevronRight className="text-gray-600" />
