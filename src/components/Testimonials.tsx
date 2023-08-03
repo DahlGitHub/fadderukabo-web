@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Separator } from './ui/separator';
 import { ChevronDown, ChevronUp, Quote } from 'lucide-react';
+import Image from 'next/image';
 
 interface Testimonial {
   docId: string;
@@ -44,7 +45,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
         <div className="transition duration-500 ease-in-out transform scale-100 translate-x-0 translate-y-0 opacity-100">
           <div className="mb-12 space-y-5 md:mb-16 md:text-center">
             <h1 className="mb-5 text-3xl font-semibold md:text-center font-poppins md:text-5xl">
-              En "studiestart" for alle.
+              En &quot;studiestart&quot; for alle.
             </h1>
             <blockquote>
               <p className="mt-6 max-w-3xl mx-auto text-lg font-poppins text-slate-700">
@@ -61,12 +62,14 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
               </p>
             </blockquote>
             <figcaption className="mt-6 flex items-center justify-center space-x-4 text-left">
-              <img
+              <Image
                 src="https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/usnpp.jpg?alt=media&token=978d9830-a9c8-43da-b035-e37a238a46f4"
                 alt=""
                 className="w-14 h-14 rounded-full"
                 loading="lazy"
                 decoding="async"
+                width={56}
+                height={56}
               />
               <div>
                 <div className="text-slate-900 font-semibold dark:text-white">

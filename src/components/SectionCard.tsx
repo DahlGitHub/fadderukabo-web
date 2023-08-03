@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 interface SectionCardProps {
   id: string;
   title: string;
@@ -21,13 +23,13 @@ export const SectionCard: React.FC<SectionCardProps> = ({
         {reverse ? (
           <>
             <div className="md:w-1/2 container">
-              <img src={image} className="w-full rounded" />
+              <Image src={image} className="w-full rounded" alt={'image'}
+              width={1000}
+              height={1000} />
             </div>
             <div className="md:w-1/2">
               <div className="pb-5 my-2 container flex flex-col font-poppins">
-                <span className={`font-semibold text-2xl ${color}`}>
-                  {id}
-                </span>
+                <span className={`font-semibold text-2xl ${color}`}>{id}</span>
                 <span className="text-4xl font-bold text-gray-900">
                   {title}
                 </span>
@@ -41,9 +43,7 @@ export const SectionCard: React.FC<SectionCardProps> = ({
           <>
             <div className="md:w-1/2">
               <div className="pb-5 container flex flex-col font-poppins">
-                <span className={`font-semibold text-2xl ${color}`}>
-                  {id}
-                </span>
+                <span className={`font-semibold text-2xl ${color}`}>{id}</span>
                 <span className="text-4xl font-bold text-gray-900">
                   {title}
                 </span>
@@ -53,7 +53,7 @@ export const SectionCard: React.FC<SectionCardProps> = ({
               </div>
             </div>
             <div className="md:w-1/2 container">
-              <img src={image} className="w-full rounded" />
+              <Image src={image} className="w-full rounded" alt='Fadder' width={1000} height={1000} />
             </div>
           </>
         )}
