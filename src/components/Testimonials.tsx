@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Separator } from './ui/separator';
-import { Quote } from 'lucide-react';
+import { ChevronDown, ChevronUp, Quote } from 'lucide-react';
 
 interface Testimonial {
   docId: string;
@@ -141,9 +141,9 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
               <button
                 type="button"
                 onClick={showMoreTestimonials}
-                className="relative bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 text-sm text-white font-semibold h-12 px-6 rounded-lg flex items-center dark:bg-slate-700 dark:hover:bg-slate-600 pointer-events-auto"
+                className="relative bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 text-sm text-white font-semibold h-12 px-3 rounded-full flex items-center dark:bg-slate-700 dark:hover:bg-slate-600 pointer-events-auto"
               >
-                {showMore ? 'Show less...' : 'Show more...'}
+                {showMore ? <ChevronUp/> : <ChevronDown/>}
               </button>
             </div>
           )}

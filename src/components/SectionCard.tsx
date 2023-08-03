@@ -16,7 +16,7 @@ export const SectionCard: React.FC<SectionCardProps> = ({
   reverse,
 }) => {
   return (
-    <div className="container py-5 pb-5">
+    <div className="container my-10 py-5 pb-5">
       <div className="flex flex-col md:flex-row">
         {reverse ? (
           <>
@@ -24,7 +24,7 @@ export const SectionCard: React.FC<SectionCardProps> = ({
               <img src={image} className="w-full rounded" />
             </div>
             <div className="md:w-1/2">
-              <div className="pb-5 container flex flex-col font-poppins">
+              <div className="pb-5 my-2 container flex flex-col font-poppins">
                 <span className={`font-semibold text-2xl ${color}`}>
                   {id}
                 </span>

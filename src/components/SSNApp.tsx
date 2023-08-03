@@ -6,7 +6,7 @@ export const SSNApp = () => {
       <div className="flex flex-col md:flex-row">
         <div className="md:w-1/2">
           <div className="pb-5 container flex flex-col font-poppins">
-            <span className={`font-semibold text-2xl text-slate-900`}>05.</span>
+            <span className={`font-semibold text-2xl text-slate-900`}>06.</span>
             <span className="text-4xl font-bold text-gray-900">
               Student i Sørøst-Norge?
             </span>
