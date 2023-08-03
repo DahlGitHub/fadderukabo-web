@@ -71,9 +71,12 @@ export const LandingSection = () => {
             <div className="py-5 text-gray-800 tracking-wide leading-6.5 break-normal text-center">
               {targetDate && <CountDown targetDate={targetDate} />}
             </div>
-            <div className='text-center z-10'>
+            <div className='grid grid-cols-2 gap-5 text-center z-10'>
             <Link href="/program">
-              <Button variant="default" size={"lg"}>Program <ChevronRight className="inline ml-2 transition-transform hover:scale-110" /></Button>
+              <Button variant="default" className='bg-slate-800 rounded-full tracking-wide' size={"lg"}>FADDERPROGRAM</Button>
+            </Link>
+            <Link href="/fadder#faddergrupper">
+              <Button variant="default" className='bg-slate-800 rounded-full tracking-wide' size={"lg"}>FADDERGRUPPER</Button>
             </Link>
             </div>
           </div>
