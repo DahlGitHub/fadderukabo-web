@@ -18,9 +18,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   setSelectedDate,
   dates,
 }) => (
-  <div className="flex justify-center pb-5 z-10 font-poppins">
+  <div className="flex justify-center z-10 font-poppins">
     <label className="max-w-3xl">
-      <p className="text-gray-600 dark:text-gray-400">Dato</p>
       <Popover>
         <PopoverTrigger asChild>
           <Button

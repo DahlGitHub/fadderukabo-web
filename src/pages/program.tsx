@@ -113,21 +113,22 @@ const App = () => {
   return (
     <Layout>
       <div className="p-6">
-        <div className="flex justify-center pb-5 z-10 font-poppins">
-          <label className="max-w-3xl">
-            <h2 className="text-4xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
-              Program
-            </h2>
-            <DatePicker
-              selectedDate={selectedDate}
-              setSelectedDate={setSelectedDate}
-              dates={dates}
-            />
-          </label>
+        <div className="flex flex-col mx-auto max-w-xl pb-5 z-10 font-poppins">
+          <span className="font-semibold text-2xl text-purple-600">
+            Campus Bø
+          </span>
+          <span className="text-4xl md:text-5xl pb-3 font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
+            Fadderprogram
+          </span>
         </div>
         <CategoryButtons
           selectedCategories={selectedCategories}
           toggleCategory={toggleCategory}
+        />
+        <DatePicker
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          dates={dates}
         />
         {Array.from(filteredMap.entries())
           .sort(
