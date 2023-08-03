@@ -60,7 +60,7 @@ interface CarouselCardProps {
   type: string;
 }
 
-export default function Info() {
+export default function Student() {
   const [accordionData, setAccordionData] = useState<AccordionItem[]>([]);
   const [carouselData, setCarouselData] = useState<CarouselCardProps[]>([]);
   const [carouselDataStudentLife, setCarouselDataStudentLife] = useState<CarouselCardProps[]>([]);
@@ -131,24 +131,32 @@ export default function Info() {
         image={
           'https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/usnrektor.jpeg?alt=media&token=996696c9-8135-475a-ad7a-73ed6ee82c3f'
         }
-        color="text-blue-600"
+        color="text-blue-400"
       />
+      <div className='container py-6' id='organisasjoner'>
+      <CarouselList cards={carouselData} number={'02.'} title={'Studentorg.'} />
+      </div>
       <FeatureSection
         title={'Campus Bø'}
-        sectionNumber={'02.'}
-        color={'text-blue-600'}
+        sectionNumber={'03.'}
+        color={'text-blue-400'}
         textColor={'text-slate-900'}
         titleColor={''}
         bgColor={'bg-orange-50'}
         features={campusFeatures}
         iconBgColor={'bg-blue-300/30'}
       />
-      <CarouselList cards={carouselData} />
+      
+      
       <div id="faq">
         <AccordionList accordionData={accordionData} />
       </div>
-      <CarouselList cards={carouselDataStudentLife} />
+      <div className='container py-6' id='studentlivet'>
+      <CarouselList cards={carouselDataStudentLife} number={'05.'} title={'Studentlivet'} />
+      </div>
+      <div id='appen'>
       <SSNApp />
+      </div>
       
     </Layout>
   );
