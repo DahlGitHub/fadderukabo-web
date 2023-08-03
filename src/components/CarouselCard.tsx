@@ -16,7 +16,7 @@ export const CarouselCard = ({ title, image, link }: CarouselCardProps) => {
                     />
                 </div>
             </div>
-            <p className="text-xs text-center font-poppins text-muted-foreground">{title}</p>
+            <p className="text-xs text-center font-poppins">{title}</p>
         </a>
     );
 }

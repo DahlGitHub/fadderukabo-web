@@ -15,25 +15,31 @@ interface CarouselListProps {
         image: string;
         url: string;
     }[];
+    number: string;
+    title: string;
 }
 
-const CarouselList: React.FC<CarouselListProps> = ({ cards }) => {
+const CarouselList: React.FC<CarouselListProps> = ({ cards, number, title }) => {
     return (
-        <div className="container font-poppins">
-            <div className="font-poppins flex flex-col">
-                <span className="font-semibold text-2xl text-blue-400">03.</span>
-                <span className="text-4xl font-bold">Studentlivet</span>
+        <div className="container font-poppins my-10 pb-5">
+            <div className="pb-5 font-poppins flex flex-col">
+                <span className="font-semibold text-2xl text-blue-400">{number}</span>
+                <span className="text-4xl font-bold">{title}</span>
             </div>
             <Swiper
                 modules={[A11y, Autoplay]}
                 spaceBetween={25}
-                slidesPerView={2}
+                slidesPerView={1}
                 loop={true}
                 autoplay={{ delay: 2000 }}
                 speed={700}
       
                 breakpoints={{
-                    320: {
+                    400: {
+                        slidesPerView: 1,
+                        spaceBetween: 10
+                    },
+                    450: {
                         slidesPerView: 2,
                         spaceBetween: 10
                     },
