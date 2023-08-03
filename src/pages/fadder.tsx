@@ -9,8 +9,10 @@ export default function Fadder() {
     <Layout>
       <FadderSection />
       <FadderTabs />
+      <div id='trygg-fadder' className='py-6'>
       <TryggFadder />
-      <div className="my-5 py-5">
+      </div>
+      <div className="my-10 py-10" id='faddergrupper'>
         <GroupList />
       </div>
     </Layout>

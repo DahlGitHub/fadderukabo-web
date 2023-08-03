@@ -28,7 +28,7 @@ export const GroupList = () => {
   }, []);
 
   return (
-    <div>
+    <div className='py-5'>
       <div className="font-poppins mx-auto md:max-w-3xl container flex flex-col">
         <span className="font-semibold text-2xl text-red-400">03.</span>
         <span className="text-4xl font-bold">Faddergrupper</span>
