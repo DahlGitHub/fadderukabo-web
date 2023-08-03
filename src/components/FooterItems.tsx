@@ -9,23 +9,23 @@ const FooterItems = () => {
       links: [
         { text: 'Program', url: '/program' },
         { text: 'Fadderliste', url: '/fadderliste' },
-        { text: 'Faddergrupper', url: '/' },
+        { text: 'Faddergrupper', url: '/fadder/#faddergrupper' },
       ],
     },
     {
       title: 'Ny student?',
       links: [
-        { text: 'Studentlivet', url: 'https://github.com/themesberg/flowbite' },
-        { text: 'Ofte stilte spørsmål', url: '/info' },
-        { text: 'Studentorganisasjoner', url: '/' },
+        { text: 'Studentorg.', url: '/student/#organisasjoner' },
+        { text: 'Ofte stilte spørsmål', url: '/student#faq' },
+        { text: 'Studentlivet', url: '/student#studentlivet' },
       ],
     },
     {
       title: 'Kontakt oss',
       links: [
-        { text: 'Gullbringvegen 36, 3800 Bø, Norge', url: '#' },
-        { text: 'fadderstyretbo@gmail.com', url: '#' },
-        { text: 'facebook.com/fadderstyretbo', url: '#' },
+        { text: 'Gullbringvegen 36, 3800 Bø, Norge', url: 'https://www.google.no/maps/@59.408748,9.0586712,17.28z'},
+        { text: 'fadderstyretbo@gmail.com', url: 'mailto:fadderstyret@gmail.com' },
+        { text: 'facebook.com/fadderstyretbo', url: 'https://www.facebook.com/fadderukabo' },
       ],
     },
   ];
@@ -50,7 +50,7 @@ const FooterItems = () => {
           <ul className="text-gray-800 text-xs font-medium">
             {section.links.map(link => (
               <li key={link.text} className="mb-4 flex items-center">
-                <Link href={link.url} className="hover:underline">
+                <Link href={link?.url} className="hover:underline">
                   {link.text}
                 </Link>
               </li>
