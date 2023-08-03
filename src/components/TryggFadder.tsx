@@ -4,9 +4,9 @@ import { Button } from './ui/button';
 export const TryggFadder = () => {
   return (
     <div className="bg-gray-50">
-      <div className="container py-5 pb-5">
+      <div className="container py-10 my-10">
         <div className="flex flex-col md:flex-row">
-          <div className="md:w-1/2 container">
+          <div className="md:w-1/2 container items-center">
             <div className='w-40 h-40 bg-red-400 flex mx-auto'>
               <img
                 src={
@@ -33,7 +33,7 @@ export const TryggFadder = () => {
             </div>
           </div>
         </div>
-        <div className="flex justify-center my-5">
+        <div className="flex justify-center">
           <Button className="rounded-full bg-slate-800" size={'lg'}>
             <span className="font-poppins">SIKRESIDEN.NO</span>
           </Button>
