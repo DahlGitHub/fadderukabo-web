@@ -3,8 +3,7 @@ import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { TableSkeleton } from '@/components/TableSkeleton';
 import { DataTable, Program, columns } from '@/components/program/ProgramData';
 import { collection, onSnapshot } from 'firebase/firestore';
-import { auth, db } from '../../../firebase';
-import { useRouter } from 'next/router';
+import { db } from '../../../firebase';
 
 const Program = () => {
   const [data, setData] = useState<Program[]>([]);

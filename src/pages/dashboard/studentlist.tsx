@@ -8,7 +8,6 @@ import {
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { TableSkeleton } from '@/components/TableSkeleton';
-import { getSession } from 'next-auth/react';
 
 const Studentlist = () => {
   const [data, setData] = useState<Authorized[]>([]);

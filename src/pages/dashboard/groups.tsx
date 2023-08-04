@@ -4,7 +4,7 @@ import { DataTable, Group, columns } from '@/components/groups/GroupData';
 import { onSnapshot, collection, query, where } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { TableSkeleton } from '@/components/TableSkeleton';
-import { getSession } from 'next-auth/react';
+
 
 const Groups = () => {
   const [data, setData] = useState<Group[]>([]);

@@ -39,7 +39,7 @@ const FormSchema = z.object({
 });
 
 export const EditGroup = React.forwardRef<HTMLDivElement, EditGroupProps>(
-  ({ docId, data }, ref) => {
+  ({ docId, data }) => {
     EditGroup.displayName = 'EditGroup';
     const [currentData, setCurrentData] = useState(data);
     const [color, setColor] = useState(currentData.hexValue);

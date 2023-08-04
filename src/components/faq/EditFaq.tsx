@@ -49,7 +49,7 @@ const FormSchema = z.object({
 });
 
 export const EditFaq = React.forwardRef<HTMLDivElement, EditDataProps>(
-  ({ docId, data }, ref) => {
+  ({ docId, data }) => {
     EditFaq.displayName = 'EditFaq';
     const [currentData, setCurrentData] = useState(data);
     const [isOpen, setIsOpen] = useState(false);

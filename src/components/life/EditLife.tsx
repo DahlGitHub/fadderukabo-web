@@ -59,7 +59,7 @@ const FormSchema = z.object({
 });
 
 export const EditLife= React.forwardRef<HTMLDivElement, EditDataProps>(
-  ({ docId, data }, ref) => {
+  ({ docId, data }) => {
     EditLife.displayName = 'EditLife';
     const [currentData, setCurrentData] = React.useState(data);
     const [isOpen, setIsOpen] = useState(false);

@@ -46,7 +46,7 @@ const FormSchema = z.object({
 });
 
 export const EditStudent = React.forwardRef<HTMLDivElement, EditDataProps>(
-  ({ docId, data }, ref) => {
+  ({ docId, data }) => {
     EditStudent.displayName = 'EditStudent';
     const [currentData, setCurrentData] = React.useState(data);
     const [groupOptions, setGroupOptions] = useState<string[]>([]);
