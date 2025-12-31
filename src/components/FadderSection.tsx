@@ -24,7 +24,7 @@ export const FadderSection = () => {
         </div>
         <div className="md:w-1/2">
           <Image
-            src="https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/Component_115.png?alt=media&token=ac1950f1-2876-4cd2-9d23-957b12265bcc"
+            src="https://firebasestorage.googleapis.com/v0/b/usnfadderuka.firebasestorage.app/o/Images%2FComponent_115.png?alt=media&token=f1af379e-3fb0-4586-9854-3752d8f09432"
             alt={'Fadder'}
             width={1000}
             height={1000}

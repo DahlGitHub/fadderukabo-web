@@ -35,7 +35,7 @@ const FooterItems = () => {
       <div className='my-2'>
         <Image
           src={
-            'https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/USN-logo_sort.png?alt=media&token=05196be1-a4aa-47dc-b815-6040648056f7'
+            'https://firebasestorage.googleapis.com/v0/b/usnfadderuka.firebasestorage.app/o/Images%2FUSN-logo_sort.png?alt=media&token=51284377-0536-4e64-9c17-f0ad59fed270'
           }
           alt={'USN'}
           width={150}

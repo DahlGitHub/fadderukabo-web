@@ -12,7 +12,7 @@ export const TryggFadder = () => {
             <div className="w-40 h-40 bg-red-400 flex mx-auto">
               <Image
                 src={
-                  'https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/tryggfadder.png?alt=media&token=1db2a1d5-46d7-4e84-b9aa-c07d0f4e68d5'
+                  'https://firebasestorage.googleapis.com/v0/b/usnfadderuka.firebasestorage.app/o/Images%2Ftryggfadder.png?alt=media&token=934e2060-027d-4608-83bb-7c60b3e810f5'
                 }
                 width={500}
                 height={500}

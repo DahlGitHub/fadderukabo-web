@@ -25,7 +25,7 @@ export const SSNApp = () => {
                 <Image
                   width={150}
                   height={50}
-                  src="https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/apple.png?alt=media&token=8cfa5355-3bee-4cd8-a55e-8f902f782f13"
+                  src="https://firebasestorage.googleapis.com/v0/b/usnfadderuka.firebasestorage.app/o/Images%2FComponent%202.png?alt=media&token=1cd119c7-9142-41b8-92c1-e23e0895e3ad"
                   alt="App Store"
                 />
               </Link>
@@ -37,7 +37,7 @@ export const SSNApp = () => {
                 <Image
                   width={150}
                   height={50}
-                  src="https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/googleplay.png?alt=media&token=55d33494-b487-4e90-8220-3e1239bff309"
+                  src="https://firebasestorage.googleapis.com/v0/b/usnfadderuka.firebasestorage.app/o/Images%2FComponent%202(1).png?alt=media&token=21f71ec0-d09e-49f5-8c54-def5b14779cd"
                   alt="Google Play"
                 />
               </a>
@@ -50,7 +50,7 @@ export const SSNApp = () => {
             height={500}
             alt="Student Sørøst"
             src={
-              'https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/studentapp.webp?alt=media&token=1f5fbd2a-bd2b-4a2b-9ac1-07eed585438b'
+              'https://firebasestorage.googleapis.com/v0/b/usnfadderuka.firebasestorage.app/o/Images%2Fstudentsorost_august24-9935-2_epmyik.webp?alt=media&token=f46929da-2966-41e3-95d0-249786e318cc'
             }
             className="w-full rounded"
           />

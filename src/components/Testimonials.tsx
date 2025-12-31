@@ -63,7 +63,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
             </blockquote>
             <figcaption className="mt-6 flex items-center justify-center space-x-4 text-left">
               <Image
-                src="https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/usnpp.jpg?alt=media&token=978d9830-a9c8-43da-b035-e37a238a46f4"
+                src="https://firebasestorage.googleapis.com/v0/b/usnfadderuka.firebasestorage.app/o/Images%2Flogo.png?alt=media&token=4fdbc398-3fd1-4d93-8c7e-6c84c3aabaca"
                 alt=""
                 className="w-14 h-14 rounded-full"
                 loading="lazy"

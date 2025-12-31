@@ -9,7 +9,7 @@ const pointsData = [
     text: 'En fadder ved Universitetet i Sørøst-Norge er en nøkkelperson i å bygge bro mellom nye studenter og campusets studentmiljø. Deres hovedrolle er å gi en hjelpende hånd til nye studenter, og sikre at de har en jevn og behagelig overgang til studentlivet.',
     icon: <HeartHandshake size={32} strokeWidth={1.5} />,
     image:
-      'https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/Component%201(16)(1).png?alt=media&token=d5111f17-706e-447d-889b-2c624f846226',
+      'https://firebasestorage.googleapis.com/v0/b/usnfadderuka.firebasestorage.app/o/Images%2FComponent_116.png?alt=media&token=14dbeadb-628a-4cea-b3a3-b611ea10da90',
     header: 'Rolle',
   },
   {
@@ -18,7 +18,7 @@ const pointsData = [
     text: 'Begynnelsen på studietiden kan være litt overveldende, men det er her din fadder kommer inn. Deres oppgave er å gjøre overgangen til studentlivet så glatt som mulig. Fra dag én vil fadderen din introdusere deg for campus, dele verdifulle tips og sikre at du føler deg hjemme i ditt nye miljø.',
     icon: <ShieldCheck size={32} strokeWidth={1.5} />,
     image:
-      'https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/Component%201(17)(1).png?alt=media&token=1ac1d297-9d2d-4b26-b335-feec1f0d640a',
+      'https://firebasestorage.googleapis.com/v0/b/usnfadderuka.firebasestorage.app/o/Images%2FComponent_117.png?alt=media&token=0518ab1b-e9bc-4699-8e99-9f25d6d8575b',
     header: 'Oppgave',
   },
   {
@@ -27,7 +27,7 @@ const pointsData = [
     text: 'Et robust sosialt nettverk er avgjørende for en berikende studieopplevelse. Ved å være en del av en faddergruppe, vil du ikke bare bli kjent med dine medstudenter, men du vil også ha en innebygd støttegruppe gjennom hele studietiden. Du vil finne faddergrupper spesielt rettet mot ditt studieprogram nedenfor.',
     icon: <Users2 size={32} strokeWidth={1.5} />,
     image:
-      'https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/Component%201(18)(1).png?alt=media&token=7c2077c2-2c7b-43ed-868e-a44faa40c335',
+      'https://firebasestorage.googleapis.com/v0/b/usnfadderuka.firebasestorage.app/o/Images%2FComponent_118.png?alt=media&token=6ae5090d-a335-44b2-afac-2b84eb63e254',
     header: 'Gruppe',
   },
 ];

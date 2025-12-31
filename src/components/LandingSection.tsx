@@ -84,7 +84,7 @@ export const LandingSection = () => {
         </div>
         <div className="md:w-2/3 container">
           <Image
-            src={'https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/Studiestart.png?alt=media&token=242da57b-8b58-4639-b225-d71ce6684777'}
+            src={'https://firebasestorage.googleapis.com/v0/b/usnfadderuka.firebasestorage.app/o/Images%2FStudiestart-illustrasjon-16-9.png_article.png?alt=media&token=ffe48955-309d-47ca-9d3e-c671cce4f1ed'}
             className="w-full rounded" alt={'Studiestart'}
             width={1000}
             height={1000}

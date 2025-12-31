@@ -129,7 +129,7 @@ export default function Student() {
           'Universitetet i Sørøst-Norge har cirka 18000 studenter, og 1.800 årsverk. Det tilbys profesjons- og arbeidslivsretta utdannelse, forskning og formidling av kunnskap med høy internasjonal kvalitet.\n\n Alt av informasjon fra studiestart, emneplan, veiledning til timeplan og kontaktinformasjon finner sted på den offisielle nettsiden til Universitetet i Sørøst-Norge.'
         }
         image={
-          'https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/usnrektor.jpeg?alt=media&token=996696c9-8135-475a-ad7a-73ed6ee82c3f'
+          'https://firebasestorage.googleapis.com/v0/b/usnfadderuka.firebasestorage.app/o/Images%2F15%2Bnyh%2Bskolestart%2BUSN%2BKongsberg%2B1_1.jpg?alt=media&token=b7008938-3bed-4a95-89fc-a768ec0bc4f1'
         }
         color="text-blue-400"
       />

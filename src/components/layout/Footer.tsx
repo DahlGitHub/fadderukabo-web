@@ -14,7 +14,7 @@ export default function Footer() {
         <hr className="my-2 border-gray-200" />
         <div className="pt-3 flex items-center space-x-2">
           <Image
-            src="https://firebasestorage.googleapis.com/v0/b/fadderukabo.appspot.com/o/USN-symbol_sort.png?alt=media&token=e72960d6-666d-4c3c-9b6a-a38d9ab25ce7"
+            src="https://firebasestorage.googleapis.com/v0/b/usnfadderuka.firebasestorage.app/o/Images%2FUSN-symbol_sort.png?alt=media&token=1f3e24b0-7d87-4c36-aad5-55eab52d308f"
             alt={'USN'}
             width={25}
             height={25}
